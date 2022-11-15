@@ -5,6 +5,9 @@
       <label for="username">username : </label>
       <input type="text" id="username" v-model="username"><br>
 
+      <label for="email">email : </label>
+      <input type="text" id="email" v-model="email"><br>
+
       <label for="password1">password : </label>
       <input type="password" id="password1" v-model="password1"><br>
 
@@ -22,6 +25,7 @@ export default {
   data() {
     return {
       username: null,
+      email: null,
       password1: null,
       password2: null,
     }
@@ -29,11 +33,12 @@ export default {
   methods: {
     signUp() {
       const username = this.username
+      const email = this.email
       const password1 = this.password1
       const password2 = this.password2
 
       const payload = {
-        username, password1, password2
+        username, email, password1, password2
       }
       this.$store.dispatch('signUp', payload)
     }
