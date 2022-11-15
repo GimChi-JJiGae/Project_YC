@@ -13,7 +13,6 @@ export default new Vuex.Store({
   ],
   state: {
     access_token: null,
-    refresh_token: null,
   },
   getters: {
     isLogin(state) {
@@ -22,10 +21,14 @@ export default new Vuex.Store({
   },
   mutations: {
     // auth
-    SAVE_TOKEN(state, tokens) {
-      state.access_token = tokens[0]
-      state.refresh_token = tokens[1]
+    SAVE_TOKEN(state, token) {
+      state.access_token = token
       router.push({ name: 'HomeView' })
+    },
+    LOGOUT(state) {
+      state.access_token = null
+      localStorage.access_token = null
+      // router.push({ name: 'HomeView' })
     }
   },
   actions: {
@@ -58,13 +61,27 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
-          console.log(res.data)
-          const tokens = [res.data.access_token, res.data.refresh_token]
-          context.commit('SAVE_TOKEN', tokens)
+          // console.log(res.data)
+          const token = res.data.access_token
+          context.commit('SAVE_TOKEN', token)
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          const errMsg = JSON.parse(err.response.request.response)
+          console.log(errMsg)
+          if (errMsg.username) {
+            alert("username : " + errMsg.username)
+          } else if (errMsg.email) {
+            alert("email : " + errMsg.email)
+          } else if (errMsg.password1) {
+            alert("password : " + errMsg.password1)
+          } else if (errMsg.password2) {
+            alert("password confirmation : " + errMsg.password2)
+          } else if (errMsg.non_field_errors) {
+            alert(errMsg.non_field_errors)
+          }
+        })
     },
-    logIn(context, payload) {
+    LogIn(context, payload) {
       const username = payload.username
       const email = payload.email
       const password = payload.password
@@ -76,11 +93,14 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
-          const tokens = [res.data.access_token, res.data.refresh_token]
-          context.commit('SAVE_TOKEN', tokens)
+          const token = res.data.access_token
+          context.commit('SAVE_TOKEN', token)
         })
         .catch(err => console.log(err))
     },
+    LogOut(context) {
+      context.commit('LOGOUT')
+    }
   },
   modules: {
   }

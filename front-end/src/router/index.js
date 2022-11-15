@@ -23,6 +23,10 @@ const routes = [
     name: 'SignUpView',
     component: SignUpView
   },
+  {
+    path: '/logout',
+    name: 'LogOut',
+  },
 
 ]
 

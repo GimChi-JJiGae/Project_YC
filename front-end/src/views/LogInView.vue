@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>LogIn Page</h1>
-    <form @submit.prevent="logIn" @keyup.enter="logIn">
+    <form @submit.prevent="LogIn" @keyup.enter="logIn">
       <label for="username">username : </label>
       <input type="text" id="username" v-model="username"><br>
 
@@ -27,7 +27,7 @@ export default {
     }
   },
   methods: {
-    logIn() {
+    LogIn() {
       const username = this.username
       const email = this.email
       const password = this.password
@@ -35,7 +35,7 @@ export default {
       const payload = {
         username, email, password
       }
-      this.$store.dispatch('logIn', payload)
+      this.$store.dispatch('LogIn', payload)
       this.$router.push({ name: 'HomeView' })
     }
   }

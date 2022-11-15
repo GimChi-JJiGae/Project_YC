@@ -1,13 +1,46 @@
 <template>
   <div id="app">
     <nav>
-      <router-link :to="{ name: 'HomeView' }">Home</router-link> |
-      <router-link :to="{ name: 'LogInView' }">Login</router-link> | 
-      <router-link :to="{ name: 'SignUpView' }">SignUpPage</router-link> | 
+      <span v-if="access_token">
+        <router-link :to="{ name: 'HomeView' }">Home</router-link> |
+        <router-link to="javascript:void(0)" @click.native="LogOut">logout</router-link>
+      </span>
+      <span v-else>
+        <router-link :to="{ name: 'HomeView' }">Home</router-link> |
+        <router-link :to="{ name: 'LogInView' }">Login</router-link> | 
+        <router-link :to="{ name: 'SignUpView' }">SignUpPage</router-link> | 
+      </span>
     </nav>
     <router-view/>
   </div>
 </template>
+
+<script>
+// import jwt_decode from "jwt-decode"
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      isTrue: true,
+    }
+  },
+  computed: {
+    access_token() {
+      return this.$store.state.access_token
+    },
+    // username() {
+    //   return jwt_decode(this.token).username
+    // }
+  },
+  methods: {
+    LogOut() {
+      this.$store.dispatch('LogOut')
+      this.$router.push({ name: 'HomeView' })
+    }
+  }
+}
+</script>
 
 <style>
 #app {
