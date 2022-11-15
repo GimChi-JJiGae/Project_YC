@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
+    # CORS policy
+    'corsheaders',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,6 +62,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -68,14 +72,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = True
+
 SITE_ID = 1
 
 # DRF
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',   # 인증된 사용자만 접근 가능
+        # 'rest_framework.permissions.IsAuthenticated',   # 인증된 사용자만 접근 가능
         # 'rest_framework.permissions.IsAdminUser',       # 관리자만 접근 가능
-        # 'rest_framework.permissions.AllowAny',          # 누구나 접근 가능
+        'rest_framework.permissions.AllowAny',          # 누구나 접근 가능
     ),
 	
     'DEFAULT_AUTHENTICATION_CLASSES': (
