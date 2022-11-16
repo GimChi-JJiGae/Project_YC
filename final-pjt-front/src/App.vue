@@ -44,6 +44,7 @@ export default {
       this.$router.push({ name: 'HomeView' })
 
     },
+    /*
     getMovies: function () {
       axios.get(`http://127.0.0.1:8000/movies/`)
       .then( (res) => {
@@ -66,6 +67,7 @@ export default {
       console.log(err)
     })
     }
+    */
 
   },
 
