@@ -19,8 +19,7 @@
 </template>
 
 <script>
-// import jwt_decode from "jwt-decode"
-import axios from 'axios'
+
 
 export default {
   name: 'App',
@@ -41,6 +40,7 @@ export default {
     LogOut() {
       this.$store.dispatch('LogOut')
       this.$router.push({ name: 'HomeView' })
+
     },
     getMovies: function () {
       axios.get(`http://127.0.0.1:8000/movies/`)
@@ -69,6 +69,7 @@ export default {
 
  
 }
+
 
 </script>
 
