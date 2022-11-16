@@ -70,6 +70,7 @@ for idx, movie_Id in enumerate(movie_Ids):
                     "overview": json_object.get("overview"),
                     "genres": [json_object.get("genres")[0].get("id")],
                     "original_title": json_object.get("original_title"),
+                    "original_id": json_object.get("id"),
                 }  
             }
         else:
@@ -88,10 +89,11 @@ for idx, movie_Id in enumerate(movie_Ids):
                     "overview": json_object.get("overview"),
                     "genres": json_object.get("genres"),
                     "original_title": json_object.get("original_title"),
+                    "original_id": json_object.get("id"),
                 }
             }
         movie_list.append(my_object)
-print("check???")
+
 with open('movies.json', 'w', encoding='UTF-8') as file:
     file.write(json.dumps(movie_list, ensure_ascii=False))
 

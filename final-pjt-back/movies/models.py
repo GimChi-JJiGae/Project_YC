@@ -10,6 +10,7 @@ class Genre(models.Model):
 
 class Movie(models.Model):
     title = models.TextField()
+    original_id = models.IntegerField()
     original_title = models.TextField()
     overview = models.TextField()
     genres = models.ManyToManyField(Genre)

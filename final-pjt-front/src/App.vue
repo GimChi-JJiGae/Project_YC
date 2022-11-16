@@ -40,18 +40,6 @@ export default {
       this.$store.dispatch('LogOut')
       this.$router.push({ name: 'HomeView' })
     },
-    getMovies: function () {
-      axios.get(`http://127.0.0.1:8000/movies/`)
-      .then( (res) => {
-        if (this.$store.state.movies.length === 0) {
-          this.$store.state.movies = res.data
-          console.log(this.$store.state.movies)
-        }
-      })
-      .catch( (err) => {
-        console.log(err)
-      })
-    },
   },
 
  
