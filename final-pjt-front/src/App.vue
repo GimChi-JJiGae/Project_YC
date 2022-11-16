@@ -12,7 +12,9 @@
       </span>
     </nav>
     <router-view/>
-    
+    <button v-on:click="getMovies">11111</button>
+    <button v-on:click="getRelatedMovies">22222</button>
+
   </div>
 </template>
 
@@ -40,10 +42,34 @@ export default {
       this.$router.push({ name: 'HomeView' })
 
     },
+    getMovies: function () {
+      axios.get(`http://127.0.0.1:8000/movies/`)
+      .then( (res) => {
+        if (this.$store.state.movies.length === 0) {
+          this.$store.state.movies = res.data
+          console.log(this.$store.state.movies)
+          console.log("check")
+        }
+      })
+      .catch( (err) => {
+        console.log(err)
+      })
+    },
+    getRelatedMovies: function() {
+      axios.get(`https://api.themoviedb.org/3/movie/${this.$store.state.movies[0].original_id}/recommendations?api_key=5d2592924ae354925561438e12ee8888&language=ko-KR&page=1`)
+    .then( (res) => {
+      console.log(res.data)
+    })
+    .catch( (err) => {
+      console.log(err)
+    })
+    }
+
+  },
 
  
-  }
 }
+
 
 </script>
 
