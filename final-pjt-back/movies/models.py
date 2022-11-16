@@ -11,6 +11,7 @@ class Genre(models.Model):
 class Movie(models.Model):
     title = models.TextField()
     original_title = models.TextField()
+    original_id = models.IntegerField()
     overview = models.TextField()
     genres = models.ManyToManyField(Genre)
     poster_path = models.TextField()
