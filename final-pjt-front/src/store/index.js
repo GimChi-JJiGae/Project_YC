@@ -13,6 +13,7 @@ export default new Vuex.Store({
   ],
   state: {
     access_token: null,
+    movies: [],
   },
   getters: {
     isLogin(state) {
