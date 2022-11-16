@@ -12,13 +12,12 @@
       </span>
     </nav>
     <router-view/>
-    <button v-on:click="getMovies"></button>
+    
   </div>
 </template>
 
 <script>
-// import jwt_decode from "jwt-decode"
-import axios from 'axios'
+
 
 export default {
   name: 'App',
@@ -39,10 +38,11 @@ export default {
     LogOut() {
       this.$store.dispatch('LogOut')
       this.$router.push({ name: 'HomeView' })
+
     },
-  },
 
  
+  }
 }
 
 </script>

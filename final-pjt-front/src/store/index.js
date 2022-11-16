@@ -24,7 +24,7 @@ export default new Vuex.Store({
     // auth
     SAVE_TOKEN(state, token) {
       state.access_token = token
-      router.push({ name: 'HomeView' })
+      router.push({ name: 'HomeView' }).catch(()=>{})
     },
     LOGOUT(state) {
       state.access_token = null
@@ -49,7 +49,6 @@ export default new Vuex.Store({
     // },
 
     signUp(context, payload) {
-      const username = payload.username
       const email = payload.email
       const password1 = payload.password1
       const password2 = payload.password2
@@ -58,7 +57,7 @@ export default new Vuex.Store({
         method: 'post',
         url: `${API_URL}/accounts/registration/`,
         data: {
-          username, email, password1, password2
+          email, password1, password2
         }
       })
         .then(res => {
@@ -69,9 +68,7 @@ export default new Vuex.Store({
         .catch((err) => {
           const errMsg = JSON.parse(err.response.request.response)
           console.log(errMsg)
-          if (errMsg.username) {
-            alert("username : " + errMsg.username)
-          } else if (errMsg.email) {
+          if (errMsg.email) {
             alert("email : " + errMsg.email)
           } else if (errMsg.password1) {
             alert("password : " + errMsg.password1)
@@ -83,14 +80,13 @@ export default new Vuex.Store({
         })
     },
     LogIn(context, payload) {
-      const username = payload.username
       const email = payload.email
       const password = payload.password
       axios({
         method: 'post',
         url: `${API_URL}/accounts/login/`,
         data: {
-          username, email, password
+          email, password
         }
       })
         .then(res => {
