@@ -1,37 +1,52 @@
 <template>
   <div>
     <h1>LogIn Page</h1>
-    <form @submit.prevent="LogIn" @keyup.enter="logIn">
-      <label for="email">email : </label>
-      <input type="text" id="email" v-model="email"><br>
-
+    <form @submit.prevent="LogIn" @keyup.enter="LogIn">
+      <label for="username">Username</label>
+      <input v-model.trim="credential.username" id="username" type="text" placeholder="Username" required="required" data-validation-required-message="Please enter your username." />
+      <br>
       <label for="password">password : </label>
-      <input type="password" id="password" v-model="password">
+      <input v-model.trim="credential.password" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." />
 
       <input type="submit" value="LogIn">
     </form>
+    <h3>Sign up</h3>
+    <button @click="moveToSignUp" id="Signup" type="submit">Signup</button>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const SERVER_URL = 'http://127.0.0.1:8000'
+
 export default {
   name: 'LogInView',
   data() {
     return {
-      email: null,
-      password: null,
+      credential: {
+        username: null,
+        password: null,
+      }
     }
   },
   methods: {
     LogIn() {
-      const email = this.email
-      const password = this.password
-
-      const payload = {
-        email, password
-      }
-      this.$store.dispatch('LogIn', payload)
-      this.$router.push({ name: 'HomeView' })
+      axios.post(`${SERVER_URL}/accounts/api-token-auth/`, this.credential)
+      .then((res) => {
+        // console.log(res)
+        localStorage.setItem('access_token', res.data.token)
+        this.$store.dispatch('LogIn', res.data.token)
+        this.$router.push({ name: "HomeView" }).catch(()=>{})
+        // location.reload()
+      })
+      .catch( (err) => {
+        alert("올바른 아이디와 비밀번호를 입력해주세요.")
+        console.log(err)
+      })
+    },
+    moveToSignUp() {
+      this.$router.push({ name: 'SignUpView' })
     }
   }
   

@@ -1,22 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.utils.translation import ugettext_lazy as _
 
-from .managers import CustomUserManager
-
-
+# Create your models here.
 class User(AbstractUser):
-    username = None
-    email = models.EmailField(_('email address'), unique=True)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    SEX_CHOICES = {
+        ('male', 'Male'),
+        ('female', 'Female'),
+    }
 
-    objects = CustomUserManager()
+    age = models.CharField(max_length=20)
+    sex = models.CharField(max_length=10, choices=SEX_CHOICES, null=False, default="male")
 
-    spouse_name = models.CharField(blank=True, max_length=100)
-    date_of_birth = models.DateField(blank=True, null=True)
-    
-
-    def __str__(self):
-        return self.email
+    followers = models.ManyToManyField('self', symmetrical=False, related_name='followings')
