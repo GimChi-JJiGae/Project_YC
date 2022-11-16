@@ -3,7 +3,9 @@
     <nav>
       <span v-if="access_token">
         <router-link :to="{ name: 'HomeView' }">Home</router-link> |
-        <router-link to="javascript:void(0)" @click.native="LogOut">logout</router-link>
+        <router-link to="javascript:void(0)" @click.native="LogOut">logout</router-link> |
+        <router-link :to="{ name: 'UsersView' }">Users</router-link> |
+        <router-link :to="{ name: 'MyProfileView' }">My Profile</router-link>
       </span>
       <span v-else>
         <router-link :to="{ name: 'HomeView' }">Home</router-link> |
