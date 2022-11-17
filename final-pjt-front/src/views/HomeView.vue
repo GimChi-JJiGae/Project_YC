@@ -52,7 +52,10 @@ export default {
       return this.$store.getters.isLogin
     }
   },
-  
+  components: {
+    Carousel3d,
+    Slide
+  },
   methods: {
     pick_top_poster_images: function () {
       for (let i = 0; i<10; i++) {
