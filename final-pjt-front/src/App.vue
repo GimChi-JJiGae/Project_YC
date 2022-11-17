@@ -14,14 +14,13 @@
       </span>
     </nav>
     <router-view/>
-    <button v-on:click="getMovies">11111</button>
-    <button v-on:click="getRelatedMovies">22222</button>
+  
 
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+//import axios from 'axios'
 
 export default {
   name: 'App',

@@ -37,6 +37,9 @@ export default new Vuex.Store({
       state.access_token = null
       localStorage.access_token = null
       // router.push({ name: 'HomeView' })
+    },
+    CLEAR_MOVIES(state){
+      state.movies
     }
   },
   actions: {
