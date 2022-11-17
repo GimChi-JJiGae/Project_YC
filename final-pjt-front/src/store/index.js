@@ -8,9 +8,7 @@ Vue.use(Vuex)
 // const API_URL = 'http://127.0.0.1:8000'
 
 export default new Vuex.Store({
-  plugins: [
-    createPersistedState(),
-  ],
+
   state: {
     access_token: null,
 
@@ -19,8 +17,9 @@ export default new Vuex.Store({
     sex: ["male", "female"],
     ages: ["10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "90대", ],
     reviewRate: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-
+    
     movies: [],
+    
   },
   getters: {
     isLogin(state) {
