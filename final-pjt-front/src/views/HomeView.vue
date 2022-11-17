@@ -84,8 +84,9 @@ export default {
         // 로그인 안했을 때 페이지 보여주기
       }
       axios.get(`http://127.0.0.1:8000/movies/`)
+      
       .then( (res) => {
-        
+        localStorage.setItem('movies', movie2)
         if (this.$store.state.movies.length === 0) {
           this.$store.state.movies = res.data
           console.log(this.$store.state.movies)
