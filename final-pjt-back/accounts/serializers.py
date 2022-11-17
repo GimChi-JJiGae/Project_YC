@@ -11,6 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
 
-        fields = ('id', 'username', 'password', 'age', 'sex', 'email', )
-        # fields = ('id', 'username', 'like_movies', 'password', 'age', 'sex', 'email', 'followings', 'reviews', 'followers',)
-        # read_only_fields = ('followings', 'reviews', 'like_movies', 'followers',)
+        # fields = ('id', 'username', 'password', 'age', 'sex', 'email', )
+        fields = ('id', 'username', 'like_movies', 'movie_comments',
+                  'password', 'age', 'sex', 'email', 'followings', 
+                  'like_movie_comments', 'hate_movie_comments', 'followers',
+                  'like_articles', )
+                  
+        read_only_fields = ('followings', 'like_movie_comments', 'movie_comments',
+                            'hate_movie_comments', 'like_movies', 'followers',
+                            'like_articles', )

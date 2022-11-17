@@ -23,12 +23,13 @@ class Movie(models.Model):
     popularity = models.FloatField(validators=[MinValueValidator(0)])
     adult = models.BooleanField()
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
-    
-    #likes = models.IntegerField() # 나중에 manytomany로 수정할 예정
 
 
 class MovieComment(models.Model):
-    user_id = models.IntegerField() # N to 1 예정
-    movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="movie_comments")
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     content = models.TextField()
     rank = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    like_movie_comment_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movie_comments')
+    hate_movie_comment_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='hate_movie_comments')
