@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import { Carousel3d, Slide } from 'vue-carousel-3d'
 import _ from 'lodash'
 
@@ -77,36 +77,6 @@ export default {
         }
       }
     },
-    getMovies: function () {
-      if (this.isLogin) {
-        // this.$store.dispatch('getMovies')
-      } else {
-        // 로그인 안했을 때 페이지 보여주기
-      }
-      axios.get(`http://127.0.0.1:8000/movies/`)
-      
-      .then( (res) => {
-        localStorage.setItem('movies', movie2)
-        if (this.$store.state.movies.length === 0) {
-          this.$store.state.movies = res.data
-          console.log(this.$store.state.movies)
-        }
-      })
-      
-      .catch( (err) => {
-        console.log(err)
-      })
-    },
-  },
-  created() {
-    console.log(this.$store.state.movies.length)
-    if (this.$store.state.movies.length === 0) {
-      this.getMovies()
-      console.log('생성됨')
-    }
-    console.log(this.$store.state.movies)
-    
-    
   },
 }
 </script>

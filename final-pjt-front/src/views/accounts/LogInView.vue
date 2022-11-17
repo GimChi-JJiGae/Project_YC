@@ -2,8 +2,8 @@
   <div>
     <h1>LogIn Page</h1>
     <form @submit.prevent="LogIn" @keyup.enter="LogIn">
-      <label for="username">Username</label>
-      <input v-model.trim="credential.username" id="username" type="text" placeholder="Username" required="required" data-validation-required-message="Please enter your username." />
+      <label for="username">ID</label>
+      <input v-model.trim="credential.username" id="username" type="text" placeholder="ID" required="required" data-validation-required-message="Please enter your username." />
       <br>
       <label for="password">password : </label>
       <input v-model.trim="credential.password" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." />

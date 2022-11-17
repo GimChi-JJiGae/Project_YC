@@ -22,12 +22,13 @@ def article_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-api_view(['GET', 'DELETE', 'PUT'])
+@api_view(['GET', 'DELETE', 'PUT'])
 def article_detail(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
 
     if request.method == 'GET':
         serializer = ArticleSerializer(article)
+        print(serializer.data)
         return Response(serializer.data)
 
     elif request.method == 'DELETE':
@@ -41,13 +42,13 @@ def article_detail(request, article_pk):
             return Response(serializer.data)
 
 
-api_view(['GET'])
+@api_view(['GET'])
 def comment_list(request):
     comments = get_list_or_404(Comment)
     serializer = CommentListSerializer(comments, many=True)
     return Response(serializer.data)
 
-api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def comment_detail(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
 

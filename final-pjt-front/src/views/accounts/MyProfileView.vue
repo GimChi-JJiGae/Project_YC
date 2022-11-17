@@ -6,9 +6,8 @@
           <div class="well profile containerSpecial" style="position:relative;">
                 <div class="col-sm-12">
                     <div class="col-xs-6 col-sm-8 center" style="margin-bottom:20px">
-                        <h2 class="title-font" style="margin-bottom: 10px">My Profile</h2>
-                        <!-- <div><button @click="open2" style="background-color:black; border:0px; color:white;" class="m-1 btn content-font">Following <span>{{ this.followingsLength }}명</span></button> <button @click="open1" style="background-color:black; border:0px; color:white;" class="m-1 btn content-font">Follower <span>{{ this.followesLength }}명</span></button></div> -->
-                        <p class="content-font" style="font-size: 20px"><strong>username: </strong> {{ user.username }} </p>
+                        <h2 class="title-font" style="margin-bottom: 10px"><strong>{{ user.username }}님의 프로필</strong></h2>
+                        <div><button @click="open2" class="m-1 btn content-font">Following <span>{{ this.followingsLength }}명</span></button> <button @click="open1" class="m-1 btn content-font">Follower <span>{{ this.followersLength }}명</span></button></div>
                         <p class="content-font" style="font-size: 20px"><strong>Email: </strong> {{ user.email }} </p>
                         <p class="content-font" style="font-size: 20px"><strong>Info: </strong>
                             <span class="tags" style="margin-right:5px">{{user.age}}</span> 
@@ -16,18 +15,17 @@
                         </p>
                     </div>
                     <br>             
-                    <!-- <div class="col-xs-12 col-sm-4 text-center">
+                    <div class="col-xs-12 col-sm-4 text-center">
                         <figure>
-                            <img src="@/assets/미니언즈.jpg" alt="" class="img-circle img-responsive">
+                            <!-- <img src="@/assets/미니언즈.jpg" alt="" class="img-circle img-responsive"> -->
                         </figure>
-                    </div> -->
+                    </div>
                   <!-- 절취선 -->
                   <!-- 절취선 -->
                 </div>            
           </div>                 
       </div>
     </div>
-
   </div>
 </template>
 
@@ -75,18 +73,17 @@ export default {
       const info = VueJwtDecode.decode(hash)
       axios.post(`${SERVER_URL}/accounts/myprofile/`, info, config)
       .then( (res) => {
-        // console.log(res)
         this.user = res.data
-        const item = this.user.like_movies
 
-        axios.post(`${SERVER_URL}/movies/${this.user.id}/like/`, item, config)
-        .then( (res) => {
-          // console.log(res)
-          this.myMovies = res.data
-        })
-        .catch( (err) => {
-          console.log(err)
-        })
+        // const item = this.user.like_movies
+        // axios.post(`${SERVER_URL}/movies/${this.user.id}/like/`, item, config)
+        // .then( (res) => {
+        //   // console.log(res)
+        //   this.myMovies = res.data
+        // })
+        // .catch( (err) => {
+        //   console.log(err)
+        // })
 
       })
       .catch( (err) => {
@@ -108,7 +105,23 @@ export default {
   },
   created() {
     this.getMyName()
-  }
+  },
+  computed: {
+    followingsLength() {
+      if (this.user.followings) {
+        return this.user.followings.length
+      } else {
+        return 0
+      }
+    },
+    followersLength() {
+      if (this.user.followers) {
+        return this.user.followers.length
+      } else {
+        return 0
+      }
+    },
+  },
 }
 </script>
 

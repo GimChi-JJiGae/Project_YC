@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import axios from 'axios'
-import createPersistedState from 'vuex-persistedstate'
+// import createPersistedState from 'vuex-persistedstate'
 import router from '@/router'
 
 Vue.use(Vuex)
@@ -12,7 +12,7 @@ export default new Vuex.Store({
   state: {
     access_token: null,
 
-    communities: [],
+    articles: [],
 
     sex: ["male", "female"],
     ages: ["10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "90대", ],
@@ -23,6 +23,8 @@ export default new Vuex.Store({
   },
   getters: {
     isLogin(state) {
+      state.access_token = localStorage.getItem('access_token')
+      // console.log(state.access_token)
       return state.access_token ? true : false
     }
   },
@@ -34,11 +36,15 @@ export default new Vuex.Store({
     },
     LOGOUT(state) {
       state.access_token = null
-      localStorage.access_token = null
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('vuex')
       // router.push({ name: 'HomeView' })
     },
     CLEAR_MOVIES(state){
       state.movies
+    },
+    GET_ARTICLES(state, articles) {
+      state.articles = articles
     }
   },
   actions: {
@@ -61,6 +67,9 @@ export default new Vuex.Store({
     },
     LogOut(context) {
       context.commit('LOGOUT')
+    },
+    getArticles(context, articles) {
+      context.commit('GET_ARTICLES', articles)
     }
   },
   modules: {

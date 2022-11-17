@@ -3,12 +3,14 @@
     <nav>
       <span v-if="access_token">
         <router-link :to="{ name: 'HomeView' }">Home</router-link> |
+        <router-link :to="{ name: 'ArticleHomeView' }">Community</router-link> |
         <router-link to="javascript:void(0)" @click.native="LogOut">logout</router-link> |
         <router-link :to="{ name: 'UsersView' }">Users</router-link> |
         <router-link :to="{ name: 'MyProfileView' }">My Profile</router-link>
       </span>
       <span v-else>
         <router-link :to="{ name: 'HomeView' }">Home</router-link> |
+        <router-link :to="{ name: 'ArticleHomeView' }">Community</router-link> |
         <router-link :to="{ name: 'LogInView' }">Login</router-link> | 
         <router-link :to="{ name: 'SignUpView' }">SignUpPage</router-link> | 
       </span>
@@ -20,7 +22,7 @@
 </template>
 
 <script>
-//import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -67,7 +69,34 @@ export default {
     })
     }
     */
-
+    getMovies: function () {
+      if (this.isLogin) {
+        // this.$store.dispatch('getMovies')
+      } else {
+        // 로그인 안했을 때 페이지 보여주기
+      }
+      axios.get(`http://127.0.0.1:8000/movies/`)
+      
+      .then( (res) => {
+        if (this.$store.state.movies.length === 0) {
+          this.$store.state.movies = res.data
+          // console.log(this.$store.state.movies)
+        }
+      })
+      
+      .catch( (err) => {
+        console.log(err)
+      })
+    },
+  },
+  created() {
+    // console.log(this.$store.state.movies.length)
+    if (this.$store.state.movies.length === 0) {
+      this.getMovies()
+      console.log('영화 데이터 생성됨')
+    } else {
+      console.log('영화 데이터 이미 있음')
+    }
   },
 
  
