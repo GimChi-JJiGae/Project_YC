@@ -1,10 +1,13 @@
 final-pjt-back/venv/
 final-pjt-back/db.sqlite3
 *.pyc
+final-pjt-back/accounts/migrations/
 final-pjt-back/accounts/__pycache__/
 final-pjt-back/accounts/migrations/__pycache__/
+final-pjt-back/articles/migrations/
 final-pjt-back/articles/__pycache__/
 final-pjt-back/articles/migrations/__pycache__/
+final-pjt-back/movies/migrations/
 final-pjt-back/movies/__pycache__/
 final-pjt-back/movies/migrations/__pycache__/
 final-pjt-back/my_api/__pycache__/

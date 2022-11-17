@@ -14,7 +14,7 @@ def home(request):
     if request.method == 'GET':
         movies = Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data) 
 
 
 
