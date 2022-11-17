@@ -1,5 +1,6 @@
 final-pjt-back/venv/
 final-pjt-back/db.sqlite3
+*.pyc
 final-pjt-back/accounts/__pycache__/
 final-pjt-back/accounts/migrations/__pycache__/
 final-pjt-back/articles/__pycache__/
