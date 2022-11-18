@@ -39,7 +39,6 @@ export default {
     },
     getArticles() {
       const config = this.getToken()
-
       if (this.isLogin === true) {
         axios.get(`${SERVER_URL}/articles/`, config)
         .then(res => {

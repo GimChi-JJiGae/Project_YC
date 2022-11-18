@@ -17,8 +17,8 @@
               <div class="[ info-card-detail ] st-font">
                 <p>나이: {{user.age}}</p>
                 <p>성별: {{user.sex}}</p>
-                <!-- <p v-if="user.like_movies.length">좋아요 한 영화 개수: {{user.like_movies.length}}</p>
-                <p v-if="!user.like_movies.length">{{user.username}}님은 아직 좋아요를 누른 영화가 없습니다.</p> -->
+                <p v-if="user.like_movies.length">좋아요 한 영화 개수: {{user.like_movies.length}}</p>
+                <p v-else>{{user.username}}님은 아직 좋아요를 누른 영화가 없습니다.</p>
               </div>
             </div>
           </div>
@@ -54,7 +54,6 @@ export default {
     },
     getUsers() {
       const config = this.getToken()
-      
       axios.get(`${SERVER_URL}/accounts/users`, config)
         .then(res => {
           this.users = res.data
@@ -64,7 +63,7 @@ export default {
         })
     },
     moveToProfile(user) {
-      this.$router.push({ name: "ProfileView", params: { user_pk: `${user.id}`, username: `${user.username}` }})
+      this.$router.push({ name: "ProfileView", params: { user_id: `${user.id}`, username: `${user.username}` }})
     }
   },
   created() {

@@ -92,7 +92,7 @@ export default {
     },
     getUserInfoSub: function () {
       const config = this.getToken()
-      const user_pk = this.$route.params.user_pk
+      const user_pk = this.$route.params.user_id
       const username = this.$route.params.username
       const userItem = {
         user_pk: user_pk,
@@ -108,7 +108,7 @@ export default {
     },
     getUserInfo: function () {
       const config = this.getToken()
-      const user_pk = this.$route.params.user_pk
+      const user_pk = this.$route.params.user_id
       const username = this.$route.params.username
       const userItem = {
         user_pk: user_pk,
@@ -116,8 +116,6 @@ export default {
       }
       axios.post(`${SERVER_URL}/accounts/${username}/`, userItem, config)
       .then( (res) => {
-        // console.log(res.data)
-        // console.log(res)
         this.user = res.data
 
         // const item = this.user.like_movies
@@ -142,8 +140,6 @@ export default {
       }
       axios.post(`${SERVER_URL}/accounts/follow/${this.me.id}/${this.user.id}/`, item, config)
       .then( () => {
-        // console.log(res)
-        // console.log(this.me)
         this.getMyName()
         this.getUserInfoSub()
       })
@@ -172,8 +168,8 @@ export default {
     },
   },
   created() {
-    this.getMyName()
     this.getUserInfo()
+    this.getMyName()
   },
 }
 </script>

@@ -11,6 +11,7 @@ import MyProfileView from '@/views/accounts/MyProfileView'
 import ArticleHomeView from '@/views/articles/ArticleHomeView'
 import ArticleDetailView from '@/views/articles/ArticleDetailView'
 import ArticleCreateView from '@/views/articles/ArticleCreateView'
+import ArticleUpdate from '@/views/articles/ArticleUpdate'
 
 
 Vue.use(VueRouter)
@@ -41,7 +42,7 @@ const routes = [
     component: UsersView,
   },
   {
-    path: '/profile',
+    path: '/:user_id/profile',
     name: 'ProfileView',
     component: ProfileView,
   },
@@ -64,6 +65,11 @@ const routes = [
     path: '/article/create',
     name: 'ArticleCreateView',
     component: ArticleCreateView,
+  },
+  {
+    path: '/article/:id/update',
+    name: 'ArticleUpdate',
+    component: ArticleUpdate,
   },
 
 

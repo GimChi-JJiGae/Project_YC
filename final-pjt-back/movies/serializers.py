@@ -15,3 +15,4 @@ class MovieCommentSerializer(serializers.ModelSerializer):
         model = MovieComment
         fields = '__all__'
         read_only_fields = ('user', 'movie', 'like_movie_comment_users', 'hate_movie_comment_users', )
+
