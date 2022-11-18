@@ -81,6 +81,7 @@ export default {
         if (this.$store.state.movies.length === 0) {
           this.$store.state.movies = res.data
           // console.log(this.$store.state.movies)
+          localStorage.setItem('movie_list',JSON.stringify(this.$store.state.movies) )
         }
       })
       
