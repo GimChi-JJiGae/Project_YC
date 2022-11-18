@@ -31,6 +31,7 @@ export default {
     return {
       isTrue: true,
       random_top_movie_list: [],
+      popular_movie_list: [],
     }
   },
   computed: {
@@ -84,7 +85,8 @@ export default {
           this.$store.state.movies = res.data         // 다른곳에 잠시 활용하기 위해 vuex에도 저장해두자
           
           localStorage.setItem('movie_list',JSON.stringify(this.$store.state.movies) )
-          this.pick_top_poster_images()
+          this.pick_random_top_movies()
+          this.pick_popular_movies()
         }
       })
       
@@ -92,25 +94,33 @@ export default {
         console.log(err)
       })
     },
-    pick_top_poster_images: function () {   // 여기서 영화 목록 열개를 골라서 잠시 vuex에 저장하고 포스터 패스가 존재하는지 확인한 후 로컬 스토리지에 저장한다.
-      console.log("here?")
+    pick_random_top_movies: function () {   // 여기서 영화 목록 열개를 골라서 잠시 vuex에 저장하고 포스터 패스가 존재하는지 확인한 후 로컬 스토리지에 저장한다.
+      
       for (let i = 0; i<10; i++) {
         let number = _.random(0, 979)
 
         if (this.$store.state.movies[number].poster_path){ // 포스터 패스가 없을 경우는 다른걸 찾는다
-          this.random_top_movie_list.push("https://image.tmdb.org/t/p/original/" + this.$store.state.movies[number].poster_path)
+          this.random_top_movie_list.push(this.$store.state.movies[number])
         }
         else {
           i = i - 1
         }
       }
-      
       localStorage.setItem('random_top_movie_list', JSON.stringify(this.random_top_movie_list)) 
     },
+
+
+    pick_popular_movies: function() {
+      for (let i = 0; i<10; i++){
+        this.popular_movie_list.push(this.$store.state.movies[i])
+      }
+      localStorage.setItem('popular_movie_list', JSON.stringify(this.popular_movie_list))
+    }
   },
   created() {
     // console.log(this.$store.state.movies.length)
     if (this.$store.state.movies.length === 0) {
+      
       this.getMovies()
       
       console.log('영화 데이터 생성됨')
