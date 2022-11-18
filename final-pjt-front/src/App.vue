@@ -23,12 +23,14 @@
 
 <script>
 import axios from 'axios'
+import _ from 'lodash'
 
 export default {
   name: 'App',
   data() {
     return {
       isTrue: true,
+      random_top_movie_list: [],
     }
   },
   computed: {
@@ -79,9 +81,10 @@ export default {
       
       .then( (res) => {
         if (this.$store.state.movies.length === 0) {
-          this.$store.state.movies = res.data
-          // console.log(this.$store.state.movies)
+          this.$store.state.movies = res.data         // 다른곳에 잠시 활용하기 위해 vuex에도 저장해두자
+          
           localStorage.setItem('movie_list',JSON.stringify(this.$store.state.movies) )
+          this.pick_top_poster_images()
         }
       })
       
@@ -89,11 +92,27 @@ export default {
         console.log(err)
       })
     },
+    pick_top_poster_images: function () {   // 여기서 영화 목록 열개를 골라서 잠시 vuex에 저장하고 포스터 패스가 존재하는지 확인한 후 로컬 스토리지에 저장한다.
+      console.log("here?")
+      for (let i = 0; i<10; i++) {
+        let number = _.random(0, 979)
+
+        if (this.$store.state.movies[number].poster_path){ // 포스터 패스가 없을 경우는 다른걸 찾는다
+          this.random_top_movie_list.push("https://image.tmdb.org/t/p/original/" + this.$store.state.movies[number].poster_path)
+        }
+        else {
+          i = i - 1
+        }
+      }
+      
+      localStorage.setItem('random_top_movie_list', JSON.stringify(this.random_top_movie_list)) 
+    },
   },
   created() {
     // console.log(this.$store.state.movies.length)
     if (this.$store.state.movies.length === 0) {
       this.getMovies()
+      
       console.log('영화 데이터 생성됨')
     } else {
       console.log('영화 데이터 이미 있음')
