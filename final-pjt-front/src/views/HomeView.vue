@@ -42,9 +42,12 @@
 // import axios from 'axios'
 import { Carousel3d, Slide } from 'vue-carousel-3d'
 import _ from 'lodash'
+import { onUpdated } from 'vue'
 
-
-
+onUpdated(() => {
+  // text content should be the same as current `count.value`
+  console.log('wow')
+})
 
 export default {
   name: 'HomeView',
@@ -52,6 +55,7 @@ export default {
   data () {
     return {
       top_movie_poster_list: []
+      
     }
   },
   computed: {
@@ -69,7 +73,7 @@ export default {
         let number = _.random(0, 979)
         
         const movie_list_info = JSON.parse(localStorage.getItem("movie_list"))
-        console.log(movie_list_info[number].poster_path)
+        console.log("https://image.tmdb.org/t/p/original/" + movie_list_info[number].poster_path)
         if (this.$store.state.movies[number].poster_path){ // 포스터 패스가 없을 경우는 다른걸 찾는다
           this.top_movie_poster_list.push("https://image.tmdb.org/t/p/original/" + this.$store.state.movies[number].poster_path)
         }
