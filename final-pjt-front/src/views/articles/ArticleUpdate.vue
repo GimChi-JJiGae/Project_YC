@@ -46,7 +46,7 @@ export default {
       const article_pk = this.$route.params.id
       axios.get(`${SERVER_URL}/articles/${article_pk}`, config)
         .then(res => {
-          this.article = res.data
+          this.article = res.data.article
         })
         .catch(err => {
           console.log(err)
@@ -64,7 +64,6 @@ export default {
           if (res.data.message) {
             alert("본인이 작성한 글만 수정 가능합니다.")
           } else {
-            console.log(article.id)
             this.$router.push({ name: 'ArticleDetailView', params: { id: `${article.id}`} })
           }
         })

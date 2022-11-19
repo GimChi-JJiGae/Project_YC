@@ -63,7 +63,7 @@ export default {
         })
     },
     moveToProfile(user) {
-      this.$router.push({ name: "ProfileView", params: { user_id: `${user.id}`, username: `${user.username}` }})
+      this.$router.push({ name: "ProfileView", params: { username: `${user.username}` }})
     }
   },
   created() {

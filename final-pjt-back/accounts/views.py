@@ -36,7 +36,7 @@ def signup(request):
 @permission_classes([IsAuthenticated])
 def my_profile(request):
 
-    user = get_object_or_404(get_user_model(), pk=request.data.get('user_id'))
+    user = get_object_or_404(get_user_model(), username=request.data.get('username'))
     serializer = UserSerializer(user)
 
     return Response(serializer.data)
@@ -47,8 +47,7 @@ def my_profile(request):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def profile(request, username):
-    # print(request.data)
-    user = get_object_or_404(get_user_model(), pk=request.data.get('user_pk'))
+    user = get_object_or_404(get_user_model(), username=request.data.get('username'))
     serializer = UserSerializer(user)
     return Response(serializer.data)
 

@@ -42,7 +42,7 @@ const routes = [
     component: UsersView,
   },
   {
-    path: '/:user_id/profile',
+    path: '/:username/profile',
     name: 'ProfileView',
     component: ProfileView,
   },

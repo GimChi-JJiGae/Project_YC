@@ -26,6 +26,73 @@
           </div>                 
       </div>
     </div>
+    <b-modal
+      hide-footer
+      v-model="show2"
+      id="review-modal"
+      size="sm"
+      title="My Follwings"
+      :header-bg-variant="headerBgVariant"
+      :header-text-variant="headerTextVariant"
+      :body-bg-variant="bodyBgVariant"
+      :body-text-variant="bodyTextVariant"
+      :footer-bg-variant="footerBgVariant"
+      :footer-text-variant="footerTextVariant"
+    >
+      <hr>
+      <section class="page-section" id="contact">
+        <div class="container">
+            <!-- Contact Section Heading-->
+            <h2 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followings</h2>
+            <!-- Contact Section Form-->
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
+                  <div class="control-group">
+                      <div v-for="(follow, idx) in user.followings" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
+                          <MyFollower :follow="follow" />
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </section>
+      <div class="text-white st-font form-group"><button @click="close2" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div>
+    </b-modal>
+    <!-- 절취선 -->
+    <b-modal
+      hide-footer
+      v-model="show1"
+      id="review-modal"
+      size="sm"
+      title="My Follwers"
+      :header-bg-variant="headerBgVariant"
+      :header-text-variant="headerTextVariant"
+      :body-bg-variant="bodyBgVariant"
+      :body-text-variant="bodyTextVariant"
+      :footer-bg-variant="footerBgVariant"
+      :footer-text-variant="footerTextVariant"
+    >
+      <hr>
+      <section class="page-section" id="contact">
+        <div class="container">
+            <!-- Contact Section Heading-->
+            <h2 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followers</h2>
+            <!-- Contact Section Form-->
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
+                  <div class="control-group">
+                      <div v-for="(follower, idx) in user.followers" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
+                          <MyFollower :follow="follower" />
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </section>
+      <div class="text-white st-font form-group"><button @click="close" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div>
+    </b-modal>
   </div>
 </template>
 
@@ -33,11 +100,16 @@
 import axios from 'axios'
 import VueJwtDecode from "vue-jwt-decode"
 
+import MyFollower from "@/components/MyFollower"
+
 // const SERVER_URL = process.env.VUE_APP_SERVER_URL
 const SERVER_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'MyProfileView',
+  components: {
+    MyFollower,
+  },
   data() {
     return {
       user: [],

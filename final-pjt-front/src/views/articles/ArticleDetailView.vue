@@ -4,7 +4,7 @@
       <h1>Detail</h1>
       <hr>
       <div>글 번호 : {{ article?.id }}</div>
-      <div>작성자 : {{ article?.username }}</div>
+      <div @click="moveToProfile(article.user, article.username)" style="cursor:pointer;">작성자 : {{ article?.username }}</div>
       <div>작성시간 : {{ article?.created_at }}</div>
       <div>수정시간 : {{ article?.udivdated_at }}</div>
       <div>제목 : {{ article?.title }}</div>
@@ -24,7 +24,7 @@
       <div class="container" v-for="(comment, idx) in commentsList" :key="idx">
         <div>{{ comment.content }}</div>
         <span>{{ comment.created_at }}   </span>
-        <span style="cursor:pointer;" @click="moveToProfile(comment.user, comment.username)">{{ comment.user }}    </span>
+        <span style="cursor:pointer;" @click="moveToProfile(comment.user, comment.username)">{{ comment.username }}    </span>
         <div>
           <button @click="deleteComment(comment)">댓글 삭제</button>
         </div>
@@ -60,10 +60,10 @@ export default {
       return this.comments
     },
     is_Like() {
-      return this.is_liked
+      return this.is_liked ? '좋아요' : '좋아요 취소'
     },
     is_Hate() {
-      return this.is_hated
+      return this.is_hated ? '싫어요' : '싫어요 취소'
     },
 
   },
@@ -179,7 +179,8 @@ export default {
       }
     },
     moveToProfile(user, username) {
-      this.$router.push({ name: "ProfileView", params: { user_id: `${user}`, username: `${username}` } })
+      console.log(username)
+      this.$router.push({ name: "ProfileView", params: { username: `${username}` } })
     },
     likeArticle(article) {
       const config = this.getToken()
