@@ -7,6 +7,8 @@ import SignUpView from '@/views/accounts/SignUpView'
 import UsersView from '@/views/accounts/UsersView'
 import ProfileView from '@/views/accounts/ProfileView'
 import MyProfileView from '@/views/accounts/MyProfileView'
+import UpdateUserView from '@/views/accounts/UpdateUserView'
+import UpdatePassword from '@/views/accounts/UpdatePassword'
 
 import ArticleHomeView from '@/views/articles/ArticleHomeView'
 import ArticleDetailView from '@/views/articles/ArticleDetailView'
@@ -40,6 +42,16 @@ const routes = [
     path: '/users',
     name: 'UsersView',
     component: UsersView,
+  },
+  {
+    path: '/:username/update',
+    name: 'UpdateUserView',
+    component: UpdateUserView,
+  },
+  {
+    path: '/:username/change_password',
+    name: 'UpdatePassword',
+    component: UpdatePassword,
   },
   {
     path: '/:username/profile',

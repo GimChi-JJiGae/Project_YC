@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>LogIn Page</h1>
-    <form @submit.prevent="LogIn" @keyup.enter="LogIn">
+    <form @submit.prevent="LogIn" >
       <label for="username">ID</label>
       <input v-model.trim="credential.username" id="username" type="text" placeholder="ID" required="required" data-validation-required-message="Please enter your username." />
       <br>
@@ -33,16 +33,16 @@ export default {
   methods: {
     LogIn() {
       axios.post(`${SERVER_URL}/accounts/api-token-auth/`, this.credential)
-      .then((res) => {
-        // console.log(res)
-        localStorage.setItem('access_token', res.data.token)
-        this.$store.dispatch('LogIn', res.data.token)
-        this.$router.push({ name: "HomeView" }).catch(()=>{})
-        // location.reload()
-      })
-      .catch( (err) => {
-        alert("올바른 아이디와 비밀번호를 입력해주세요.")
-        console.log(err)
+        .then((res) => {
+          // console.log(res)
+          localStorage.setItem('access_token', res.data.token)
+          this.$store.dispatch('LogIn', res.data.token)
+          this.$router.push({ name: "HomeView" }).catch(()=>{})
+          // location.reload()
+        })
+        .catch( (err) => {
+          alert("올바른 아이디와 비밀번호를 입력해주세요.")
+          console.log(err)
       })
     },
     moveToSignUp() {

@@ -20,6 +20,10 @@
                             <!-- <img src="@/assets/미니언즈.jpg" alt="" class="img-circle img-responsive"> -->
                         </figure>
                     </div>
+                    <div>
+                      <button @click="updateUser">회원정보수정</button>
+                      <button @click="deleteUser">회원 탈퇴</button>
+                    </div>
                   <!-- 절취선 -->
                   <!-- 절취선 -->
                 </div>            
@@ -174,6 +178,17 @@ export default {
     close2: function () {
       this.show2 = false
     },
+    updateUser() {
+      this.$router.push({ name: 'UpdateUserView', params: { username: `${this.user.username}` } })
+    },
+    deleteUser() {
+      const config = this.getToken()
+      axios.delete(`${SERVER_URL}/accounts/${this.user.username}/delete/`, config)
+        .then(() => {
+          this.$store.dispatch('LogOut')
+          this.$router.push({ name: 'HomeView' })
+        })
+    }
   },
   created() {
     this.getMyName()

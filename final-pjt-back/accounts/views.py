@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from .serializers import UserSerializer
+from .validators import CustomPasswordValidator
 
 
 @api_view(['POST'])
@@ -13,7 +14,9 @@ def signup(request):
 	#1-1. Client에서 온 데이터를 받아서
     password = request.data.get('password')
     password_confirmation = request.data.get('passwordConfirmation')
-		
+    CustomPasswordValidator().validate(password=password)
+    CustomPasswordValidator().get_help_text()
+
 	#1-2. 패스워드 일치 여부 체크
     if password != password_confirmation:
         return Response({'error': '비밀번호가 일치하지 않습니다.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -41,7 +44,57 @@ def my_profile(request):
 
     return Response(serializer.data)
 
+@api_view(['DELETE'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_user(request, username):
+    user = get_object_or_404(get_user_model(), username=username)
+    user.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+@api_view(['PUT'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def update_user(request, username):
+    if not request.user.check_password(request.data['password']):
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    user_data=request.data['user']
+    user_data['password'] = request.data['password']
+
+    serializer = UserSerializer(request.user, data=user_data)
+    if serializer.is_valid(raise_exception=True):
+        user = serializer.save()
+        user.set_password(user_data['password'])     # 비밀번호 암호화
+        user.save()
+    # password는 직렬화 과정에는 포함 되지만 → 표현(response)할 때는 나타나지 않는다.
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['PUT'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def change_password(request, username):
+    user_data = request.data['user']
+    
+    if not request.user.check_password(request.data['currentPassword']):
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    new_password = request.data['newPassword']
+    new_password_confirmation = request.data['newPasswordConfirmation']
+    # 1. 비밀번호 유효성 확인 (글자수, 대소문자 및 숫자로 이루어졌는지 여부)
+    CustomPasswordValidator().validate(password=new_password)
+    # 2. 비밀번호 일치 여부
+    if new_password != new_password_confirmation:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    user_data['password'] = new_password
+
+    serializer = UserSerializer(request.user, data=user_data)
+    if serializer.is_valid(raise_exception=True):
+        user = serializer.save()
+        user.set_password(new_password)     # 비밀번호 암호화
+        user.save()                         # 유저 정보 DB에 저장 (덮어쓰기)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 @authentication_classes([JSONWebTokenAuthentication])

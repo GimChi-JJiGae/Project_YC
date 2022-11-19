@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     email = models.EmailField(unique=True, help_text='EMAIL')
     username = models.CharField(max_length=30, unique=True)
+    password = models.CharField(max_length=20)
 
     SEX_CHOICES = {
         ('male', 'Male'),
