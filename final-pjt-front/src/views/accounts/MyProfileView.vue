@@ -1,102 +1,126 @@
 <template>
-  <div class="container">
-    <h1 class="title-font" style="margin-bottom:40px">My Profile</h1>
-    <div class="containter" style="margin-bottom:30px">
-      <div class="row">
-          <div class="well profile containerSpecial" style="position:relative;">
-                <div class="col-sm-12">
-                    <div class="col-xs-6 col-sm-8 center" style="margin-bottom:20px">
-                        <h2 class="title-font" style="margin-bottom: 10px"><strong>{{ user.username }}님의 프로필</strong></h2>
-                        <div><button @click="open2" class="m-1 btn content-font">Following <span>{{ this.followingsLength }}명</span></button> <button @click="open1" class="m-1 btn content-font">Follower <span>{{ this.followersLength }}명</span></button></div>
-                        <p class="content-font" style="font-size: 20px"><strong>Email: </strong> {{ user.email }} </p>
-                        <p class="content-font" style="font-size: 20px"><strong>Info: </strong>
-                            <span class="tags" style="margin-right:5px">{{user.age}}</span> 
-                            <span class="tags" style="margin-right:5px">{{user.sex}}</span>
-                        </p>
+  <div class="container test-center" style="height:600px;">
+    <div class="row gap-3" style="height:600px;">
+      <div class="col-4 bg-secondary bg-opacity-25 rounded-3">
+        <div class="mt-3">
+          <div>
+            <h5 class="text-start ms-3"><strong>{{ user.username }}님</strong></h5>
+            <br>
+            <div>
+              <div>
+                <p class="mb-1 ms-3 text-start"><strong>이메일</strong></p>
+                <p class="text-start ms-3 mb-4">{{ user.email }}</p>
+              </div>
+              <div>
+                <p class="mb-1 ms-3 text-start"><strong>성별</strong></p>
+                <p class="text-start ms-3 mb-4">{{ this.sex }}</p>
+              </div>
+              <div>
+                <p class="mb-1 ms-3 text-start"><strong>연령대</strong></p>
+                <p class="text-start ms-3">{{ user.age }}</p>
+              </div>
+              <div>
+                <p class="mb-1 ms-3 text-start">
+                  <a @click="open2" class="content-font text-decoration-none text-black" style="cursor:pointer;"><strong> 팔로잉 </strong><span>{{ this.followingsLength }}명</span></a>
+                </p>
+              </div>
+              <div>
+                <p class="mb-1 ms-3 text-start">
+                  <a @click="open1" class="content-font text-decoration-none text-black" style="cursor:pointer;"><strong> 팔로워 </strong><span>{{ this.followersLength }}명</span></a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button @click="updateUser" class="m-1 btn content-font">회원정보수정</button>
+          </div>
+          <div>
+            <button @click="deleteUser" class="m-1 btn content-font">회원 탈퇴</button>
+          </div>
+        </div>
+        <b-modal
+          hide-footer
+          v-model="show2"
+          id="review-modal"
+          size="sm"
+          title="My Follwings"
+          :header-bg-variant="headerBgVariant"
+          :header-text-variant="headerTextVariant"
+          :body-bg-variant="bodyBgVariant"
+          :body-text-variant="bodyTextVariant"
+          :footer-bg-variant="footerBgVariant"
+          :footer-text-variant="footerTextVariant"
+        >
+          <hr>
+          <section class="page-section" id="contact">
+            <div class="container">
+                <!-- Contact Section Heading-->
+                <h3 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followings</h3>
+                <!-- Contact Section Form-->
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
+                      <div class="control-group">
+                          <div v-for="(follow, idx) in user.followings" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
+                              <MyFollower :follow="follow" />
+                          </div>
+                      </div>
                     </div>
-                    <br>             
-                    <div class="col-xs-12 col-sm-4 text-center">
-                        <figure>
-                            <!-- <img src="@/assets/미니언즈.jpg" alt="" class="img-circle img-responsive"> -->
-                        </figure>
+                </div>
+            </div>
+          </section>
+          <div class="text-white st-font form-group"><button @click="close2" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div>
+        </b-modal>
+        <b-modal
+          hide-footer
+          v-model="show1"
+          id="review-modal"
+          size="sm"
+          title="My Follwers"
+          :header-bg-variant="headerBgVariant"
+          :header-text-variant="headerTextVariant"
+          :body-bg-variant="bodyBgVariant"
+          :body-text-variant="bodyTextVariant"
+          :footer-bg-variant="footerBgVariant"
+          :footer-text-variant="footerTextVariant"
+        >
+          <hr>
+          <section class="page-section" id="contact">
+            <div class="container">
+                <!-- Contact Section Heading-->
+                <h3 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followers</h3>
+                <!-- Contact Section Form-->
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
+                      <div class="control-group">
+                          <div v-for="(follower, idx) in user.followers" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
+                              <MyFollower :follow="follower" />
+                          </div>
+                      </div>
                     </div>
-                    <div>
-                      <button @click="updateUser">회원정보수정</button>
-                      <button @click="deleteUser">회원 탈퇴</button>
-                    </div>
-                  <!-- 절취선 -->
-                  <!-- 절취선 -->
-                </div>            
-          </div>                 
+                </div>
+            </div>
+          </section>
+          <div class="text-white st-font form-group"><button @click="close" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div>
+        </b-modal>
       </div>
+
+      <div class="col-7 bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column">
+        <div class="m-3" style="height:100%">
+
+          <div class="" style="height:50%;">
+            <h4><strong>내가 좋아요 한 영화들</strong></h4>
+          </div>
+          <div class="" style="height:50%;">
+            <h4><strong>추천 영화 목록</strong></h4>
+          </div>
+          
+        </div>
+      </div>
+
     </div>
-    <b-modal
-      hide-footer
-      v-model="show2"
-      id="review-modal"
-      size="sm"
-      title="My Follwings"
-      :header-bg-variant="headerBgVariant"
-      :header-text-variant="headerTextVariant"
-      :body-bg-variant="bodyBgVariant"
-      :body-text-variant="bodyTextVariant"
-      :footer-bg-variant="footerBgVariant"
-      :footer-text-variant="footerTextVariant"
-    >
-      <hr>
-      <section class="page-section" id="contact">
-        <div class="container">
-            <!-- Contact Section Heading-->
-            <h2 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followings</h2>
-            <!-- Contact Section Form-->
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
-                  <div class="control-group">
-                      <div v-for="(follow, idx) in user.followings" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
-                          <MyFollower :follow="follow" />
-                      </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-      </section>
-      <div class="text-white st-font form-group"><button @click="close2" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div>
-    </b-modal>
-    <!-- 절취선 -->
-    <b-modal
-      hide-footer
-      v-model="show1"
-      id="review-modal"
-      size="sm"
-      title="My Follwers"
-      :header-bg-variant="headerBgVariant"
-      :header-text-variant="headerTextVariant"
-      :body-bg-variant="bodyBgVariant"
-      :body-text-variant="bodyTextVariant"
-      :footer-bg-variant="footerBgVariant"
-      :footer-text-variant="footerTextVariant"
-    >
-      <hr>
-      <section class="page-section" id="contact">
-        <div class="container">
-            <!-- Contact Section Heading-->
-            <h2 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followers</h2>
-            <!-- Contact Section Form-->
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
-                  <div class="control-group">
-                      <div v-for="(follower, idx) in user.followers" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
-                          <MyFollower :follow="follower" />
-                      </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-      </section>
-      <div class="text-white st-font form-group"><button @click="close" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div>
-    </b-modal>
+
   </div>
 </template>
 
@@ -208,6 +232,13 @@ export default {
         return 0
       }
     },
+    sex() {
+      if (this.user.sex === 'male') {
+        return '남성'
+      } else {
+        return '여성'
+      }
+    }
   },
 }
 </script>

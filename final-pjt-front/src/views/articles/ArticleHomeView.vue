@@ -1,10 +1,23 @@
 <template>
   <div>
-    <div>
-      <h2>Community</h2>
-      <hr>
-      <router-link :to="{ name: 'ArticleCreateView' }">[CREATE]</router-link>
-      <ArticleList/>
+    <h2>Community</h2>
+    <div class="">
+      <div class="row">
+        <div class="col-1">
+        </div>
+        <div class="col-10">
+          <ArticleList/>
+        </div>
+        <div class="col-1">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <button class="m-1 btn content-font border">
+            <router-link :to="{ name: 'ArticleCreateView' }" class="text-decoration-none text-black">게시글 생성</router-link>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>

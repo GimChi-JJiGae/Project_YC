@@ -1,30 +1,17 @@
 <template>
-  <div>
+  <div class="d-flex flex-column align-items-center">
     <h2>전체 유저 목록</h2>
-    <hr>
-    <div class="container">
-      <div class="row">
-        <div
+    <hr style="width: 400px">
+    <div class="">
+      <ul class="list-group list-group-flush" style="width:200px;" >
+        <li
          v-for="(user, idx) in users"
         :key="idx"
+        class="list-group-item"
         >
-          <div class="[ info-card ]">
-            <div class="[ info-card-details ] animate">
-              <div class="[ info-card-header ]">
-                <h1 @click="moveToProfile(user)" style="cursor:pointer;">{{ user.username }}</h1>
-                <h3>{{ user.email }}</h3>
-              </div>
-              <div class="[ info-card-detail ] st-font">
-                <p>나이: {{user.age}}</p>
-                <p>성별: {{user.sex}}</p>
-                <p v-if="user.like_movies.length">좋아요 한 영화 개수: {{user.like_movies.length}}</p>
-                <p v-else>{{user.username}}님은 아직 좋아요를 누른 영화가 없습니다.</p>
-              </div>
-            </div>
-          </div>
-          <hr>
-        </div>
-      </div>
+          <span @click="moveToProfile(user)" style="cursor:pointer;">{{ user.username }}</span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>

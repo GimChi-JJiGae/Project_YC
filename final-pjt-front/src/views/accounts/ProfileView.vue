@@ -1,45 +1,53 @@
 <template>
   <div>
-    <div>
-      <div>
-        <h2>{{ user.username }}님의 Profile</h2>
-        <p class="content-font" style="font-size: 20px"><strong>Email: </strong> {{ user.email }} </p>
-        <p class="content-font" style="font-size: 20px"><strong>Info: </strong>
-          <span class="tags" style="margin-right:5px">{{user.age}}</span> 
-          <span class="tags" style="margin-right:5px">{{user.sex}}</span>
-        </p>
-        <!-- <p v-if="isFollowing" class="st-font">{{ user.username }}님을 팔로우 중 입니다.</p> -->
-        <div class="col-xs-12 col-sm-4 text-center">
-          <figure>
-            <!-- <img src="@/assets/미니언즈.jpg" alt="" class="img-circle img-responsive"> -->
-          </figure>
+    <div style="height:600px;">
+      <div class="bg-secondary bg-opacity-25 rounded-3 mx-3" style="height:100%;">
+        <div class="d-flex align-items-center" style="height:100%;">
+          <div class="text-start m-3">
+            <h5 class=" ms-3"><strong>{{ user.username }}님</strong></h5>
+            <br>
+            <div>
+              <div>
+                <p class="mb-1 ms-3 "><strong>이메일</strong></p>
+                <p class=" ms-3 mb-4">{{ user.email }}</p>
+              </div>
+              <div>
+                <p class="mb-1 ms-3 "><strong>성별</strong></p>
+                <p class=" ms-3 mb-4">{{ this.sex }}</p>
+              </div>
+              <div>
+                <p class="mb-1 ms-3 "><strong>연령대</strong></p>
+                <p class=" ms-3">{{ user.age }}</p>
+              </div>
+              <div>
+                <p class="mb-1 ms-3 ">
+                  <strong> 팔로잉 </strong><span>{{ this.followingsLength }}명</span>
+                </p>
+              </div>
+              <div>
+                <p class="mb-1 ms-3 ">
+                  <strong> 팔로워 </strong><span>{{ this.followersLength }}명</span>
+                </p>
+              </div>
+              <div v-if="me.username !== user.username" class="ms-3">
+                <button v-if="isFollowing" @click="follow" class="btn btn-secondary btn-block"><span class="fa fa-plus-circle"></span> UnFollow </button>
+                <button v-else @click="follow" class="btn btn-primary btn-block"><span class="fa fa-plus-circle"></span> Follow </button>
+              </div>
+              <div>                
+                <p class="ms-3"><small>'좋아요'한 영화 수 : {{user.like_movies.length}}</small></p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-12 divider text-center">
-            <div>
-              <h2><strong v-if="user.followers">{{followersLength}}</strong></h2>                    
-              <p><small>Followers</small></p>
-            </div>
-            <div>
-              <h2><strong>{{followingsLength}}</strong></h2>                    
-              <p><small>Following</small></p>
-            </div>
-            <div>
-              <h2><strong v-if="user.followings">{{user.like_movies.length}}</strong></h2>                    
-              <p><small>'좋아요'한 영화 수</small></p>
-            </div>
-          </div>
-          <div v-if="me.email !== user.email">
-            <button v-if="isFollowing" @click="follow" class="btn btn-secondary btn-block"><span class="fa fa-plus-circle"></span> UnFollow </button>
-            <button v-else @click="follow" class="btn btn-primary btn-block"><span class="fa fa-plus-circle"></span> Follow </button>
-          </div>
+
+        <!-- <h2 >{{ user.username }}님이 좋아요 한 영화</h2>    
+        <ul v-if="usersMovies">
+          <MovieCard 
+            :movies="usersMovies"
+          />
+        </ul> -->
       </div>
     </div>
-    <h2 >{{ user.username }}님이 좋아요 한 영화</h2>    
-    <!-- <ul v-if="usersMovies">
-      <MovieCard 
-        :movies="usersMovies"
-      />
-    </ul> -->
   </div>
 </template>
 
@@ -161,6 +169,13 @@ export default {
         return this.user.followers.length
       } else {
         return 0
+      }
+    },
+    sex() {
+      if (this.user.sex === 'male') {
+        return '남성'
+      } else {
+        return '여성'
       }
     },
   },

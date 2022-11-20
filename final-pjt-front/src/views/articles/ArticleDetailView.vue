@@ -1,18 +1,23 @@
 <template>
-  <div>
-    <div>
-      <h1>Detail</h1>
-      <hr>
-      <div>글 번호 : {{ article?.id }}</div>
-      <div @click="moveToProfile(article.user, article.username)" style="cursor:pointer;">작성자 : {{ article?.username }}</div>
-      <div>작성시간 : {{ article?.created_at }}</div>
-      <div>수정시간 : {{ article?.udivdated_at }}</div>
-      <div>제목 : {{ article?.title }}</div>
-      <div>내용 : {{ article?.content }}</div>
-      <div>좋아요 수 : {{ like_numbers }}</div>
-      <div>싫어요 수 : {{ hate_numbers }}</div>
-      <button @click="deleteArticle(article)">삭제</button>
-      <button @click="moveToUpdate(article)">수정</button>
+  <div class="container">
+    <div class="row">
+      <div class="col-10"><h4>{{ article?.title }}</h4></div>
+      <div class="col-1">좋아 {{ like_numbers }}</div>
+      <div class="col-1">싫어 {{ hate_numbers }}</div>
+    </div>
+    <div class="row">
+      <div class="col" @click="moveToProfile(article.user, article.username)" style="cursor:pointer;">작성자 : {{ article?.username }}</div>
+      <div v-if="article.created_at === article.updated_at" class="col">작성시간 : {{ created }}</div>
+      <div v-else class="col">수정시간 : {{ updated }}</div>
+      <div class="col-1">
+        <button @click="deleteArticle(article)">삭제</button>
+      </div>
+      <div class="col-1">
+        <button @click="moveToUpdate(article)">수정</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="">{{ article?.content }}</div>
     </div>
     <hr>
     <div>
@@ -64,6 +69,48 @@ export default {
     },
     is_Hate() {
       return this.is_hated ? '싫어요' : '싫어요 취소'
+    },
+    created() {
+      let js_date = new Date(this.article.created_at)
+      const year = js_date.getFullYear()
+      let month = js_date.getMonth() + 1
+      let day = js_date.getDate()
+      let hour = js_date.getHours()
+      let min = js_date.getMinutes()
+      if (min < 10) {
+        min = '0' + min;
+      }
+      if (hour < 10) {
+        hour = '0' + hour;
+      }
+      if(month < 10){
+        month = '0' + month;
+      }
+      if(day < 10){
+        day = '0' + day;
+      }
+      return year + '-' + month + '-' + day + '  ' + hour + ':' + min
+    },
+    updated() {
+      let js_date = new Date(this.article.updated_at)
+      const year = js_date.getFullYear()
+      let month = js_date.getMonth() + 1
+      let day = js_date.getDate()
+      let hour = js_date.getHours()
+      let min = js_date.getMinutes()
+      if (min < 10) {
+        min = '0' + min;
+      }
+      if (hour < 10) {
+        hour = '0' + hour;
+      }
+      if (month < 10) {
+        month = '0' + month;
+      }
+      if (day < 10) {
+        day = '0' + day;
+      }
+      return year + '-' + month + '-' + day + '  ' + hour + ':' + min
     },
 
   },
