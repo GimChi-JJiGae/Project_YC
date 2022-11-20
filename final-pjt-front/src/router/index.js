@@ -14,7 +14,7 @@ import ArticleHomeView from '@/views/articles/ArticleHomeView'
 import ArticleDetailView from '@/views/articles/ArticleDetailView'
 import ArticleCreateView from '@/views/articles/ArticleCreateView'
 import ArticleUpdate from '@/views/articles/ArticleUpdate'
-
+import MovieDetail from '@/views/MovieDetail'
 
 Vue.use(VueRouter)
 
@@ -83,7 +83,11 @@ const routes = [
     name: 'ArticleUpdate',
     component: ArticleUpdate,
   },
-
+  {
+    path: '/movies/:movie_pk',
+    name: 'MovieDetail',
+    component: MovieDetail,
+  },
 
 
 ]
