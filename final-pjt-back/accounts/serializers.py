@@ -15,8 +15,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'like_movies', 'movie_comments',
                   'password', 'age', 'sex', 'email', 'followings', 
                   'like_movie_comments', 'hate_movie_comments', 'followers',
-                  'like_articles', )
+                  'like_articles', 'image', )
                   
         read_only_fields = ('followings', 'like_movie_comments', 'movie_comments',
                             'hate_movie_comments', 'like_movies', 'followers',
-                            'like_articles', )
+                            'like_articles',)

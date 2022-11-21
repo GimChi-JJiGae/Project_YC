@@ -6,6 +6,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, help_text='EMAIL')
     username = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=20)
+    image = models.ImageField(blank=True)
 
     SEX_CHOICES = {
         ('male', 'Male'),

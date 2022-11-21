@@ -4,7 +4,14 @@
       <div class="col-4 bg-secondary bg-opacity-25 rounded-3">
         <div class="mt-3">
           <div>
-            <h5 class="text-start ms-3"><strong>{{ user.username }}님</strong></h5>
+            <div class="row">
+              <div class="col">
+                <img :src="image" alt="" style="width: 100%;">
+              </div>
+              <div class="col">
+                <h5 class="text-start ms-3"><strong>{{ user.username }}님</strong></h5>
+              </div>
+            </div>
             <br>
             <div>
               <div>
@@ -110,10 +117,10 @@
         <div class="m-3" style="height:100%">
 
           <div class="" style="height:50%;">
-            <h4><strong>내가 좋아요 한 영화들</strong></h4>
+            <h5><strong>내가 좋아요 한 영화들</strong></h5>
           </div>
           <div class="" style="height:50%;">
-            <h4><strong>추천 영화 목록</strong></h4>
+            <h5><strong>추천 영화 목록</strong></h5>
           </div>
           
         </div>
@@ -140,6 +147,7 @@ export default {
   },
   data() {
     return {
+      image: null,
       user: [],
       users: [],
       myFollowings: [],
@@ -166,6 +174,9 @@ export default {
       }
       return config
     },
+    getImage(url) {
+      this.image = SERVER_URL + url
+    },
     getMyName: function () {
       const config = this.getToken()
 
@@ -174,6 +185,8 @@ export default {
       axios.post(`${SERVER_URL}/accounts/myprofile/`, info, config)
       .then( (res) => {
         this.user = res.data
+        console.log(this.user.image)
+        this.getImage(this.user.image)
 
         // const item = this.user.like_movies
         // axios.post(`${SERVER_URL}/movies/${this.user.id}/like/`, item, config)

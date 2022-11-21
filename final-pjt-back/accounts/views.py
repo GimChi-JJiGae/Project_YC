@@ -11,6 +11,8 @@ from .validators import CustomPasswordValidator
 
 @api_view(['POST'])
 def signup(request):
+    print(request.FILES)
+    
 	#1-1. Client에서 온 데이터를 받아서
     password = request.data.get('password')
     password_confirmation = request.data.get('passwordConfirmation')

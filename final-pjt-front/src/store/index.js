@@ -16,6 +16,7 @@ export default new Vuex.Store({
     access_token: null,
 
     articles: [],
+    searchArticles: [],
 
     sex: ["male", "female"],
     ages: ["10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "90대", ],
@@ -48,7 +49,10 @@ export default new Vuex.Store({
     },
     GET_ARTICLES(state, articles) {
       state.articles = articles
-    }
+    },
+    SEARCH_ARTICLES(state, searchList) {
+      state.searchArticles = searchList
+    },
   },
   actions: {
     // 처음 영화 데이터를 받아올 함수
@@ -73,7 +77,10 @@ export default new Vuex.Store({
     },
     getArticles(context, articles) {
       context.commit('GET_ARTICLES', articles)
-    }
+    },
+    searchArticles(context, searchList) {
+      context.commit('SEARCH_ARTICLES', searchList)
+    },
   },
   modules: {
   }

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'movies',
     'accounts',
     'articles',
+    'imagekit',
 
     # django-rest-auth
     'rest_framework',

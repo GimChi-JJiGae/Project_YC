@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="">
+    <div class="row ">
       <h2>Community</h2>
       <div class="row">
         <div class="col-1">
@@ -9,13 +9,6 @@
           <ArticleList/>
         </div>
         <div class="col-1">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3 ms-4">
-          <button class="m-1 btn content-font border">
-            <router-link :to="{ name: 'ArticleCreateView' }" class="text-decoration-none text-black">게시글 생성</router-link>
-          </button>
         </div>
       </div>
     </div>

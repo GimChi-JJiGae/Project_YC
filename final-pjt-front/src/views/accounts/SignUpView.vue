@@ -1,26 +1,31 @@
 <template>
-  <div class="container row justify-content-center">
-    <div class="border p-3 rounded-3 row justify-content-center align-items-center" style="width:500px; height:600px">      
+  <div class="row justify-content-center">
+    <div class="border p-3 rounded-3 row justify-content-center" style="width:500px; height:800px">      
       <div style="width:300px;" class="my-3">
         <form @submit.prevent="signUp">
+          <div class="text-start my-3 ">
+            <label for="username" class="st-font form-label"><strong>프로필 사진</strong></label>
+            <input type="file" @change="onInputImage()" ref="serveyImage" class="form-file">
+          </div>
+
           <div class="text-start my-3 ">
             <label for="username" class="st-font form-label"><strong>아이디</strong></label>
             <input v-model.trim="credential.username" id="id" type="text" placeholder="아이디" required="required" data-validation-required-message="Please enter your username." class="form-control"/>
           </div>
 
-          <div class="text-start">
+          <div class="text-start mb-3" style="height: 70px;">
             <label style="margin-right: 15px" class="st-font form-label" for="sex"><strong>나이</strong></label>
             <span class="select-wrapper" style="margin-right: 15px">            
-              <select style="font-size: 20px" name="age" id="age" v-model="credential.age" class="st-font form-select">
+              <select style="font-size: 20px; height:38px;" name="age" id="age" v-model="credential.age" class="st-font form-select">
                 <option :value="age" v-for="(age, idx) in this.$store.state.ages" :key="idx">{{ age }}</option>
               </select>
             </span>
           </div>
 
-          <div class="text-start">
+          <div class="text-start mb-3" style="height: 70px;">
             <label style="margin-right: 15px" class="st-font form-label" for="sex"><strong>성별</strong></label>
             <span class="select-wrapper" style="margin-right: 15px">            
-              <select style="font-size: 20px" name="sex" id="sex" v-model="credential.sex" class="st-font form-select">
+              <select style="font-size:20px; height:38px;" name="sex" id="sex" v-model="credential.sex" class="st-font form-select">
                 <option :value="sex" v-for="(sex, idx) in this.$store.state.sex" :key="idx">{{ sex }}</option>
               </select>
             </span>
@@ -37,7 +42,7 @@
             <div v-if="caution1" id="emailHelp" class="form-text">{{ caution1 }}</div>
           </div>
 
-          <div class="text-start mb-3">
+          <div class="text-start mb-4">
             <label for="password2" class="st-font form-label"><strong>비밀번호 확인</strong></label>
             <input v-model.trim="credential.passwordConfirmation" @input="checkPW" @keypress.enter="signUp" id="passwordConfirmation" type="password" placeholder="passwordConfirmation" required="required" data-validation-required-message="Please confirm your password" class="form-control"/>
             <div v-if="caution2" id="emailHelp" class="form-text">{{ caution2 }}</div>
@@ -66,6 +71,7 @@ export default {
         email: null,
         password: null,
         passwordConfirmation: null,
+        image: null,
       },
       caution1: '',
       caution2: '',
@@ -74,8 +80,29 @@ export default {
   computed: {
   },
   methods: {
+    onInputImage() {
+      this.credential.image = this.$refs.serveyImage.files
+      console.log(this.credential.image)
+    },
     signUp() {
-      axios.post(`${SERVER_URL}/accounts/signup/`, this.credential)
+      const formdata = new FormData()
+      formdata.append('username', this.credential.username)
+      formdata.append('age', this.credential.age)
+      formdata.append('sex', this.credential.sex)
+      formdata.append('email', this.credential.email)
+      formdata.append('password', this.credential.password)
+      formdata.append('passwordConfirmation', this.credential.passwordConfirmation)
+      formdata.append('image', this.credential.image[0])
+
+      // axios.post(`${SERVER_URL}/accounts/signup/`, this.credential)
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/accounts/signup/`,
+        headers: {
+          'Content-Type':'multipart/form-data',
+        },
+        data: formdata
+      })
       .then( () => {
         const login_credential = {
           username: this.credential.username,

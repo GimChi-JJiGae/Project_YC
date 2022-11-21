@@ -1,5 +1,5 @@
 <template>
-  <div class="container row justify-content-center">
+  <div class="row justify-content-center">
     <div class="border p-3 rounded-3" style="width:500px; height:300px">
       <router-link :to="{ name: 'HomeView' }"><img src="@/assets/logo.png" alt="" style="width:100px;"></router-link>
       <form @submit.prevent="LogIn" >

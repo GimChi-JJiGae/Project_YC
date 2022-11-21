@@ -4,13 +4,13 @@
       <div class="col text-start fw-bold fs-2">{{ article?.title }}</div>
       <div class="col-2 row justify-content-center align-items-center ">
         <div class="col p-0 text-end" style="cursor:pointer;"  @click="likeArticle(article)" >
-          <font-awesome-icon icon="fa-regular fa-thumbs-up" v-if="is_liked"/>
-          <font-awesome-icon icon="fa-solid fa-thumbs-up" v-else/> {{ like_numbers }}
+          <font-awesome-icon icon="fa-solid fa-thumbs-up" v-if="is_liked"/>
+          <font-awesome-icon icon="fa-regular fa-thumbs-up" v-else/> {{ like_numbers }}
         </div>
         <div class="col-1">|</div>
         <div class="col p-0 text-start" style="cursor:pointer;" @click="hateArticle(article)">
-          <font-awesome-icon icon="fa-regular fa-thumbs-down" v-if="is_hated"/>
-          <font-awesome-icon icon="fa-solid fa-thumbs-down" v-else/> {{ hate_numbers }}
+          <font-awesome-icon icon="fa-solid fa-thumbs-down" v-if="is_hated"/>
+          <font-awesome-icon icon="fa-regular fa-thumbs-down" v-else/> {{ hate_numbers }}
         </div>
       </div>
     </div>
@@ -170,9 +170,9 @@ export default {
       axios.get(`${SERVER_URL}/articles/${this.$route.params.id}/`, config)
         .then(res => {
           this.article = res.data.article
-          this.is_liked = res.data.is_liked
+          this.is_liked = !res.data.is_liked
           this.like_numbers = res.data.likes_count
-          this.is_hated = res.data.is_hated
+          this.is_hated = !res.data.is_hated
           this.hate_numbers = res.data.hates_count
           this.getComments()
           this.getMyName()
@@ -259,7 +259,7 @@ export default {
     moveToUpdate(article) {
       if (this.user.username === article.username) {
         this.$router.push({ name: 'ArticleUpdate', params: { id: `${article.id}` } })
-      } else {
+      } else {	4
         alert("본인이 작성한 글만 수정 가능합니다.")
       }
     },
@@ -269,11 +269,12 @@ export default {
     },
     likeArticle(article) {
       const config = this.getToken()
+      this.is_liked = !this.is_liked
       axios.post(`${SERVER_URL}/articles/${article.id}/likes/`, this.is_Like, config)
         .then(res => {
           this.is_liked = res.data.is_liked
           this.like_numbers = res.data.likes_count
-          this.getArticleDetail()
+          // this.getArticleDetail()
         })
         .catch(err => {
           console.log(err)
@@ -285,7 +286,7 @@ export default {
         .then(res => {
           this.is_hated = res.data.is_hated
           this.hate_numbers = res.data.hates_count
-          this.getArticleDetail()
+          // this.getArticleDetail()
         })
         .catch(err => {
           console.log(err)
