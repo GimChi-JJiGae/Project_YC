@@ -30,6 +30,8 @@ def article_list(request):
 @permission_classes([IsAuthenticated])
 def article_detail(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
+    article.viewnums += 1
+    article.save()
 
     if request.method == 'GET':
         serializer = ArticleSerializer(article)

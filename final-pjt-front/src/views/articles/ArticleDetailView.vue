@@ -1,42 +1,61 @@
 <template>
-  <div class="container">
+  <div class="container border p-4" style="min-width: 960px;">
     <div class="row">
-      <div class="col-10"><h4>{{ article?.title }}</h4></div>
-      <div class="col-1">좋아 {{ like_numbers }}</div>
-      <div class="col-1">싫어 {{ hate_numbers }}</div>
-    </div>
-    <div class="row">
-      <div class="col" @click="moveToProfile(article.user, article.username)" style="cursor:pointer;">작성자 : {{ article?.username }}</div>
-      <div v-if="article.created_at === article.updated_at" class="col">작성시간 : {{ created }}</div>
-      <div v-else class="col">수정시간 : {{ updated }}</div>
-      <div class="col-1">
-        <button @click="deleteArticle(article)">삭제</button>
-      </div>
-      <div class="col-1">
-        <button @click="moveToUpdate(article)">수정</button>
+      <div class="col text-start fw-bold fs-2">{{ article?.title }}</div>
+      <div class="col-2 row justify-content-center align-items-center ">
+        <div class="col p-0 text-end" style="cursor:pointer;"  @click="likeArticle(article)" >
+          <font-awesome-icon icon="fa-regular fa-thumbs-up" v-if="is_liked"/>
+          <font-awesome-icon icon="fa-solid fa-thumbs-up" v-else/> {{ like_numbers }}
+        </div>
+        <div class="col-1">|</div>
+        <div class="col p-0 text-start" style="cursor:pointer;" @click="hateArticle(article)">
+          <font-awesome-icon icon="fa-regular fa-thumbs-down" v-if="is_hated"/>
+          <font-awesome-icon icon="fa-solid fa-thumbs-down" v-else/> {{ hate_numbers }}
+        </div>
       </div>
     </div>
+    <hr class="m-0">
     <div class="row">
+      <div class="col text-start m-1"><span @click="moveToProfile(article.user, article.username)" style="cursor:pointer;"><small>{{ article?.username }}님</small></span></div>
+      <div class="col-8">
+      </div>
+      <div class="col"><small>{{ create_at }}</small></div>
+    </div>
+    <div class="row text-start my-4">
       <div class="">{{ article?.content }}</div>
     </div>
-    <hr>
-    <div>
-      좋아요 : <button @click="likeArticle(article)">{{ is_Like }}</button>
-      싫어요 : <button @click="hateArticle(article)">{{ is_Hate }}</button>
+    <div class="row flex-row-reverse" v-if="user?.username === article?.username">
+      <div class="col-2 row justify-content-start">
+        <div class="col p-0 text-end">
+          <button @click="moveToUpdate(article)" class="m-1 btn content-font border btn-sm">수정</button>
+        </div>
+        <div class="col p-0 text-start">
+          <button @click="deleteArticle(article)" class="m-1 btn content-font border btn-sm">삭제</button>
+        </div>
+      </div>
     </div>
     <hr>
-    <div>
-      <div class="container" v-for="(comment, idx) in commentsList" :key="idx">
-        <div>{{ comment.content }}</div>
-        <span>{{ comment.created_at }}   </span>
-        <span style="cursor:pointer;" @click="moveToProfile(comment.user, comment.username)">{{ comment.username }}    </span>
-        <div>
-          <button @click="deleteComment(comment)">댓글 삭제</button>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" v-for="(comment, idx) in commentsList" :key="idx">
+        <div class="row text-start align-items-center">
+          <div class="col-2"><span style="cursor:pointer;" @click="moveToProfile(comment.user, comment.username)"><strong>{{ comment.username }}</strong></span></div>
+          <div class="col-8">{{ comment.content }}</div>
+          <div class="col-2"><small>{{ comment_create[idx] }}</small></div>
         </div>
-
+        <div class="text-end" v-if="user.username === comment.username">
+          <button class="m-1 btn content-font border btn-sm" @click="deleteComment(comment)">삭제</button>
+        </div>
+      </li>
+    </ul>
+    <div class="row">
+      <div class="col">
+        <textarea name="createComment" id="createComment" style="width: 100%; height: 6.25em;" placeholder="댓글을 작성하세요" v-model="comment_content"></textarea>
       </div>
-      <textarea name="createComment" id="createComment" cols="50" rows="2" placeholder="댓글을 작성하세요" v-model="comment_content"></textarea>
-      <button type="submit" @click="createComment">댓글 작성</button>
+    </div>
+    <div class="row">
+      <div class="col text-end">
+        <button class="m-1 btn content-font border btn-sm" type="submit" @click="createComment">댓글 작성</button>
+      </div>
     </div>
   </div>
 </template>
@@ -64,14 +83,8 @@ export default {
     commentsList() {
       return this.comments
     },
-    is_Like() {
-      return this.is_liked ? '좋아요' : '좋아요 취소'
-    },
-    is_Hate() {
-      return this.is_hated ? '싫어요' : '싫어요 취소'
-    },
-    created() {
-      let js_date = new Date(this.article.created_at)
+    create_at() {
+      let js_date = new Date(this.article?.created_at)
       const year = js_date.getFullYear()
       let month = js_date.getMonth() + 1
       let day = js_date.getDate()
@@ -91,8 +104,8 @@ export default {
       }
       return year + '-' + month + '-' + day + '  ' + hour + ':' + min
     },
-    updated() {
-      let js_date = new Date(this.article.updated_at)
+    update_at() {
+      let js_date = new Date(this.article?.updated_at)
       const year = js_date.getFullYear()
       let month = js_date.getMonth() + 1
       let day = js_date.getDate()
@@ -111,6 +124,31 @@ export default {
         day = '0' + day;
       }
       return year + '-' + month + '-' + day + '  ' + hour + ':' + min
+    },
+    comment_create() {
+      let comments_created = []
+      for (let i = 0; i < this.commentsList.length; i++) {
+        let js_date = new Date(this.commentsList[i]?.created_at)
+        const year = js_date.getFullYear()
+        let month = js_date.getMonth() + 1
+        let day = js_date.getDate()
+        let hour = js_date.getHours()
+        let min = js_date.getMinutes()
+        if (min < 10) {
+          min = '0' + min;
+        }
+        if (hour < 10) {
+          hour = '0' + hour;
+        }
+        if(month < 10){
+          month = '0' + month;
+        }
+        if(day < 10){
+          day = '0' + day;
+        }
+        comments_created.push(year + '-' + month + '-' + day + '  ' + hour + ':' + min)
+      }
+      return comments_created
     },
 
   },

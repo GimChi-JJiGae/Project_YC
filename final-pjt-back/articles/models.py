@@ -10,6 +10,7 @@ class Article(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    viewnums = models.IntegerField(default=0)
 
 
 class Comment(models.Model):

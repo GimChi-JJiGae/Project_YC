@@ -1,37 +1,53 @@
 <template>
-  <div>
-    <h1>회원가입</h1>
-    <form @submit.prevent="signUp">
-      <label for="username">ID </label>
-      <input v-model.trim="credential.username" id="id" type="text" placeholder="ID" required="required" data-validation-required-message="Please enter your username." /><br>
+  <div class="container row justify-content-center">
+    <div class="border p-3 rounded-3 row justify-content-center align-items-center" style="width:500px; height:600px">      
+      <div style="width:300px;" class="my-3">
+        <form @submit.prevent="signUp">
+          <div class="text-start my-3 ">
+            <label for="username" class="st-font form-label"><strong>아이디</strong></label>
+            <input v-model.trim="credential.username" id="id" type="text" placeholder="아이디" required="required" data-validation-required-message="Please enter your username." class="form-control"/>
+          </div>
 
-      <label style="margin-right: 15px" class="st-font" for="sex">나이 </label>
-      <span class="select-wrapper" style="margin-right: 15px">            
-        <select style="font-size: 20px" name="age" id="age" v-model="credential.age" class="st-font">
-          <option :value="age" v-for="(age, idx) in this.$store.state.ages" :key="idx">{{ age }}</option>
-        </select>
-      </span><br>
+          <div class="text-start">
+            <label style="margin-right: 15px" class="st-font form-label" for="sex"><strong>나이</strong></label>
+            <span class="select-wrapper" style="margin-right: 15px">            
+              <select style="font-size: 20px" name="age" id="age" v-model="credential.age" class="st-font form-select">
+                <option :value="age" v-for="(age, idx) in this.$store.state.ages" :key="idx">{{ age }}</option>
+              </select>
+            </span>
+          </div>
 
-      <label style="margin-right: 15px" class="st-font" for="sex">성별 </label>
-      <span class="select-wrapper" style="margin-right: 15px">            
-        <select style="font-size: 20px" name="sex" id="sex" v-model="credential.sex" class="st-font">
-          <option :value="sex" v-for="(sex, idx) in this.$store.state.sex" :key="idx">{{ sex }}</option>
-        </select>
-      </span><br>
+          <div class="text-start">
+            <label style="margin-right: 15px" class="st-font form-label" for="sex"><strong>성별</strong></label>
+            <span class="select-wrapper" style="margin-right: 15px">            
+              <select style="font-size: 20px" name="sex" id="sex" v-model="credential.sex" class="st-font form-select">
+                <option :value="sex" v-for="(sex, idx) in this.$store.state.sex" :key="idx">{{ sex }}</option>
+              </select>
+            </span>
+          </div>
 
-      <label for="email">Email </label>
-      <input v-model.trim="credential.email" id="email" type="text" placeholder="email" required="required" data-validation-required-message="Please enter your email address." /><br>
+          <div class="text-start mb-3">
+            <label for="email" class="st-font form-label"><strong>Email</strong></label>
+            <input v-model.trim="credential.email" id="email" type="text" placeholder="email" required="required" data-validation-required-message="Please enter your email address." class="form-control"/>
+          </div>
 
-      <label for="password1" >비밀번호 </label>
-      <input v-model.trim="credential.password" @input="passwordValidation" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." /><br>
-      <div v-if="caution1">{{ caution1 }}</div>
+          <div class="text-start mb-3">
+            <label for="password1" class="st-font form-label"><strong>비밀번호</strong></label>
+            <input v-model.trim="credential.password" @input="passwordValidation" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." class="form-control"/>
+            <div v-if="caution1" id="emailHelp" class="form-text">{{ caution1 }}</div>
+          </div>
 
-      <label for="password2">비밀번호 확인 </label>
-      <input v-model.trim="credential.passwordConfirmation" @input="checkPW" @keypress.enter="signUp" id="passwordConfirmation" type="password" placeholder="passwordConfirmation" required="required" data-validation-required-message="Please confirm your password" />
-      <div v-if="caution2">{{ caution2 }}</div>
-      <br>
-      <button id="Signup" type="submit">Signup</button>
-    </form>
+          <div class="text-start mb-3">
+            <label for="password2" class="st-font form-label"><strong>비밀번호 확인</strong></label>
+            <input v-model.trim="credential.passwordConfirmation" @input="checkPW" @keypress.enter="signUp" id="passwordConfirmation" type="password" placeholder="passwordConfirmation" required="required" data-validation-required-message="Please confirm your password" class="form-control"/>
+            <div v-if="caution2" id="emailHelp" class="form-text">{{ caution2 }}</div>
+          </div>
+          <div class="mt-3">
+            <button class="btn content-font border" type="submit">Signup</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 

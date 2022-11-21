@@ -1,17 +1,24 @@
 <template>
-  <div>
-    <h1>LogIn Page</h1>
-    <form @submit.prevent="LogIn" >
-      <label for="username">ID</label>
-      <input v-model.trim="credential.username" id="username" type="text" placeholder="ID" required="required" data-validation-required-message="Please enter your username." />
-      <br>
-      <label for="password">password : </label>
-      <input v-model.trim="credential.password" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." />
-
-      <input type="submit" value="LogIn">
-    </form>
-    <h3>Sign up</h3>
-    <button @click="moveToSignUp" id="Signup" type="submit">Signup</button>
+  <div class="container row justify-content-center">
+    <div class="border p-3 rounded-3" style="width:500px; height:300px">
+      <router-link :to="{ name: 'HomeView' }"><img src="@/assets/logo.png" alt="" style="width:100px;"></router-link>
+      <form @submit.prevent="LogIn" >
+        <div class="mt-3">
+          <input v-model.trim="credential.username" id="username" class="border-0 border-bottom" type="text" placeholder="아이디" required="required" data-validation-required-message="Please enter your username." style="width:300px;"/>
+        </div>
+        <div class="mt-3">
+          <input v-model.trim="credential.password" id="password" class="border-0 border-bottom" type="password" placeholder="비밀번호" required="required" data-validation-required-message="Please enter your password." style="width:300px;"/>
+        </div>
+        <div class="mt-4">
+          <button type="submit" style="width:300px;" class="btn content-font border">로그인</button>
+        </div>
+      </form>
+    </div>
+    <div class="row">
+      <div>
+        <button @click="moveToSignUp" class="m-1 btn content-font border btn-sm" type="submit">Signup</button>
+      </div>
+    </div>
   </div>
 </template>
 

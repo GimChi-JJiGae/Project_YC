@@ -34,7 +34,7 @@
                 <button v-else @click="follow" class="btn btn-primary btn-block"><span class="fa fa-plus-circle"></span> Follow </button>
               </div>
               <div>                
-                <p class="ms-3"><small>'좋아요'한 영화 수 : {{user.like_movies.length}}</small></p>
+                <!-- <p class="ms-3"><small>'좋아요'한 영화 수 : {{user.like_movies.length}}</small></p> -->
               </div>
             </div>
           </div>

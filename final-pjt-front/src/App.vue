@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <div class="container" style="min-width: 960px;">
+
     <nav>
       <span v-if="access_token">
         <router-link :to="{ name: 'HomeView' }">Home</router-link> |
@@ -18,6 +20,7 @@
     <router-view/>
   
 
+    </div>
   </div>
 </template>
 
