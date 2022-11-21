@@ -6,6 +6,7 @@
     
     <MovieDetailTop :movie="movie"/>
     <MovieDetailYoutube :movieYoutubeUrl="movieYoutubeUrl"/>
+    <MovieDetailCommentList/>
     <MovieDetailRelated/>
     
   </div>
@@ -16,7 +17,7 @@ import axios from 'axios'
 import MovieDetailYoutube from '@/components/MovieDetailYoutube.vue'
 import MovieDetailTop from '@/components/MovieDetailTop.vue'
 import MovieDetailRelated from '@/components/MovieDetailRelated.vue'
-
+import MovieDetailCommentList from '@/components/MovieDetailCommentList.vue'
 //const youtube = document.getElementById("youtube");
 
 export default {
@@ -33,6 +34,7 @@ export default {
     MovieDetailYoutube,
     MovieDetailTop,
     MovieDetailRelated,
+    MovieDetailCommentList,
     
 },
   methods : {
