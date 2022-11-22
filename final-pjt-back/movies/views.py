@@ -60,3 +60,19 @@ def movie_comment_create(request, movie_pk):
     if serializer.is_valid(raise_exception=True):
         serializer.save(movie=movie, user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def likes(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    if request.user in movie.like_users.all():
+        movie.like_users.remove(request.user)
+        is_liked = False
+    else:
+        movie.like_users.add(request.user)
+        is_liked = True
+    context = {
+        'is_liked' : is_liked,
+        'likes_count': movie.like_users.count()
+    }
+    return Response(context)
