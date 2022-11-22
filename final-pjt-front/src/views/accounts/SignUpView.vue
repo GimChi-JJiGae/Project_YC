@@ -1,14 +1,20 @@
 <template>
   <div class="row justify-content-center">
     <div class="border p-3 rounded-3 row justify-content-center" style="width:500px; height:800px">      
-      <div style="width:300px;" class="my-3">
+      <div style="width:300px; height: 90%;" class="my-3">
         <form @submit.prevent="signUp">
-          <div class="text-start my-3 ">
+          <div class="text-start my-3 " style="height: 100px;">
             <label for="username" class="st-font form-label"><strong>프로필 사진</strong></label>
-            <input type="file" @change="onInputImage()" ref="serveyImage" class="form-file">
+            <div class="filebox">
+              <label for="ex_file" class="p-0" style='height:80px; width:80px; border-radius:50%; overflow:hidden; '>
+                <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
+                <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
+              </label> 
+              <input type="file" @change="onInputImage()" id="ex_file" ref="serveyImage">
+            </div>
           </div>
 
-          <div class="text-start my-3 ">
+          <div class="text-start mb-3 bt-4">
             <label for="username" class="st-font form-label"><strong>아이디</strong></label>
             <input v-model.trim="credential.username" id="id" type="text" placeholder="아이디" required="required" data-validation-required-message="Please enter your username." class="form-control"/>
           </div>
@@ -73,6 +79,8 @@ export default {
         passwordConfirmation: null,
         image: null,
       },
+      basic: SERVER_URL + '/media/basic.png',
+      image: null,
       caution1: '',
       caution2: '',
     }
@@ -81,7 +89,18 @@ export default {
   },
   methods: {
     onInputImage() {
+      let files = this.$refs.serveyImage.files
+      this.user.image = this.$refs.serveyImage.files
+      this.is_upload = this.$refs.serveyImage.files
+      let reader = new FileReader()
+      reader.readAsDataURL(files[0])
+      reader.onload = e => {
+        this.image = e.target.result
+      }
       this.credential.image = this.$refs.serveyImage.files
+    },
+    getImage(url) {
+      this.image = SERVER_URL + url
     },
     signUp() {
       const formdata = new FormData()
@@ -159,5 +178,26 @@ export default {
 </script>
 
 <style>
+.filebox label {
+  display: inline-block;
+  padding: .5em .75em;
+  color: #999;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: .25em;
+}
 
+.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+  position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
 </style>
