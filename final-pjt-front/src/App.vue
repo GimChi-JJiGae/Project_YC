@@ -109,8 +109,10 @@ export default {
           i = i - 1
         }
       }
+      localStorage.removeItem('random_top_movie_list')
       localStorage.setItem('random_top_movie_list', JSON.stringify(this.random_top_movie_list)) 
     },
+    
 
 
     pick_popular_movies: function() {
@@ -129,6 +131,7 @@ export default {
       console.log('영화 데이터 생성됨')
     } else {
       console.log('영화 데이터 이미 있음')
+      
     }
   },
 

@@ -9,7 +9,8 @@
       <img :src='`https://image.tmdb.org/t/p/original/${random_top_movie_list[i].poster_path}`' alt="">
       <div class="title">
         <h3 class="more">평점</h3>
-        <router-link class="more" :to="{name : 'MovieDetail', params : {movie_pk : random_top_movie_list[i].original_id }}">Detail</router-link>
+        <router-link class="more" :to="{name : 'MovieDetail', params : {movie_pk : random_top_movie_list[i].id }}">Detail</router-link>
+        <!--<a class="more" :href='`http://localhost:8080/movies/${random_top_movie_list[i].id}`'>Detail</a>-->
       </div>
     </div>
     </slide>
@@ -27,7 +28,8 @@
     <img :src='`https://image.tmdb.org/t/p/original/${popular_movie_list[i].poster_path}`' alt="">
     <div class="title">
       <h3 class="more">평점</h3>
-      <router-link class="more" :to="{name : 'MovieDetail', params : {movie_pk : popular_movie_list[i].original_id }}">Detail</router-link>
+      <router-link class="more" :to="{name : 'MovieDetail', params : {movie_pk : popular_movie_list[i].id }}">Detail</router-link>
+      <!--<a class="more" :href='`http://localhost:8080/movies/${popular_movie_list[i].id}`'>Detail</a>-->
     </div>
   </div>
     

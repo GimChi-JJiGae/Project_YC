@@ -12,7 +12,6 @@ class Movie(models.Model):
     title = models.TextField()
     original_id = models.IntegerField()
     original_title = models.TextField()
-    original_id = models.IntegerField()
     overview = models.TextField()
     genres = models.ManyToManyField(Genre)
     poster_path = models.TextField()
@@ -27,7 +26,7 @@ class Movie(models.Model):
 
 class MovieComment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="movie_comments")
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="comments")
     content = models.TextField()
     rank = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
