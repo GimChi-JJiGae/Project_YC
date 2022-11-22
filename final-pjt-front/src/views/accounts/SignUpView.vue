@@ -81,6 +81,7 @@ export default {
       },
       basic: SERVER_URL + '/media/basic.png',
       image: null,
+      is_upload: null,
       caution1: '',
       caution2: '',
     }
@@ -88,9 +89,12 @@ export default {
   computed: {
   },
   methods: {
+    getImage(url) {
+      this.image = SERVER_URL + url
+    },
     onInputImage() {
       let files = this.$refs.serveyImage.files
-      this.user.image = this.$refs.serveyImage.files
+      this.credential.image = this.$refs.serveyImage.files
       this.is_upload = this.$refs.serveyImage.files
       let reader = new FileReader()
       reader.readAsDataURL(files[0])
@@ -98,9 +102,6 @@ export default {
         this.image = e.target.result
       }
       this.credential.image = this.$refs.serveyImage.files
-    },
-    getImage(url) {
-      this.image = SERVER_URL + url
     },
     signUp() {
       const formdata = new FormData()

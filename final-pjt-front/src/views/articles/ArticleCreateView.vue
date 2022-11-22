@@ -57,8 +57,7 @@ export default {
         return
       } 
       axios.post(`${SERVER_URL}/articles/`, data, config)
-        .then(res => {
-          console.log(res)
+        .then(() => {
           this.$router.push({ name: 'ArticleHomeView' }).catch(()=>{})
         })
         .catch(err => {

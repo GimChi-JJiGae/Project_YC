@@ -50,7 +50,10 @@ def my_profile(request):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_user(request, username):
+    print(request.data)
     user = get_object_or_404(get_user_model(), username=username)
+    if not request.user.check_password(request.data['password']):
+        return Response(status=status.HTTP_400_BAD_REQUEST)
     user.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -3,14 +3,18 @@
     <div class="border p-3 rounded-3 row justify-content-center" style="width:500px; height:550px">
       <div style="width:300px; height: 70px;" class="my-3">
         <form @submit.prevent="update">
-          <div class="text-start my-3 " style="height: 100px;">
-            <label for="username" class="st-font form-label"><strong>프로필 사진</strong></label>
-            <div class="filebox">
-              <label for="ex_file" class="col-3 p-0" style='height:100%; border-radius:50%; overflow:hidden; '>
-                <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
-                <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
-              </label> 
-              <input type="file" @change="onInputImage()" id="ex_file" ref="serveyImage">
+          <div class="text-start " style="height: 150px;">
+            <div class="row">
+              <label for="username" class="st-font form-label"><strong>프로필 사진</strong></label>
+            </div>
+            <div class="row">
+              <div class="filebox" style="height: 100px;">
+                <label for="ex_file" style='height:100px; width:100px; border-radius:50%; overflow:hidden; padding: 0px;'>
+                  <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
+                  <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
+                </label> 
+                <input type="file" @change="onInputImage()" id="ex_file" ref="serveyImage">
+              </div>
             </div>
           </div>
           <div class="text-start mb-3" style="height: 70px;">
@@ -27,12 +31,29 @@
             <label for="password1" class="st-font form-label"><strong>비밀번호</strong></label>
             <input v-model.trim="password" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." class="form-control"/>
           </div>
-
+          
           <div class="mt-3">
             <button class="btn content-font border" type="submit">변경</button>
             <button @click="moveToChangePassword" class="btn content-font border">비밀번호 변경하기</button>
           </div>
         </form>
+        <div class="mt-2">
+          <button @click="open" class="m-2 btn content-font">회원 탈퇴</button>
+        </div>
+        <b-modal
+          hide-footer
+          v-model="show"
+          id="deleteUser-modal"
+          size="md"
+          title="회원탈퇴"
+          hide-header-close
+        >
+          <div class="text-start mb-3" style="height: 100px;">
+            <label for="password1" class="st-font form-label"><strong>비밀번호를 입력하세요</strong></label>
+            <input v-model.trim="password" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." class="form-control"/>
+            <button @click="deleteUser" class="my-2 btn btn-outline-dark btn-sm">회원 탈퇴</button>
+          </div>
+        </b-modal>
       </div>
     </div>
   </div>
@@ -54,6 +75,14 @@ export default {
       image: null,
       basic: null,
       is_upload: null,
+      show: false,
+      variants: ["light", "dark"],
+      headerBgVariant: "dark",
+      headerTextVariant: "white",
+      bodyBgVariant: "dark",
+      bodyTextVariant: "white",
+      footerBgVariant: "danger",
+      footerTextVariant: "dark",
     }
   },
   methods: {
@@ -145,6 +174,20 @@ export default {
     moveToChangePassword() {
       this.$router.push({ name: 'UpdatePassword', params: { username: `${this.original_username}`} })
     },
+    deleteUser() {
+      const config = this.getToken()
+      axios.delete(`${SERVER_URL}/accounts/${this.user.username}/delete/`, {headers: config['headers'], data: {password:this.password}})
+        .then(() => {
+          this.$store.dispatch('LogOut')
+          this.$router.push({ name: 'HomeView' })
+        })
+    },
+    open() {
+      this.show = true
+    },
+    close() {
+      this.show = false
+    }
   },
   created() {
     this.getMyName()

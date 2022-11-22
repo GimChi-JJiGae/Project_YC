@@ -1,12 +1,12 @@
 <template>
-  <div class="container test-center" style="height:600px;">
+  <div class="container test-center" style="height:600px; min-width:770px;">
     <div class="row gap-3" style="height:600px;">
       <div class="col-4 bg-secondary bg-opacity-25 rounded-3" style="min-width:240px;">
         <div class="mt-4">
           <div class='d-flex flex-column'>
-            <div class="row">
+            <div class="row" style="height:150px;">
               <div class="col-1"></div>
-              <div class="col-3 p-0" style='height:100%; border-radius:50%; overflow:hidden; '>
+              <div class="col-3 p-0" style='height:100%; width:150px; border-radius:50%; overflow:hidden; '>
                 <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
                 <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
               </div>
@@ -44,9 +44,6 @@
           <div class=''>
             <button @click="updateUser" class="m-1 btn content-font">회원정보수정</button>
           </div>
-          <div>
-            <button @click="deleteUser" class="m-1 btn content-font">회원 탈퇴</button>
-          </div>
         </div>
         <b-modal
           hide-footer
@@ -60,6 +57,7 @@
           :body-text-variant="bodyTextVariant"
           :footer-bg-variant="footerBgVariant"
           :footer-text-variant="footerTextVariant"
+          hide-header-close
         >
           <section class="page-section my-2" id="contact">
             <div class="container">
@@ -93,6 +91,7 @@
           :body-text-variant="bodyTextVariant"
           :footer-bg-variant="footerBgVariant"
           :footer-text-variant="footerTextVariant"
+          hide-header-close
         >
           <section class="page-section" id="contact">
             <div class="container">
@@ -159,12 +158,12 @@ export default {
       show1: false,
       show2: false,
       variants: ["light", "dark"],
-    headerBgVariant: "dark",
-    headerTextVariant: "white",
-    bodyBgVariant: "dark",
-    bodyTextVariant: "white",
-    footerBgVariant: "danger",
-    footerTextVariant: "dark",
+      headerBgVariant: "dark",
+      headerTextVariant: "white",
+      bodyBgVariant: "dark",
+      bodyTextVariant: "white",
+      footerBgVariant: "danger",
+      footerTextVariant: "dark",
     }
   },
   methods: {
@@ -226,14 +225,6 @@ export default {
     updateUser() {
       this.$router.push({ name: 'UpdateUserView', params: { username: `${this.user.username}` } })
     },
-    deleteUser() {
-      const config = this.getToken()
-      axios.delete(`${SERVER_URL}/accounts/${this.user.username}/delete/`, config)
-        .then(() => {
-          this.$store.dispatch('LogOut')
-          this.$router.push({ name: 'HomeView' })
-        })
-    }
   },
   created() {
     this.getMyName()

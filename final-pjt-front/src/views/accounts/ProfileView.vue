@@ -3,8 +3,8 @@
     <div class="bg-secondary bg-opacity-25 rounded-3 mx-3" style="height:600px;">
       <div class="test-center p-5" style="height:100%;">
         <div class="d-flex flex-column align-items-center" style="width: 100%; ">
-          <div class="row  mb-4" style="width: 100%; height: 100%;">
-            <div class="col-2 p-0" style='height:100%; border-radius:50%; overflow:hidden; '>
+          <div class="row" style="width: 100%; height: 150px;">
+            <div class="col-2 p-0" style='height:100%; width: 150px; border-radius:50%; overflow:hidden; '>
               <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
               <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
             </div>
@@ -14,7 +14,7 @@
             <div class="col-1"></div>
           </div>
           <div class="row " style="width: 100%; height: 70px;">
-            <p class="mb-1  text-start"><strong>이메일</strong></p>
+            <p class="my-1  text-start"><strong>이메일</strong></p>
             <p class="text-start">{{ user.email }}</p>
           </div>
           <div class="row " style="width: 100%; height: 70px;">
