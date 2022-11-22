@@ -1,16 +1,19 @@
 <template>
   <div class="container test-center" style="height:600px;">
     <div class="row gap-3" style="height:600px;">
-      <div class="col-4 bg-secondary bg-opacity-25 rounded-3">
-        <div class="mt-3">
-          <div>
+      <div class="col-4 bg-secondary bg-opacity-25 rounded-3" style="min-width:240px;">
+        <div class="mt-4">
+          <div class='d-flex flex-column'>
             <div class="row">
-              <div class="col">
-                <img :src="image" alt="" style="width: 100%;">
+              <div class="col-1"></div>
+              <div class="col-3 p-0" style='height:100%; border-radius:50%; overflow:hidden; '>
+                <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
+                <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
               </div>
-              <div class="col">
-                <h5 class="text-start ms-3"><strong>{{ user.username }}님</strong></h5>
+              <div class="col row justify-content-center align-items-center">
+                <h5 class="text-start"><strong>{{ user.username }}님</strong></h5>
               </div>
+              <div class="col-1"></div>
             </div>
             <br>
             <div>
@@ -38,7 +41,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div class=''>
             <button @click="updateUser" class="m-1 btn content-font">회원정보수정</button>
           </div>
           <div>
@@ -58,12 +61,12 @@
           :footer-bg-variant="footerBgVariant"
           :footer-text-variant="footerTextVariant"
         >
-          <hr>
-          <section class="page-section" id="contact">
+          <section class="page-section my-2" id="contact">
             <div class="container">
                 <!-- Contact Section Heading-->
-                <h3 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followings</h3>
+                <!-- <h5 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followings</h5> -->
                 <!-- Contact Section Form-->
+                <br>
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
                         <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
@@ -76,7 +79,7 @@
                 </div>
             </div>
           </section>
-          <div class="text-white st-font form-group"><button @click="close2" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div>
+          <!-- <div class="text-white st-font form-group"><button @click="close2" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div> -->
         </b-modal>
         <b-modal
           hide-footer
@@ -91,12 +94,12 @@
           :footer-bg-variant="footerBgVariant"
           :footer-text-variant="footerTextVariant"
         >
-          <hr>
           <section class="page-section" id="contact">
             <div class="container">
                 <!-- Contact Section Heading-->
-                <h3 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followers</h3>
+                <!-- <h5 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followers</h5> -->
                 <!-- Contact Section Form-->
+                <br>
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
                         <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
@@ -109,11 +112,11 @@
                 </div>
             </div>
           </section>
-          <div class="text-white st-font form-group"><button @click="close" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div>
+          <!-- <div class="text-white st-font form-group"><button @click="close" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div> -->
         </b-modal>
       </div>
 
-      <div class="col-7 bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column">
+      <div class="col-7 bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column" style="min-width:420px;">
         <div class="m-3" style="height:100%">
 
           <div class="" style="height:50%;">
@@ -148,6 +151,7 @@ export default {
   data() {
     return {
       image: null,
+      basic: null,
       user: [],
       users: [],
       myFollowings: [],
@@ -183,10 +187,14 @@ export default {
       const hash = localStorage.getItem('access_token')
       const info = VueJwtDecode.decode(hash)
       axios.post(`${SERVER_URL}/accounts/myprofile/`, info, config)
-      .then( (res) => {
-        this.user = res.data
-        console.log(this.user.image)
-        this.getImage(this.user.image)
+        .then( (res) => {
+          this.user = res.data
+          if (this.user.image) {
+            this.getImage(this.user.image)
+          } else {
+            const url = '/media/basic.png'
+            this.getImage(url)
+          }
 
         // const item = this.user.like_movies
         // axios.post(`${SERVER_URL}/movies/${this.user.id}/like/`, item, config)

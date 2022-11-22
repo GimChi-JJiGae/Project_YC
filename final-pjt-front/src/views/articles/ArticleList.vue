@@ -7,7 +7,7 @@
       <div class="col-1"><font-awesome-icon icon="fa-regular fa-thumbs-up"/></div>
       <div class="col-1"><font-awesome-icon icon="fa-regular fa-thumbs-down"/></div>
       <div class="col-1">조회</div>
-      <hr class="border border-dark border-2">
+      <hr class="border-top border-bottom border-dark border-2">
       <div class="article-list">
         <ArticleListItem
         v-for="article in paginatedData"
@@ -37,12 +37,17 @@
       <div class="col-3"></div>
       <div class="col row">
         <div class="col p-0 row justify-content-end me-1">
-          <select style="font-size: 18px; width: 120px; height:36px;" v-model="keyword" class="st-font form-select">
+          <select style="font-size: 14px; width: 100px; height:36px;" v-model="keyword" class="st-font form-select">
             <option :value="keyword" v-for="(keyword, idx) in keywords" :key="idx">{{keyword}}</option>
           </select>
         </div>
         <div class="col p-0">
-          <input class="stage-search border-opacity-10" type="text" v-model="search" placeholder="검색어" @keyup.enter="handleSearchInput" style="width:100%; height:36px;"/>
+          <input class="stage-search border-opacity-10 rounded-2" type="text" v-model="search" placeholder="검색어" @keyup.enter="handleSearchInput" style="width:100%; height:36px;"/>
+        </div>
+        <div class="col-2 p-0 text-start">
+          <button class="btn content-font border btn-sm" style="height:36px;" @click="handleSearchInput" type="sumbit">
+            <span style="font-size: 11px;">검색</span>
+          </button>
         </div>
       </div>
       <div class="col-3">
@@ -60,9 +65,9 @@ export default {
     return {
       search: null,
       keywords: ['제목', '글쓴이'],
-      keyword: null,
+      keyword: '제목',
       pageNum: 0,
-      pageSize: 10,
+      pageSize: 5,
     }
   },
   components: {
@@ -80,6 +85,7 @@ export default {
           listSize = this.pageSize,
           page = Math.floor(listLeng / listSize);
       if (listLeng % listSize > 0) page += 1;
+      if (page === 0) page = 1
       
       /*
       아니면 page = Math.floor((listLeng - 1) / listSize) + 1;
@@ -100,9 +106,8 @@ export default {
     prevPage () {
       this.pageNum -= 1;
     },
-    handleSearchInput(e) {
-      this.search = e.target.value
-      if (this.search.length !== 0) {
+    handleSearchInput() {
+      if (this.search) {
         clearTimeout(this.debounce)
         this.debounce = setTimeout(() => {
           let filteredList = []

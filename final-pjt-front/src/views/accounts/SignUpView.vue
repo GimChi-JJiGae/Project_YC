@@ -82,7 +82,6 @@ export default {
   methods: {
     onInputImage() {
       this.credential.image = this.$refs.serveyImage.files
-      console.log(this.credential.image)
     },
     signUp() {
       const formdata = new FormData()
@@ -92,7 +91,9 @@ export default {
       formdata.append('email', this.credential.email)
       formdata.append('password', this.credential.password)
       formdata.append('passwordConfirmation', this.credential.passwordConfirmation)
-      formdata.append('image', this.credential.image[0])
+      if (this.credential.image) {
+        formdata.append('image', this.credential.image[0])
+      }
 
       // axios.post(`${SERVER_URL}/accounts/signup/`, this.credential)
       axios({

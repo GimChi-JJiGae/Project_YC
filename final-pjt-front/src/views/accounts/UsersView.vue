@@ -1,15 +1,40 @@
 <template>
   <div class="d-flex flex-column align-items-center">
-    <h2>전체 유저 목록</h2>
+    <div class="row align-items-center">
+      <div class="col row">
+        <input class="stage-search border-opacity-10 rounded-2" type="text" v-model="search" placeholder="유저 이름" @input="handleSearchInput" style="width:100%; height:36px;"/>
+      </div>
+      <div class="col-2 p-0 text-start">
+        <button class="btn content-font border btn-sm" style="height:36px;" @click="handleSearchInput" type="sumbit">
+          <span style="font-size: 11px;">검색</span>
+        </button>
+      </div>
+    </div>
     <hr style="width: 400px">
     <div class="">
-      <ul class="list-group list-group-flush" style="width:200px;" >
+      <ul class="list-group list-group-flush" style="width:300px;" >
         <li
-         v-for="(user, idx) in users"
+         v-for="(user, idx) in Users"
         :key="idx"
         class="list-group-item"
+        style="height: 90px;"
         >
-          <span @click="moveToProfile(user)" style="cursor:pointer;">{{ user.username }}</span>
+          <div class="row align-items-center" style="height: 100%;">
+            <div class="col-3 p-0" style='height:100%; border-radius:50%; overflow:hidden; '>
+              <img v-if="user.image" :src="SERVER_URL+user.image" alt="" style="width: 100%; height:100%; object-fit: cover;">
+              <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
+            </div>
+            <div class="col row align-content-center">
+              <div class="row align-content-center">
+                <span @click="moveToProfile(user)" style="cursor:pointer;" class="fs-5 fw-semibold">{{ user.username }}</span>
+              </div>
+              <div class="row align-content-center">
+                <span @click="moveToProfile(user)" class="fs-6">{{ user.email }}</span>
+              </div>
+            </div>
+            <div class="col">
+            </div>
+          </div>
         </li>
       </ul>
     </div>
@@ -27,6 +52,19 @@ export default {
   data() {
     return {
       users: [],
+      filteredUsers: [],
+      search: null,
+      SERVER_URL : 'http://127.0.0.1:8000',
+      basic: SERVER_URL + '/media/basic.png',
+    }
+  },
+  computed: {
+    Users() {
+      if (this.search) {
+        return this.filteredUsers
+      } else {
+        return this.users
+      }
     }
   },
   methods: {
@@ -51,7 +89,22 @@ export default {
     },
     moveToProfile(user) {
       this.$router.push({ name: "ProfileView", params: { username: `${user.username}` }})
-    }
+    },
+    handleSearchInput() {
+      if (this.search !== 0) {
+        clearTimeout(this.debounce)
+        this.debounce = setTimeout(() => {
+          let filteredUsers = []
+          filteredUsers = this.users.filter(user => user.username.includes(this.search))
+          this.filteredUsers = filteredUsers
+        }, 500)
+      } else {
+        clearTimeout(this.debounce)
+        this.debounce = setTimeout(() => {
+          this.filteredUsers = []
+        }, 500)
+      }
+    },
   },
   created() {
     this.getUsers()

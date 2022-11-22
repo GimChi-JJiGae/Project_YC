@@ -1,6 +1,17 @@
 <template>
-  <div>
-    <h4 @click="moveToProfile(myFollower)">{{ myFollower.username }}</h4>
+  <div class="row align-content-center">
+    <div class="col-3 p-0" style='height:100%; border-radius:50%; overflow:hidden; '>
+      <img :src="myFollower.image" alt="" style="width: 100%; height:100%; object-fit: cover;">
+    </div>
+    <div class="col row align-content-center">
+      <div class="row align-content-center">
+        <span @click="moveToProfile(myFollower)" class="fs-5 fw-semibold">{{ myFollower.username }}</span>
+      </div>
+      <div class="row align-content-center">
+        <span @click="moveToProfile(myFollower)" class="fs-6">{{ myFollower.email }}</span>
+      </div>
+    </div>
+    <hr class="mt-2">
   </div>
 </template>
 
@@ -38,6 +49,7 @@ export default {
           return item.id === this.follow
         })
         this.myFollower = this.users[idx]
+        this.myFollower.image = SERVER_URL + this.myFollower.image
       })
       .catch( (err) => {
         console.log(err)

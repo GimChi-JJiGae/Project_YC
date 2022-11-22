@@ -1,20 +1,40 @@
 <template>
-  <div>
-    <h2>회원정보수정</h2>
-    <form @submit.prevent="update">
-      <label for="username">ID </label>
-      <input v-model.trim="user.username" id="id" type="text" placeholder="ID" required="required" data-validation-required-message="Please enter your username." /><br>
+  <div class="row justify-content-center">
+    <div class="border p-3 rounded-3 row justify-content-center" style="width:500px; height:550px">
+      <div style="width:300px; height: 70px;" class="my-3">
+        <form @submit.prevent="update">
+          <div class="text-start my-3 " style="height: 100px;">
+            <label for="username" class="st-font form-label"><strong>프로필 사진</strong></label>
+            <div class="filebox">
+              <label for="ex_file" class="col-3 p-0" style='height:100%; border-radius:50%; overflow:hidden; '>
+                <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
+                <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
+              </label> 
+              <input type="file" @change="onInputImage()" id="ex_file" ref="serveyImage">
+            </div>
+          </div>
+          <div class="text-start mb-3" style="height: 70px;">
+            <label for="username" class="st-font form-label"><strong>아이디</strong></label>
+            <input v-model.trim="user.username" id="id" type="text" placeholder="아이디" required="required" data-validation-required-message="Please enter your username." class="form-control"/><br>
+          </div>
 
-      <label for="email">Email </label>
-      <input v-model.trim="user.email" id="email" type="text" placeholder="email" required="required" data-validation-required-message="Please enter your email address." /><br>
+          <div class="text-start mb-3" style="height: 70px;">
+            <label for="email" class="st-font form-label"><strong>Email</strong></label>
+            <input v-model.trim="user.email" id="email" type="text" placeholder="email" required="required" data-validation-required-message="Please enter your email address." class="form-control"/>
+          </div>
 
-      <label for="password">Password </label>
-      <input v-model.trim="password" id="password" type="password" placeholder="password" required="required" data-validation-required-message="Please enter your email address." /><br>
+          <div class="text-start mb-3" style="height: 70px;">
+            <label for="password1" class="st-font form-label"><strong>비밀번호</strong></label>
+            <input v-model.trim="password" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." class="form-control"/>
+          </div>
 
-      <br>
-      <button id="Update" type="submit">수정</button><br>
-      <button @click="moveToChangePassword">비밀번호 변경하기</button>
-    </form>
+          <div class="mt-3">
+            <button class="btn content-font border" type="submit">변경</button>
+            <button @click="moveToChangePassword" class="btn content-font border">비밀번호 변경하기</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,6 +51,9 @@ export default {
       user: [],
       original_username: null,
       password: null,
+      image: null,
+      basic: null,
+      is_upload: null,
     }
   },
   methods: {
@@ -43,6 +66,9 @@ export default {
       }
       return config
     },
+    getImage(url) {
+      this.image = SERVER_URL + url
+    },
     getMyName: function () {
       const config = this.getToken()
 
@@ -52,18 +78,51 @@ export default {
       .then( (res) => {
         this.user = res.data
         this.original_username = res.data.username
+        this.image = SERVER_URL + res.data.image
+        if (this.user.image) {
+          this.getImage(this.user.image)
+        } else {
+          const url = '/media/basic.png'
+          this.getImage(url)
+        }
       })
       .catch( (err) => {
         console.log(err)
       })
     },
-    update() {
-      const config = this.getToken()
-      const data = {
-        user : this.user,
-        password : this.password,
+    onInputImage() {
+      let files = this.$refs.serveyImage.files
+      this.user.image = this.$refs.serveyImage.files
+      this.is_upload = this.$refs.serveyImage.files
+      let reader = new FileReader()
+      reader.readAsDataURL(files[0])
+      reader.onload = e => {
+        this.image = e.target.result
       }
-      axios.put(`${SERVER_URL}/accounts/${this.original_username}/update/`, data, config)
+    },
+    update() {
+      const token = this.getToken().headers.Authorization
+      const formdata = new FormData()
+      formdata.append('username', this.user.username)
+      formdata.append('age', this.user.age)
+      formdata.append('sex', this.user.sex)
+      formdata.append('email', this.user.email)
+      formdata.append('password', this.password)
+      formdata.append('passwordConfirmation', this.password)
+      if (this.is_upload) {
+        formdata.append('image', this.user.image[0])
+      } 
+
+      // axios.put(`${SERVER_URL}/accounts/${this.original_username}/update/`, data, config)
+      axios({
+        method: 'put',
+        url: `${SERVER_URL}/accounts/${this.original_username}/update/`,
+        headers: {
+          'Content-Type':'multipart/form-data',
+          'Authorization': `${token}`,
+        },
+        data: formdata
+      })
       .then( () => {
         const login_credential = {
           username: this.user.username,
@@ -85,7 +144,7 @@ export default {
     },
     moveToChangePassword() {
       this.$router.push({ name: 'UpdatePassword', params: { username: `${this.original_username}`} })
-    }
+    },
   },
   created() {
     this.getMyName()
@@ -94,5 +153,26 @@ export default {
 </script>
 
 <style>
+.filebox label {
+  display: inline-block;
+  padding: .5em .75em;
+  color: #999;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: .25em;
+}
 
+.filebox input[type="file"] {  /* 파일 필드 숨기기 */
+  position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
 </style>

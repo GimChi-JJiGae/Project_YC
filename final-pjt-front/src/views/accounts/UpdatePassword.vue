@@ -1,18 +1,32 @@
 <template>
-  <div>
-    <h2>비밀번호변경</h2>
-    <form @submit.prevent="changePassword">
-      <label for="currentPW">현재 비밀번호</label>
-      <input type="password" v-model="currentPassword"><br>
+  <div class='row justify-content-center'>
+    <div class="border p-3 rounded-3 row justify-content-center" style="width:500px; height:400px">
+      <div class='row' style="height: 50px; width: 100%;">
+        <h2>비밀번호변경</h2>
+      </div>
+      <form @submit.prevent="changePassword">
+        <div class="text-start mb-3" style="height: 70px;">
+          <label for="currentPW" class="st-font form-label"><strong>현재 비밀번호</strong></label>
+          <input v-model.trim="currentPassword" id="password" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." class="form-control"/>
+        </div>
 
-      <label for="newPW">새 비밀번호</label>
-      <input type="password" v-model="newPassword"><br>
+        <div class="text-start mb-3">
+            <label for="password1" class="st-font form-label"><strong>새 비밀번호</strong></label>
+            <input v-model.trim="newPassword" @input="passwordValidation" id="newpassword" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your password." class="form-control"/>
+            <div v-if="caution1" id="emailHelp" class="form-text">{{ caution1 }}</div>
+          </div>
 
-      <label for="newPW2">새 비밀번호 확인</label>
-      <input type="password" v-model="newPasswordConfirmation"><br>
+        <div class="text-start mb-4">
+          <label for="password2" class="st-font form-label"><strong>새 비밀번호 확인</strong></label>
+          <input v-model.trim="newPasswordConfirmation" @input="checkPW" @keypress.enter="changePassword" id="passwordConfirmation" type="password" placeholder="passwordConfirmation" required="required" data-validation-required-message="Please confirm your password" class="form-control"/>
+          <div v-if="caution2" id="emailHelp" class="form-text">{{ caution2 }}</div>
+        </div>
 
-      <button type="submit">비밀번호변경</button>
-    </form>
+        <div class="mt-3">
+          <button class="btn content-font border" type="submit">비밀번호변경</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -30,6 +44,8 @@ export default {
       newPassword: null,
       newPasswordConfirmation: null,
       user: [],
+      caution1: '',
+      caution2: '',
     }
   },
   created() {
@@ -59,15 +75,25 @@ export default {
       })
     },
     changePassword() {
-      const config = this.getToken()
-      const data = {
-        newPassword: this.newPassword,
-        newPasswordConfirmation: this.newPasswordConfirmation,
-        currentPassword: this.currentPassword,
-        user: this.user,
-      }
-      // console.log(data.user)
-      axios.put(`${SERVER_URL}/accounts/${this.user.username}/change_password/`, data, config)
+      const token = this.getToken().headers.Authorization
+      const formdata = new FormData()
+      formdata.append('username', this.user.username)
+      formdata.append('age', this.user.age)
+      formdata.append('sex', this.user.sex)
+      formdata.append('email', this.user.email)
+      formdata.append('newPassword', this.newPassword)
+      formdata.append('newPasswordConfirmation', this.newPasswordConfirmation)
+      formdata.append('password', this.currentPassword)
+      // axios.put(`${SERVER_URL}/accounts/${this.user.username}/change_password/`, data, config)
+      axios({
+        method: 'put',
+        url: `${SERVER_URL}/accounts/${this.user.username}/change_password/`,
+        headers: {
+          'Content-Type':'multipart/form-data',
+          'Authorization': `${token}`,
+        },
+        data: formdata
+      })
         .then(() => {
           const login_credential = {
           username: this.user.username,
@@ -83,7 +109,38 @@ export default {
             console.log(err)
           })
         })
-    }
+    },
+    passwordValidation() {
+      const pw = this.newPassword
+      let num = pw.search(/[0-9]/g)
+      let eng = pw.search(/[a-z]/ig)
+      let spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi)
+      if (!pw.length) {
+        this.caution1 = null
+      } else if (pw.length < 8 || pw.length > 16){
+        this.caution1 = "8자리 ~ 16자리 이내로 입력해주세요."
+        return false
+      } else if(pw.search(/\s/) != -1){
+        this.caution1 = "비밀번호는 공백 없이 입력해주세요."
+        return false
+      } else if(num < 0 || eng < 0 || spe < 0 ){
+        this.caution1 = "영문, 숫자, 특수문자를 혼합하여 입력해주세요."
+        return false
+      } else {
+        this.caution1 = null
+        return true
+      }
+    },
+    checkPW() {
+      const pw = this.newPasswordConfirmation
+      if (pw === this.newPassword) {
+        this.caution2 = null
+      } else if (!pw) {
+        this.caution2 = null
+      } else {
+        this.caution2 = '비밀번호가 일치하지 않습니다.'
+      }
+    },
   }
 }
 </script>

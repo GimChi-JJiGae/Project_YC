@@ -59,10 +59,10 @@ def delete_user(request, username):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def update_user(request, username):
+    original_user = get_object_or_404(get_user_model(), username=username)
     if not request.user.check_password(request.data['password']):
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    user_data=request.data['user']
-    user_data['password'] = request.data['password']
+    user_data=request.data
 
     serializer = UserSerializer(request.user, data=user_data)
     if serializer.is_valid(raise_exception=True):
@@ -76,9 +76,8 @@ def update_user(request, username):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def change_password(request, username):
-    user_data = request.data['user']
-    
-    if not request.user.check_password(request.data['currentPassword']):
+    user_data = request.data
+    if not request.user.check_password(request.data['password']):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     new_password = request.data['newPassword']
@@ -88,8 +87,6 @@ def change_password(request, username):
     # 2. 비밀번호 일치 여부
     if new_password != new_password_confirmation:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    user_data['password'] = new_password
 
     serializer = UserSerializer(request.user, data=user_data)
     if serializer.is_valid(raise_exception=True):
