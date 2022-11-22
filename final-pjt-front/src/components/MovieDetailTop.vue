@@ -14,7 +14,7 @@
 
       <div class="col-12 col-lg-6">
         <h1>{{ this.movie.title }}</h1>
-
+        <span>
         <div>
           <StarRating
             :rating="parseFloat(movie.vote_average) / 2"
@@ -22,6 +22,11 @@
             :increment="0.01"
           />
         </div>
+        <div v-show="isLogin">
+          <button @click="likeMovie">좋아요</button>
+          <div>{{ this.like_numbers }}</div>
+        </div>
+      </span>
         {{ this.movie.overview }}
         <h1>감독</h1>
         <div v-if="called">
@@ -58,6 +63,7 @@
 </template>
 
 <script>
+const SERVER_URL = 'http://127.0.0.1:8000'
 import StarRating from "vue-star-rating";
 import axios from "axios";
 //import MovieDetailTopCredit from './MovieDetailTopCredit.vue';
@@ -82,7 +88,13 @@ export default {
       actorsProfile: [],
       directorId: "",
       directorProfile: "",
+      like_numbers: null,
     };
+  },
+  computed: {
+    isLogin() {
+      return this.$store.getters.isLogin
+    }
   },
   methods: {
     getCredit: function () {
@@ -110,6 +122,29 @@ export default {
           console.log(err);
         });
     },
+    getToken() {
+      const token = localStorage.getItem('access_token')
+      const config = {
+        headers: {
+          Authorization: `JWT ${token}`
+        },
+      }
+      return config
+    },
+    likeMovie: function () {
+      console.log("좋아용좋아용")
+      const config = this.getToken()
+      axios.post(`${SERVER_URL}/movies/${this.$route.params.movie_pk}/likes/`, this.is_Like, config)
+        .then(res => {
+          this.is_liked = res.data.is_liked
+          this.like_numbers = res.data.likes_count
+          // this.getArticleDetail()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
   },
   created() {
     console.log("hi");
