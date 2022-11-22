@@ -86,9 +86,11 @@ export default {
   },
   methods: {
     getCredit: function () {
+      const movie_data = JSON.parse(localStorage.getItem('movie_list'))[this.$route.params.movie_pk - 1]
+      const movie_original_id = movie_data.original_id
       axios
         .get(
-          `https://api.themoviedb.org/3/movie/${this.$route.params.movie_pk}/credits?api_key=5d2592924ae354925561438e12ee8888&language=en-US`
+          'https://api.themoviedb.org/3/movie/'+ movie_original_id +'/credits?api_key=5d2592924ae354925561438e12ee8888&language=en-US'
         )
         // .then((res) => {
         //   res.json();

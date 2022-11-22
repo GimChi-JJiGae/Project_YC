@@ -1,8 +1,8 @@
 <template>
   <div>
-    fd
-    {{this.$route.params.movie_pk}}
-    fd
+    
+    <!--{{this.$route.params.movie_pk}}-->
+    
     <carousel-3d :width="300" :height="420" :disable3d="true" :space="365" :clickable="false" :controls-visible="true" >
     <slide v-for="(slide, i) in slides" :index="i" :key="slide">
     
@@ -22,18 +22,47 @@
 
 <script>
 import { Carousel3d, Slide } from 'vue-carousel-3d'
-import axios from 'axios'
+
 
 export default {
   name: "MovieDetailRelated",
   data: function() {
     return {
         relatedMovieList: [],
-        slides: 10,
+        slides: 10
     }
   },
   methods: {
     getRelatedMovies: function() {
+      const movie_data = JSON.parse(localStorage.getItem('movie_list'))[this.$route.params.movie_pk - 1]
+      const wanted_genres = movie_data.genres
+    
+      while(this.relatedMovieList.length < 10) {
+          for( let i = 0; i < 980; i ++ ){
+            const sample_genres = JSON.parse(localStorage.getItem('movie_list'))[i].genres
+            console.log(typeof(sample_genres))
+            for(let k = 0; k < wanted_genres.length; k++){
+              if (sample_genres.includes(wanted_genres[k])){
+                if (i === this.$route.params.movie_pk - 1){
+                  console.log("")
+                }
+                else {
+                  this.relatedMovieList.push(JSON.parse(localStorage.getItem('movie_list'))[i])
+                  break
+                }
+              }
+              
+            }
+            if (this.relatedMovieList.length === 10){
+                break
+              }
+          }
+        console.log()
+      }
+      console.log(this.relatedMovieList)
+
+      }
+      /*
         axios
         .get(
             `https://api.themoviedb.org/3/movie/${this.$route.params.movie_pk}/recommendations?api_key=5d2592924ae354925561438e12ee8888&language=en-US&page=1`
@@ -48,9 +77,12 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
-    }
-  },
+        });*/
+        //let movie_genre_list = 1
+      
+      
+    },
+  
   components: {
     Carousel3d,
     Slide,

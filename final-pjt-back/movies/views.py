@@ -30,25 +30,31 @@ def movie_comment_list(request):
     return Response(serializer.data)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def movie_comment_detail(request, comment_pk):
-    comment = get_object_or_404(MovieComment, pk=comment_pk)
-
+def movie_detail_comments(request, pk):
+    print("댓글조회 도착")
+    #comment = get_object_or_404(MovieComment, pk=comment_pk)
+    
     if request.method == 'GET':
-        serializer = MovieCommentSerializer(comment)
+        comments = get_list_or_404(MovieComment, movie_id=pk)
+        print(comments)
+        serializer = MovieCommentSerializer(comments, many=True)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
+        comment = get_object_or_404(MovieComment, pk=pk)
         serializer = MovieCommentSerializer(comment, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
 
     elif request.method == 'DELETE':
+        comment = get_object_or_404(MovieComment, pk=pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['POST'])
 def movie_comment_create(request, movie_pk):
+    print("댓글생성 도착!")
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = MovieCommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):

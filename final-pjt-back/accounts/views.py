@@ -105,8 +105,8 @@ def profile(request, username):
 
 
 @api_view(['GET'])
-@authentication_classes([JSONWebTokenAuthentication])
-@permission_classes([IsAuthenticated])
+#@authentication_classes([JSONWebTokenAuthentication])
+#@permission_classes([IsAuthenticated])
 def users(request):
     users = get_user_model().objects.all()
     serializer = UserSerializer(users, many=True)
