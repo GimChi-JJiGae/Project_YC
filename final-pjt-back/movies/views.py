@@ -76,3 +76,44 @@ def likes(request, movie_pk):
         'likes_count': movie.like_users.count()
     }
     return Response(context)
+
+@api_view(['GET'])
+def get_likes(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    context = {
+        'likes_count': movie.like_users.count()
+    }
+    return Response(context)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def comment_like(request, movie_comment_pk):
+    comment = get_object_or_404(MovieComment, pk=movie_comment_pk)
+    if request.user in comment.like_movie_comment_users.all():
+        comment.like_movie_comment_users.remove(request.user)
+        is_liked = False
+    else:
+        comment.like_movie_comment_users.add(request.user)
+        is_liked = True
+    context = {
+        'is_liked' : is_liked,
+        'likes_count': comment.like_movie_comment_users.count()
+    }
+    return Response(context)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def comment_hate(request, movie_comment_pk):
+    comment = get_object_or_404(MovieComment, pk=movie_comment_pk)
+    if request.user in comment.hate_movie_comment_users.all():
+        comment.hate_movie_comment_users.remove(request.user)
+        is_hated = False
+    else:
+        comment.hate_movie_comment_users.add(request.user)
+        is_hated = True
+    context = {
+        'is_hated' : is_hated,
+        'hates_count': comment.hate_movie_comment_users.count()
+    }
+    return Response(context)
