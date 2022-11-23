@@ -28,7 +28,7 @@ class MovieComment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="movie_comments")
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="comments")
     content = models.TextField()
-    rank = models.IntegerField()
+    rank = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     like_movie_comment_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movie_comments')
     hate_movie_comment_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='hate_movie_comments')

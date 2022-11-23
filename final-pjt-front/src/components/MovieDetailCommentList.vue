@@ -78,15 +78,15 @@ export default {
       rating: "No Rating Selected",
       currentRating: "No Rating",
       currentSelectedRating: "No Current Rating",
-      boundRating: 3,
-
+      //boundRating: 3,
+      final_rate: 0,
       comment_rank_list: [],
     }
   },
   computed: {
-    comment_like_list() {
-      return this.like_numbers
-    },
+    //comment_like_list() {
+    //  return this.like_numbers
+    //},
     isLogin() {
       const checkToken = localStorage.getItem('access_token')
       if(checkToken === null){
@@ -99,13 +99,17 @@ export default {
   },
   methods: {
     setRating: function(rating) {
+
+      this.final_rate = rating
       this.rating = "You have Selected: " + rating + " stars";
     },
     showCurrentRating: function(rating) {
       this.currentRating = (rating === 0) ? this.currentSelectedRating : "Click to select " + rating + " stars"
+
     },
     setCurrentSelectedRating: function(rating) {
       this.currentSelectedRating = "You have Selected: " + rating + " stars";
+      this.final_rate = rating
     },
     getToken() {
       const token = localStorage.getItem('access_token')
@@ -169,23 +173,37 @@ export default {
         this.$router.push({ name: 'LogInView' })
         return
       }
+
+      if (this.currentSelectedRating === "No Current Rating"){
+        alert("별점을 매겨주세요!")
+        return
+      }
+      else{
+        console.log("굿")
+      }
       const commentItem = {
         content: this.comment_content,
         movie_id: this.$route.params.movie_pk,
-        rank: 3
+        rank: this.final_rate,
       }
+      console.log(commentItem)
       if (commentItem.content) {
         const config = this.getToken()
-        console.log(commentItem)
+        //console.log(commentItem)
         axios.post(`http://127.0.0.1:8000/movies/${this.$route.params.movie_pk}/comments/create/`, commentItem, config) 
           .then(() => {
             this.getComments()
+            
+          })
+          .then(() => {
             this.comment_content = null
+            console.log(this.comment_rank_list)
           })
           .catch(err => {
             console.log(err)
           })
       }
+      console.log(this.comment_rank_list)
     },
     getComments() {
       
@@ -209,18 +227,19 @@ export default {
         this.user = []
         this.like_numbers = []
         this.hate_numbers = []
+        this.comment_rank_list = []
         //console.log("형태파악")
         //console.log(this.comment_data[1].content)
         //console.log(typeof(this.comment_data))
         for (let i = 0; i < this.comment_data.length; i++){
           this.comments.push(this.comment_data[i].content)
-          console.log("여기")
-          console.log(this.comment_data[i])
+          //console.log("여기")
+          //console.log(this.comment_data[i])
           let timeinfo = this.comment_data[i].created_at
           let year_month_day = timeinfo.split('T')
-          console.log(year_month_day)
+          //console.log(year_month_day)
           let hour_minuite = year_month_day[1].split('.')
-          console.log(year_month_day[0] + ' ' + hour_minuite[0])
+          //console.log(year_month_day[0] + ' ' + hour_minuite[0])
           this.comments_date.push(year_month_day[0] + ' ' + hour_minuite[0])
           this.comments_id.push(this.comment_data[i].id)
           this.like_numbers.push(this.comment_data[i].like_movie_comment_users.length)
