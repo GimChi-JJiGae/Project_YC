@@ -19,7 +19,11 @@ def article_list(request):
         return Response(serializer.data)
     
     elif request.method == 'POST':
-        serializer = ArticleSerializer(data=request.data)
+        data = request.data
+        
+        print(data)
+        serializer = ArticleSerializer(data=data)
+        # print(serializer)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
             # serializer.save()

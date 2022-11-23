@@ -98,13 +98,13 @@ export default {
 
       const data = {
         title: this.title,
-        movie_id: this.movie.id,
+        movie: this.movie.id,
         content: this.content,
       }
       if (!this.title) {
         alert('제목을 입력해주세요')
         return
-      } else if (!this.movie) {
+      } else if (!data.movie) {
         alert('영화를 입력해주세요')
         return
       } else if (!this.content) {

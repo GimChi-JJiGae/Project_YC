@@ -16,10 +16,10 @@
     </div>
     <hr class="m-0">
     <div class="row">
-      <div class="col text-start m-1"><span @click="moveToProfile(article.user, article.username)" style="cursor:pointer;"><small>{{ article?.username }}님</small></span></div>
-      <div class="col-8">
-      </div>
-      <div class="col"><small>{{ create_at }}</small></div>
+      <div class="col-4 text-start"><span style='cursor : pointer;' @click="moveToMovieDetail" >{{movie_title}}</span></div>
+      <div class="col-4"></div>
+      <div class="col text-end"><span @click="moveToProfile(article.user, article.username)" style="cursor:pointer;"><small>{{ article?.username }}님</small></span></div>
+      <div class="col-2 text-end"><small>{{ create_at }}</small></div>
     </div>
     <div class="row text-start my-4">
       <div class="">{{ article?.content }}</div>
@@ -77,6 +77,8 @@ export default {
       like_numbers: 0,
       is_hated: null,
       hate_numbers: 0,
+      movie_title: null,
+      movies: JSON.parse(localStorage.getItem("movie_list")),
     }
   },
   computed: {
@@ -174,6 +176,7 @@ export default {
           this.like_numbers = res.data.likes_count
           this.is_hated = !res.data.is_hated
           this.hate_numbers = res.data.hates_count
+          this.movie_title = this.movies[res.data.article.movie-1].title
           this.getComments()
           this.getMyName()
         })
@@ -266,6 +269,9 @@ export default {
     moveToProfile(user, username) {
       console.log(username)
       this.$router.push({ name: "ProfileView", params: { username: `${username}` } })
+    },
+    moveToMovieDetail() {
+      this.$router.push({name : 'MovieDetail', params : {movie_pk : `${this.article.movie}` } })
     },
     likeArticle(article) {
       const config = this.getToken()
