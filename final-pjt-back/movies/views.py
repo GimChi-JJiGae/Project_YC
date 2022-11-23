@@ -31,12 +31,10 @@ def movie_comment_list(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def movie_detail_comments(request, pk):
-    print("댓글조회 도착")
     #comment = get_object_or_404(MovieComment, pk=comment_pk)
     
     if request.method == 'GET':
         comments = get_list_or_404(MovieComment, movie_id=pk)
-        print(comments)
         serializer = MovieCommentSerializer(comments, many=True)
         return Response(serializer.data)
 
@@ -54,7 +52,6 @@ def movie_detail_comments(request, pk):
 
 @api_view(['POST'])
 def movie_comment_create(request, movie_pk):
-    print("댓글생성 도착!")
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = MovieCommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):

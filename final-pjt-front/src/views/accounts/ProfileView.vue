@@ -1,63 +1,71 @@
 <template>
-  <div>
-    <div class="bg-secondary bg-opacity-25 rounded-3 mx-3" style="height:600px;">
-      <div class="test-center p-5" style="height:100%;">
-        <div class="d-flex flex-column align-items-center" style="width: 100%; ">
-          <div class="row" style="width: 100%; height: 150px;">
-            <div class="col-2 p-0" style='height:100%; width: 150px; border-radius:50%; overflow:hidden; '>
-              <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
-              <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
+  <div class="d-flex flex-column" style="width:100%; height:700px; min-width:770px;">
+    <div class="row gap-3" style="height:700px; width:100%;">
+      <div class="col-3 bg-secondary bg-opacity-25 rounded-3" style="min-width:240px;">
+        <div class="mt-4">
+          <div class='d-flex flex-column'>
+            <div class="row" style="height:130px;">
+              <div class="col-1"></div>
+              <div class="col-3 p-0" style='height:100%; width:130px; border-radius:50%; overflow:hidden; '>
+                <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
+                <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
+              </div>
+              <div class="col row justify-content-center align-items-center">
+                <h5 class="text-start"><strong>{{ user.username }}님</strong></h5>
+              </div>
+              <div class="col-1"></div>
             </div>
-            <div class="col row justify-content-center align-items-center">
-              <h5 class="text-start"><strong>{{ user.username }}님</strong></h5>
-            </div>
-            <div class="col-1"></div>
-          </div>
-          <div class="row " style="width: 100%; height: 70px;">
-            <p class="my-1  text-start"><strong>이메일</strong></p>
-            <p class="text-start">{{ user.email }}</p>
-          </div>
-          <div class="row " style="width: 100%; height: 70px;">
-            <p class="mb-1  text-start"><strong>성별</strong></p>
-            <p class="text-start">{{ this.sex }}</p>
-          </div>
-          <div class="row " style="width: 100%; height: 70px;">
-            <p class="mb-1  text-start"><strong>연령대</strong></p>
-            <p class="text-start ">{{ user.age }}</p>
-          </div>
-          <div class="row " style="width: 100%; height: 40px;">
-            <p class="mb-1  text-start">
-              <strong> 팔로잉 </strong><span>{{ this.followingsLength }}명</span>
-            </p>
-          </div>
-          <div class="row " style="width: 100%; height: 40px;">
-            <p class="mb-1  text-start">
-              <strong> 팔로워 </strong><span>{{ this.followersLength }}명</span>
-            </p>
-          </div>
-          <div v-if="me.username !== user.username" class="row" style="width: 100%;">
-            <div class="text-start">
-              <button v-if="isFollowing" @click="follow" class="btn btn-secondary btn-block"><span class="fa fa-plus-circle"></span> UnFollow </button>
-              <button v-else @click="follow" class="btn btn-primary btn-block"><span class="fa fa-plus-circle"></span> Follow </button>
+            <br>
+            <div>
+              <div class="row " style="width: 100%; height: 70px;">
+                <p class="mb-1 ms-3 text-start"><strong>이메일</strong></p>
+                <p class="text-start ms-3 mb-4">{{ user.email }}</p>
+              </div>
+              <div class="row " style="width: 100%; height: 70px;">
+                <p class="mb-1 ms-3 text-start"><strong>성별</strong></p>
+                <p class="text-start ms-3 mb-4">{{ this.sex }}</p>
+              </div>
+              <div class="row " style="width: 100%; height: 70px;">
+                <p class="mb-1 ms-3 text-start"><strong>연령대</strong></p>
+                <p class="text-start ms-3">{{ user.age }}</p>
+              </div>
+              <div class="row " style="width: 100%; height: 40px;">
+                <p class="mb-1 ms-3 text-start">
+                  <strong> 팔로잉 </strong><span>{{ this.followingsLength }}명</span>
+                </p>
+              </div>
+              <div class="row " style="width: 100%; height: 40px;">
+                <p class="mb-1 ms-3 text-start">
+                  <strong> 팔로워 </strong><span>{{ this.followersLength }}명</span>
+                </p>
+              </div>
+              <div v-if="me.username !== user.username" class="row" style="width: 100%;">
+                <div class="text-start">
+                  <button v-if="isFollowing" @click="follow" class="btn btn-secondary btn-block"><span class="fa fa-plus-circle"></span> UnFollow </button>
+                  <button v-else @click="follow" class="btn btn-primary btn-block"><span class="fa fa-plus-circle"></span> Follow </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-
-      <div class="my-3" style="height:100%">
-        <div class="" style="height:100%;">
-          <h2 >{{ user.username }}님이 좋아요 한 영화들</h2>    
-          <p class="ms-3"><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></p>
-          <div class="row  flex-nowrap" id="scollbar">
-            <div v-for="like_movie in like_movies" :key=like_movie.id class="col">
-              <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">
-                <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:250px; width:180px;">
-              </router-link>
-              
+      <div class="col bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column p-3" style="min-width:420px; height:100%;">
+        <div class="my-3" style="height:100%">
+          <div class="" style="height:50%;">
+            <h5 class='mb-0'><strong>내가 좋아요 한 영화들</strong></h5>
+            <span class=""><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></span>
+            <div class="row  flex-nowrap" id="scollbar">
+              <span v-for="like_movie in like_movies" :key=like_movie.id style="width:190px;">
+                <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">
+                  <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
+                </router-link>
+              </span>
             </div>
           </div>
-        </div>        
+          <div class="" style="height:50%;">
+            <h5><strong>추천 영화 목록</strong></h5>
+          </div>
+        </div>
       </div>
     </div>
   </div>

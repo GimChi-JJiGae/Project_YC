@@ -8,7 +8,7 @@
       <div class="row mt-4">
         <input class="border-dark p-2 border-opacity-10" id="movie" v-model.trim="movie_title" placeholder="영화 검색"><br>
         <button class="btn content-font border btn-sm" style="height:36px;" @click="open">
-          <span style="font-size: 11px;">영화 검색</span>
+          <span style="font-size: 16px;">영화 검색</span>
         </button>
         <b-modal
           hide-footer
@@ -137,6 +137,7 @@ export default {
     getMovie(Movie) {
       this.movie = Movie
       this.movie_title = this.movie.title
+      console.log(this.movie)
       this.close()
     },
     open() {

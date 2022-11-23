@@ -1,11 +1,10 @@
 <template>
-  <div>
+  <div class="border p-2 rounded-3">
 
     <!--<iframe width="560" height="315" :src="this.youtubeLink" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
     <!--<iframe width="100%" height="700px" src="https://youtu.be/rrI7tOhoVzA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
     
     <MovieDetailTop :movie="movie"/>
-    <MovieDetailYoutube :movieYoutubeUrl="movieYoutubeUrl"/>
     <MovieDetailCommentList/>
     <MovieDetailRelated/>
     
@@ -14,7 +13,6 @@
 
 <script>
 import axios from 'axios'
-import MovieDetailYoutube from '@/components/MovieDetailYoutube.vue'
 import MovieDetailTop from '@/components/MovieDetailTop.vue'
 import MovieDetailRelated from '@/components/MovieDetailRelated.vue'
 import MovieDetailCommentList from '@/components/MovieDetailCommentList.vue'
@@ -34,12 +32,10 @@ export default {
     }
   },
   components : {
-    MovieDetailYoutube,
     MovieDetailTop,
     MovieDetailRelated,
     MovieDetailCommentList,
-    
-},
+  },
   methods : {
     
     getMovie : function(){
@@ -56,8 +52,6 @@ export default {
           //this.movie = res.data['movie'][0]
           //console.log(this.movie)
           //this.same_genres = res.data.same_genres
-          
-          this.movieYoutubeUrl = `https://api.themoviedb.org/3/movie/${this.movie.id}/videos?api_key=5d2592924ae354925561438e12ee8888`
         })
         .catch(() => {
           alert("없는 영화 정보입니다.")
