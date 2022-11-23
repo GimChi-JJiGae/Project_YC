@@ -118,7 +118,7 @@
             <div class="row  flex-nowrap" id="scollbar">
               <div v-for="like_movie in like_movies" :key=like_movie.id class="col">
                 <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">
-                  <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:230px; width:180px;">
+                  <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
                 </router-link>
                 
               </div>
