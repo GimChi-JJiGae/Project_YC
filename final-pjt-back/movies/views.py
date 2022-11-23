@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 
 from .models import Movie, Genre, MovieComment
-from .serializers import MovieSerializer, MovieCommentSerializer
+from .serializers import MovieSerializer, MovieCommentSerializer, GenreSerializer
 
 @api_view(['GET'])
 def home(request):
@@ -15,6 +15,20 @@ def home(request):
         movies = get_list_or_404(Movie)
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data) 
+
+@api_view(['GET'])
+def get_genres(request):
+    if request.method == 'GET':
+        genres = get_list_or_404(Genre)
+        serializer = GenreSerializer(genres, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def getrandomMovies(request, genre_id):
+    genre = get_object_or_404(Genre, id=genre_id)
+    movies = genre.movie_set.order_by('?')[:20]
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def movie_detail(request, movie_pk):

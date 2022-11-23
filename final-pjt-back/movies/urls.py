@@ -5,6 +5,8 @@ from movies import views
 urlpatterns = [
     path('', views.home),
     path('<int:movie_pk>/', views.movie_detail),
+    path('genres/', views.get_genres),
+    path('recommended/<int:genre_id>/', views.getrandomMovies, name='getrandomMovies'),
     path('comments/', views.movie_comment_list),
     path('<int:pk>/comments/', views.movie_detail_comments),
     path('<int:movie_pk>/comments/create/', views.movie_comment_create),

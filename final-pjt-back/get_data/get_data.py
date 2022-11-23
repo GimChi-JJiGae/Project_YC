@@ -54,7 +54,10 @@ for idx, movie_Id in enumerate(movie_Ids):
     json_object = json.loads(json_str)
     if json_object.get("poster_path"):
         if json_object.get("genres"):
-
+            genre_orginal_data = json_object.get("genres")
+            genre_id_list = []
+            for i in genre_orginal_data:
+                genre_id_list.append(i['id'])
             my_object = {
                 "model": "movies.movie",
                 "pk": idx+1,
@@ -68,13 +71,17 @@ for idx, movie_Id in enumerate(movie_Ids):
                     "vote_average": json_object.get("vote_average"),
                     "vote_count": json_object.get("vote_count"),
                     "overview": json_object.get("overview"),
-                    "genres": [json_object.get("genres")[0].get("id")],
+                    "genres": genre_id_list,#json_object.get("genres"),
                     "original_title": json_object.get("original_title"),
 
                     "original_id": json_object.get("id"),
                 }  
             }
         else:
+            genre_orginal_data = json_object.get("genres")
+            genre_id_list = []
+            for i in genre_orginal_data:
+                genre_id_list.append(i['id'])
             my_object = {
                 "model": "movies.movie",
                 "pk": idx+1,
@@ -88,7 +95,7 @@ for idx, movie_Id in enumerate(movie_Ids):
                     "vote_average": json_object.get("vote_average"),
                     "vote_count": json_object.get("vote_count"),
                     "overview": json_object.get("overview"),
-                    "genres": json_object.get("genres"),
+                    "genres": genre_id_list,#json_object.get("genres"),
                     "original_title": json_object.get("original_title"),
 
                     "original_id": json_object.get("id")
