@@ -2,22 +2,31 @@
   <div id="app">
     <div class="container" style="min-width: 960px;">
 
-    <nav>
-      <span v-if="access_token">
-        <router-link :to="{ name: 'HomeView' }">Home</router-link> |
-        <router-link :to="{ name: 'ArticleHomeView' }">Community</router-link> |
-        <router-link to="javascript:void(0)" @click.native="LogOut">logout</router-link> |
-        <router-link :to="{ name: 'UsersView' }">Users</router-link> |
-        <router-link :to="{ name: 'MyProfileView' }">My Profile</router-link>
-      </span>
-      <span v-else>
-        <router-link :to="{ name: 'HomeView' }">Home</router-link> |
-        <router-link :to="{ name: 'ArticleHomeView' }">Community</router-link> |
-        <router-link :to="{ name: 'LogInView' }">Login</router-link> | 
-        <router-link :to="{ name: 'SignUpView' }">SignUpPage</router-link> | 
-      </span>
-    </nav>
-    <router-view/>
+      <b-navbar type="light" class="d-flex justify-content-between">
+        <b-navbar-nav class="d-flex align-items-center">
+          <b-nav-item :to="{ name: 'HomeView' }"><img src="@/assets/logo5.png" alt="" style="width:150px;"></b-nav-item>
+
+          <b-nav-item :to="{ name: 'ArticleHomeView' }">Community</b-nav-item>
+          
+          <!-- Navbar dropdowns -->
+        </b-navbar-nav>
+
+        <b-navbar-nav class="d-flex align-items-center">
+          <b-nav-item-dropdown text="User" right >
+            <span v-if="access_token">
+              <b-dropdown-item to="javascript:void(0)" @click.native="LogOut">로그아웃</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'MyProfileView' }">내 프로필</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'UpdateUserView', params: { username: `${user?.username}` } }">회원정보수정</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'UsersView' }">유저 찾기</b-dropdown-item>
+            </span>
+            <span v-else>
+              <b-dropdown-item opdown-item :to="{ name: 'LogInView' }">로그인</b-dropdown-item>
+            </span>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+      </b-navbar>
+
+      <router-view/>
   
 
     </div>
@@ -27,6 +36,10 @@
 <script>
 import axios from 'axios'
 import _ from 'lodash'
+import VueJwtDecode from "vue-jwt-decode"
+
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const SERVER_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'App',
@@ -35,6 +48,8 @@ export default {
       isTrue: true,
       random_top_movie_list: [],
       popular_movie_list: [],
+      user: null,
+      me: null,
     }
   },
   computed: {
@@ -46,10 +61,45 @@ export default {
     // }
   },
   methods: {
+    getToken: function () {
+      const token = localStorage.getItem('access_token')
+
+      const config = {
+        headers: {
+          Authorization: `JWT ${token}`
+        },
+      }
+      return config
+    },
+    getImage(url) {
+      this.image = SERVER_URL + url
+    },
+    getMyName: function() {
+      const config = this.getToken()
+
+      const hash = localStorage.getItem('access_token')
+      const info = VueJwtDecode.decode(hash)
+      axios.post(`${SERVER_URL}/accounts/myprofile/`, info, config)
+        .then(res => {
+          this.me = res.data
+          if (this.user.image) {
+            this.getImage(this.user.image)
+          } else {
+            const url = '/media/basic.png'
+            this.getImage(url)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     LogOut() {
       this.$store.dispatch('LogOut')
       this.$router.push({ name: 'HomeView' })
-
+    },
+    updateUser() {
+      this.getMyName()
+      this.$router.push({ name: 'UpdateUserView', params: { username: `${this.user.username}` } })
     },
     /*
     getMovies: function () {
@@ -155,11 +205,13 @@ nav {
 }
 
 nav a {
-  font-weight: bold;
-  color: #2c3e50;
+  /* font-weight: bold; */
+  color: grey;
+  text-decoration: none;
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  /* color: #42b983; */
+  font-weight: 600;
 }
 </style>

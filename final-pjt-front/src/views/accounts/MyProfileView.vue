@@ -1,12 +1,12 @@
 <template>
-  <div class="container test-center" style="height:600px; min-width:770px;">
-    <div class="row gap-3" style="height:600px;">
-      <div class="col-4 bg-secondary bg-opacity-25 rounded-3" style="min-width:240px;">
+  <div class="d-flex" style="width:100%; height:700px; min-width:770px;">
+    <div class="row gap-3" style="height:700px; width:100%;">
+      <div class="col-3 bg-secondary bg-opacity-25 rounded-3" style="min-width:240px;">
         <div class="mt-4">
           <div class='d-flex flex-column'>
-            <div class="row" style="height:150px;">
+            <div class="row" style="height:130px;">
               <div class="col-1"></div>
-              <div class="col-3 p-0" style='height:100%; width:150px; border-radius:50%; overflow:hidden; '>
+              <div class="col-3 p-0" style='height:100%; width:130px; border-radius:50%; overflow:hidden; '>
                 <img v-if="image" :src="image" alt="" style="width: 100%; height:100%; object-fit: cover;">
                 <img v-else :src="basic" alt="" style="width: 100%; height:100%; object-fit: cover;">
               </div>
@@ -17,31 +17,31 @@
             </div>
             <br>
             <div>
-              <div>
+              <div class="row " style="width: 100%; height: 70px;">
                 <p class="mb-1 ms-3 text-start"><strong>이메일</strong></p>
                 <p class="text-start ms-3 mb-4">{{ user.email }}</p>
               </div>
-              <div>
+              <div class="row " style="width: 100%; height: 70px;">
                 <p class="mb-1 ms-3 text-start"><strong>성별</strong></p>
                 <p class="text-start ms-3 mb-4">{{ this.sex }}</p>
               </div>
-              <div>
+              <div class="row " style="width: 100%; height: 70px;">
                 <p class="mb-1 ms-3 text-start"><strong>연령대</strong></p>
                 <p class="text-start ms-3">{{ user.age }}</p>
               </div>
-              <div>
+              <div class="row " style="width: 100%; height: 40px;">
                 <p class="mb-1 ms-3 text-start">
                   <a @click="open2" class="content-font text-decoration-none text-black" style="cursor:pointer;"><strong> 팔로잉 </strong><span>{{ this.followingsLength }}명</span></a>
                 </p>
               </div>
-              <div>
+              <div class="row " style="width: 100%; height: 40px;">
                 <p class="mb-1 ms-3 text-start">
                   <a @click="open1" class="content-font text-decoration-none text-black" style="cursor:pointer;"><strong> 팔로워 </strong><span>{{ this.followersLength }}명</span></a>
                 </p>
               </div>
             </div>
           </div>
-          <div class=''>
+          <div class="mt-4" style="height: 70px;">
             <button @click="updateUser" class="m-1 btn content-font">회원정보수정</button>
           </div>
         </div>
@@ -51,30 +51,27 @@
           id="review-modal"
           size="sm"
           title="My Follwings"
-          :header-bg-variant="headerBgVariant"
-          :header-text-variant="headerTextVariant"
-          :body-bg-variant="bodyBgVariant"
-          :body-text-variant="bodyTextVariant"
-          :footer-bg-variant="footerBgVariant"
-          :footer-text-variant="footerTextVariant"
           hide-header-close
         >
           <section class="page-section my-2" id="contact">
             <div class="container">
-                <!-- Contact Section Heading-->
-                <!-- <h5 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followings</h5> -->
-                <!-- Contact Section Form-->
-                <br>
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
-                      <div class="control-group">
-                          <div v-for="(follow, idx) in user.followings" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
-                              <MyFollower :follow="follow" />
-                          </div>
+              <!-- Contact Section Heading-->
+              <!-- <h5 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followings</h5> -->
+              <!-- Contact Section Form-->
+              <br>
+              <div class="row">
+                <div class="col mx-auto">
+                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
+                  <div class="control-group">
+                      <div v-for="(follow, idx) in user.followings" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
+                          <MyFollower :follow="follow" />
                       </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+            <div>
+              <button @click="close2" class="m-1 btn content-font border btn-sm" type="submit">닫기</button>
             </div>
           </section>
           <!-- <div class="text-white st-font form-group"><button @click="close2" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div> -->
@@ -85,12 +82,7 @@
           id="review-modal"
           size="sm"
           title="My Follwers"
-          :header-bg-variant="headerBgVariant"
-          :header-text-variant="headerTextVariant"
-          :body-bg-variant="bodyBgVariant"
-          :body-text-variant="bodyTextVariant"
-          :footer-bg-variant="footerBgVariant"
-          :footer-text-variant="footerTextVariant"
+ 
           hide-header-close
         >
           <section class="page-section" id="contact">
@@ -98,28 +90,39 @@
                 <!-- Contact Section Heading-->
                 <!-- <h5 class="st-font page-section-heading text-center text-uppercase text-white mb-0">Followers</h5> -->
                 <!-- Contact Section Form-->
-                <br>
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
-                      <div class="control-group">
-                          <div v-for="(follower, idx) in user.followers" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
-                              <MyFollower :follow="follower" />
-                          </div>
+              <br>
+              <div class="row">
+                <div class="col mx-auto">
+                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
+                  <div class="control-group">
+                      <div v-for="(follower, idx) in user.followers" :key="idx" style="cursor:pointer" class="content-font form-group floating-label-form-group controls mb-0 pb-2">
+                          <MyFollower :follow="follower" />
                       </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+            <div>
+              <button @click="close1" class="m-1 btn content-font border btn-sm" type="submit">닫기</button>
             </div>
           </section>
           <!-- <div class="text-white st-font form-group"><button @click="close" class="btn btn-secondary btn-xl" id="sendMessageButton" type="submit">창 닫기</button></div> -->
         </b-modal>
       </div>
 
-      <div class="col-7 bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column" style="min-width:420px;">
-        <div class="m-3" style="height:100%">
-
+      <div class="col bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column p-3" style="min-width:420px; height:100%;">
+        <div class="my-3" style="height:100%">
           <div class="" style="height:50%;">
-            <h5><strong>내가 좋아요 한 영화들</strong></h5>
+            <h5 class='mb-0'><strong>내가 좋아요 한 영화들</strong></h5>
+            <span class=""><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></span>
+            <div class="row  flex-nowrap" id="scollbar">
+              <div v-for="like_movie in like_movies" :key=like_movie.id class="col">
+                <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">
+                  <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:230px; width:180px;">
+                </router-link>
+                
+              </div>
+            </div>
           </div>
           <div class="" style="height:50%;">
             <h5><strong>추천 영화 목록</strong></h5>
@@ -164,6 +167,7 @@ export default {
       bodyTextVariant: "white",
       footerBgVariant: "danger",
       footerTextVariant: "dark",
+      
     }
   },
   methods: {
@@ -216,7 +220,7 @@ export default {
     open2: function () {
       this.show2 = true
     },
-    close: function () {
+    close1: function () {
       this.show1 = false
     },
     close2: function () {
@@ -230,6 +234,16 @@ export default {
     this.getMyName()
   },
   computed: {
+    like_movies() {
+      const like_movie_list = []
+      if (this.user.like_movies) {
+          this.user.like_movies.forEach(like_movie => {
+            const movie = JSON.parse(localStorage.getItem('movie_list'))[like_movie-1]
+            like_movie_list.push(movie)
+        });
+      }
+      return like_movie_list
+    },
     followingsLength() {
       if (this.user.followings) {
         return this.user.followings.length
@@ -256,5 +270,24 @@ export default {
 </script>
 
 <style>
-
+#scollbar {
+  overflow: auto;
+  width: 100%;
+}
+#scollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  /* display: none; */
+}
+#scollbar::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+#scollbar::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
 </style>

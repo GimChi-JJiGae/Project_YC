@@ -1,7 +1,7 @@
 <template>
-  <div class="row align-content-center">
-    <div class="col-3 p-0" style='height:100%; border-radius:50%; overflow:hidden; '>
-      <img :src="myFollower.image" alt="" style="width: 100%; height:100%; object-fit: cover;">
+  <div class="row align-content-center" style='height:100%;'>
+    <div class="col-3 p-0" style='height:100%; width:70px; border-radius:50%; overflow:hidden; '>
+      <img :src="myFollower.image" alt="" style="width: 70px; height:70px; object-fit: cover;">
     </div>
     <div class="col row align-content-center">
       <div class="row align-content-center">

@@ -42,17 +42,23 @@
             </div>
           </div>
         </div>
-        <div>                
-          <!-- <p class="ms-3"><small>'좋아요'한 영화 수 : {{user.like_movies.length}}</small></p> -->
-        </div>
       </div>
 
-      <!-- <h2 >{{ user.username }}님이 좋아요 한 영화</h2>    
-      <ul v-if="usersMovies">
-        <MovieCard 
-          :movies="usersMovies"
-        />
-      </ul> -->
+
+      <div class="my-3" style="height:100%">
+        <div class="" style="height:100%;">
+          <h2 >{{ user.username }}님이 좋아요 한 영화들</h2>    
+          <p class="ms-3"><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></p>
+          <div class="row  flex-nowrap" id="scollbar">
+            <div v-for="like_movie in like_movies" :key=like_movie.id class="col">
+              <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">
+                <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:250px; width:180px;">
+              </router-link>
+              
+            </div>
+          </div>
+        </div>        
+      </div>
     </div>
   </div>
 </template>
@@ -171,6 +177,16 @@ export default {
     },
   },
   computed: {
+    like_movies() {
+      const like_movie_list = []
+      if (this.user.like_movies) {
+          this.user.like_movies.forEach(like_movie => {
+            const movie = JSON.parse(localStorage.getItem('movie_list'))[like_movie-1]
+            like_movie_list.push(movie)
+        });
+      }
+      return like_movie_list
+    },
     isFollowing() {
       return this.following
     },
