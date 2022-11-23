@@ -173,15 +173,11 @@ export default {
     }
   },
   created() {
-    // console.log(this.$store.state.movies.length)
     if (this.$store.state.movies.length === 0) {
-      
       this.getMovies()
-      
-      console.log('영화 데이터 생성됨')
     } else {
-      console.log('영화 데이터 이미 있음')
-      
+      this.pick_random_top_movies()
+      this.pick_popular_movies()
     }
   },
 

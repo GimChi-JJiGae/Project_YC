@@ -121,9 +121,7 @@ export default {
       return config
     },
     likeComment(comment_pk) {
-      console.log("따봉따봉")
       const config = this.getToken()
-      console.log(config)
       this.is_liked = !this.is_liked
       axios.post(`${SERVER_URL}/movies/${comment_pk}/comments/like/`,this.is_liked, config)
         .then(res => {
@@ -144,7 +142,6 @@ export default {
         })
     },
     hateComment(comment_pk) {
-      console.log("안따봉안따봉")
       const config = this.getToken()
       this.is_liked = !this.is_liked
       axios.post(`${SERVER_URL}/movies/${comment_pk}/comments/hate/`, this.is_liked, config)
@@ -165,10 +162,7 @@ export default {
         })
     },
     createComment() {
-      if (this.isLogin){
-        console.log("좋아용좋아용")  
-      }
-      else{
+      if (!this.isLogin){
         alert("댓글을 적으시려면 로그인을 해주세요!")
         this.$router.push({ name: 'LogInView' })
         return
@@ -178,18 +172,13 @@ export default {
         alert("별점을 매겨주세요!")
         return
       }
-      else{
-        console.log("굿")
-      }
       const commentItem = {
         content: this.comment_content,
         movie_id: this.$route.params.movie_pk,
         rank: this.final_rate,
       }
-      console.log(commentItem)
       if (commentItem.content) {
         const config = this.getToken()
-        //console.log(commentItem)
         axios.post(`http://127.0.0.1:8000/movies/${this.$route.params.movie_pk}/comments/create/`, commentItem, config) 
           .then(() => {
             this.getComments()
@@ -197,19 +186,16 @@ export default {
           })
           .then(() => {
             this.comment_content = null
-            console.log(this.comment_rank_list)
           })
           .catch(err => {
             console.log(err)
           })
       }
-      console.log(this.comment_rank_list)
     },
     getComments() {
       
       axios.get(`http://127.0.0.1:8000/movies/${this.$route.params.movie_pk}/comments/`)
       .then(res => {
-        console.log(res.data)
         this.comment_data = res.data
       })
       .catch(err => {
@@ -218,8 +204,6 @@ export default {
       .then(
       axios.get(`http://127.0.0.1:8000/accounts/users/`)
       .then(res => {
-        //console.log("이건데이터")
-        //console.log(this.comment_data)
         // 여기서 새로고침마다 초기화 시켜주자
         this.comments_id = []
         this.comments_date = []
@@ -228,18 +212,11 @@ export default {
         this.like_numbers = []
         this.hate_numbers = []
         this.comment_rank_list = []
-        //console.log("형태파악")
-        //console.log(this.comment_data[1].content)
-        //console.log(typeof(this.comment_data))
         for (let i = 0; i < this.comment_data.length; i++){
           this.comments.push(this.comment_data[i].content)
-          //console.log("여기")
-          //console.log(this.comment_data[i])
           let timeinfo = this.comment_data[i].created_at
           let year_month_day = timeinfo.split('T')
-          //console.log(year_month_day)
           let hour_minuite = year_month_day[1].split('.')
-          //console.log(year_month_day[0] + ' ' + hour_minuite[0])
           this.comments_date.push(year_month_day[0] + ' ' + hour_minuite[0])
           this.comments_id.push(this.comment_data[i].id)
           this.like_numbers.push(this.comment_data[i].like_movie_comment_users.length)
@@ -252,12 +229,8 @@ export default {
             }
           }
         }
-        
-        //localStorage.setItem('like_number_list', this.like_numbers)
-        //localStorage.setItem('hate_number_list', this.hate_numbers)
       })
       .catch(err => {
-        
         console.log(err)
       })
       )
