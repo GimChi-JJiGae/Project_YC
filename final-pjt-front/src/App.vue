@@ -7,7 +7,7 @@
           <b-nav-item :to="{ name: 'HomeView' }"><img src="@/assets/logo5.png" alt="" style="width:150px;"></b-nav-item>
 
           <b-nav-item :to="{ name: 'ArticleHomeView' }">Community</b-nav-item>
-          
+          <b-nav-item :to="{ name: 'GenreMovies' }">Genres</b-nav-item>
           <!-- Navbar dropdowns -->
         </b-navbar-nav>
 

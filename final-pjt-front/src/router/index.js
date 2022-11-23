@@ -15,6 +15,8 @@ import ArticleDetailView from '@/views/articles/ArticleDetailView'
 import ArticleCreateView from '@/views/articles/ArticleCreateView'
 import ArticleUpdate from '@/views/articles/ArticleUpdate'
 import MovieDetail from '@/views/MovieDetail'
+import GenreMovies from '@/views/GenreMovies'
+
 
 Vue.use(VueRouter)
 
@@ -88,6 +90,11 @@ const routes = [
     name: 'MovieDetail',
     component: MovieDetail,
   },
+  {
+    path: '/genremovies',
+    name: 'GenreMovies',
+    component: GenreMovies,
+  }
 
 
 ]
