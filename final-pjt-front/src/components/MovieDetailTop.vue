@@ -17,6 +17,7 @@
         <span>
         <div>
           <StarRating
+            active-color="#e1bad9"
             :rating="parseFloat(movie.vote_average) / 2"
             :read-only="true"
             :increment="0.01"
