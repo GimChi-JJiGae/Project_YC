@@ -147,6 +147,16 @@ export default {
         console.log(err)
       })
     },
+    getGenres: function() {
+      axios.get(`http://127.0.0.1:8000/movies/genres/`)
+      .then( (res) => {
+        localStorage.setItem('genres', JSON.stringify(res.data))
+      })
+    
+      .catch((err) => {
+        console.log(err)
+      })
+    },
     pick_random_top_movies: function () {   // 여기서 영화 목록 열개를 골라서 잠시 vuex에 저장하고 포스터 패스가 존재하는지 확인한 후 로컬 스토리지에 저장한다.
       
       for (let i = 0; i<10; i++) {
@@ -170,9 +180,10 @@ export default {
         this.popular_movie_list.push(this.$store.state.movies[i])
       }
       localStorage.setItem('popular_movie_list', JSON.stringify(this.popular_movie_list))
-    }
+    },
   },
   created() {
+    this.getGenres()
     if (this.$store.state.movies.length === 0) {
       this.getMovies()
     } else {

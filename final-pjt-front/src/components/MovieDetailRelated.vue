@@ -37,23 +37,27 @@ export default {
       const movie_data = JSON.parse(localStorage.getItem('movie_list'))[this.$route.params.movie_pk - 1]
       const wanted_genres = movie_data.genres
     
-      while(this.relatedMovieList.length < 10) {
-          for( let i = 0; i < 980; i ++ ){
-            const sample_genres = JSON.parse(localStorage.getItem('movie_list'))[i].genres
-            for(let k = 0; k < wanted_genres.length; k++){
-              if (sample_genres.includes(wanted_genres[k])){
-                if (i !== this.$route.params.movie_pk - 1){
-                  this.relatedMovieList.push(JSON.parse(localStorage.getItem('movie_list'))[i])
-                  break
-                }
-              }
-              
-            }
-            if (this.relatedMovieList.length === 10){
+      
+        for( let i = 0; i < 980; i ++ ){
+          const sample_genres = JSON.parse(localStorage.getItem('movie_list'))[i].genres
+          for(let k = 0; k < wanted_genres.length; k++){
+            if (sample_genres.includes(wanted_genres[k])){
+              if (i !== this.$route.params.movie_pk - 1){
+                this.relatedMovieList.push(JSON.parse(localStorage.getItem('movie_list'))[i])
                 break
               }
+            }
+              
           }
-      }
+          if (this.relatedMovieList.length === 80){
+              break
+            }
+        }
+
+      this.relatedMovieList.sort(() => Math.random() - 0.5)
+
+
+      
     },
       /*
         axios
