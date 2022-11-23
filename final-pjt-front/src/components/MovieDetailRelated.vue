@@ -40,13 +40,9 @@ export default {
       while(this.relatedMovieList.length < 10) {
           for( let i = 0; i < 980; i ++ ){
             const sample_genres = JSON.parse(localStorage.getItem('movie_list'))[i].genres
-            console.log(typeof(sample_genres))
             for(let k = 0; k < wanted_genres.length; k++){
               if (sample_genres.includes(wanted_genres[k])){
-                if (i === this.$route.params.movie_pk - 1){
-                  console.log("")
-                }
-                else {
+                if (i !== this.$route.params.movie_pk - 1){
                   this.relatedMovieList.push(JSON.parse(localStorage.getItem('movie_list'))[i])
                   break
                 }
@@ -57,11 +53,8 @@ export default {
                 break
               }
           }
-        console.log()
       }
-      console.log(this.relatedMovieList)
-
-      }
+    },
       /*
         axios
         .get(
@@ -79,8 +72,6 @@ export default {
           console.log(err);
         });*/
         //let movie_genre_list = 1
-      
-      
     },
   
   components: {

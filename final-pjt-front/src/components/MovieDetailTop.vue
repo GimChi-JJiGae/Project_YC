@@ -115,7 +115,6 @@ export default {
         //   res.json();
         // })
         .then((res) => {
-          console.log(res);
           for (let i = 0; i < 5; i++) {
             this.actorsId.push(res.data.cast[i].id);
             this.actorsProfile.push(res.data.cast[i].profile_path);
@@ -139,10 +138,7 @@ export default {
       return config
     },
     likeMovie: function () {
-      if (this.isLogin){
-        console.log("좋아용좋아용")  
-      }
-      else{
+      if (!this.isLogin){
         alert("좋아요 기능을 사용하시려면 로그인을 해주세요")
         this.$router.push({ name: 'LogInView' })
         return
@@ -171,7 +167,6 @@ export default {
     }
   },
   created() {
-    console.log("hi");
     this.getCredit();
     this.updateInfo();
     
