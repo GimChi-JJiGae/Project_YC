@@ -22,10 +22,10 @@
             :increment="0.01"
           />
         </div>
-        <div v-show="isLogin">
-          <button @click="likeMovie">좋아요</button>
-          <div>{{ this.like_numbers }}</div>
-        </div>
+        
+        <button @click="likeMovie">좋아요</button>
+        <div>{{ this.like_numbers }}</div>
+        
       </span>
         {{ this.movie.overview }}
         <h1>감독</h1>
@@ -93,7 +93,13 @@ export default {
   },
   computed: {
     isLogin() {
-      return this.$store.getters.isLogin
+      const checkToken = localStorage.getItem('access_token')
+      if(checkToken === null){
+        return false
+      }
+      else {
+        return true
+      }
     }
   },
   methods: {
@@ -132,7 +138,15 @@ export default {
       return config
     },
     likeMovie: function () {
-      console.log("좋아용좋아용")
+      if (this.isLogin){
+        console.log("좋아용좋아용")  
+      }
+      else{
+        alert("좋아요 기능을 사용하시려면 로그인을 해주세요")
+        this.$router.push({ name: 'LogInView' })
+        return
+      }
+      
       const config = this.getToken()
       axios.post(`${SERVER_URL}/movies/${this.$route.params.movie_pk}/likes/`, this.is_Like, config)
         .then(res => {
@@ -144,11 +158,22 @@ export default {
           console.log(err)
         })
     },
-
+    updateInfo(){
+      axios.get(`${SERVER_URL}/movies/${this.$route.params.movie_pk}/get_likes/`)
+        .then(res => {
+          this.like_numbers = res.data.likes_count
+          // this.getArticleDetail()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   },
   created() {
     console.log("hi");
     this.getCredit();
+    this.updateInfo();
+    
   },
 };
 </script>
