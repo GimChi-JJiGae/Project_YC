@@ -130,10 +130,18 @@
       </div>
     </div>
     <div class="row" style="width:100%">
-      <DoughnutChart
-        :movies="like_movies"
-        :chartData="chartData"
-      />
+      <div class="col">
+        <DoughnutChart
+          :movies="like_movies"
+          :chartData="chartData"
+        />
+      </div>
+      <div class="col">
+        <RecommendByLike
+          :like_movies="like_movies"
+          :LawData="LawData"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -144,6 +152,7 @@ import VueJwtDecode from "vue-jwt-decode"
 
 import MyFollower from "@/components/MyFollower"
 import DoughnutChart from "@/components/DoughnutChart"
+import RecommendByLike from "@/components/RecommendByLike"
 
 // const SERVER_URL = process.env.VUE_APP_SERVER_URL
 const SERVER_URL = 'http://127.0.0.1:8000'
@@ -152,7 +161,8 @@ export default {
   name: 'MyProfileView',
   components: {
     MyFollower,
-    DoughnutChart
+    DoughnutChart,
+    RecommendByLike,
   },
   data() {
     return {
@@ -172,6 +182,7 @@ export default {
       footerBgVariant: "danger",
       footerTextVariant: "dark",
       lawData : {},
+      LawData: {},
       chartData: {
         labels: [],
         datasets: [
@@ -217,7 +228,6 @@ export default {
             this.getImage(url)
           }
           this.getData()
-          console.log(this.chartData)
         // const item = this.user.like_movies
         // axios.post(`${SERVER_URL}/movies/${this.user.id}/like/`, item, config)
         // .then( (res) => {
@@ -263,6 +273,10 @@ export default {
           }
         }
       }
+      this.LawData = Object.fromEntries(
+        Object.entries(this.lawData).sort(([,a], [,b]) => a > b? -1:1 )
+      )
+      
       for (const com in this.lawData) {
         if (this.lawData[com]) {
           this.chartData.datasets[0]['data'][this.chartData.labels.indexOf(com)] = this.lawData[com]
