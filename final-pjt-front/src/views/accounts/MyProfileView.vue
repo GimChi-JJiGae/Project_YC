@@ -143,6 +143,15 @@
         />
       </div>
     </div>
+    <RecommendByAge
+      :age_to_recommend="age_to_recommend"
+      :like_movies="like_movies"
+      
+    />
+    <ReconmmendBySex
+      :sex_to_recommend="sex_to_recommend"
+      :like_movies="like_movies"
+    />
   </div>
 </template>
 
@@ -152,6 +161,8 @@ import VueJwtDecode from "vue-jwt-decode"
 
 import MyFollower from "@/components/MyFollower"
 import DoughnutChart from "@/components/DoughnutChart"
+import RecommendByAge from '@/components/RecommendByAge.vue'
+import ReconmmendBySex from '@/components/ReconmmendBySex.vue'
 import RecommendByLike from "@/components/RecommendByLike"
 
 // const SERVER_URL = process.env.VUE_APP_SERVER_URL
@@ -162,6 +173,8 @@ export default {
   components: {
     MyFollower,
     DoughnutChart,
+    RecommendByAge,
+    ReconmmendBySex,
     RecommendByLike,
   },
   data() {
@@ -182,6 +195,8 @@ export default {
       footerBgVariant: "danger",
       footerTextVariant: "dark",
       lawData : {},
+      age_to_recommend : null,
+      sex_to_recommend : null,
       LawData: {},
       chartData: {
         labels: [],
@@ -221,6 +236,10 @@ export default {
       axios.post(`${SERVER_URL}/accounts/myprofile/`, info, config)
         .then( (res) => {
           this.user = res.data
+          
+          this.age_to_recommend = res.data['age']
+          this.sex_to_recommend = res.data['sex']
+          console.log(this.age_to_recommend)
           if (this.user.image) {
             this.getImage(this.user.image)
           } else {
