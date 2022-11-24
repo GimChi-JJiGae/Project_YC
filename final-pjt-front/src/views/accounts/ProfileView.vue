@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column" style="width:100%; height:700px; min-width:770px;">
+  <div class="d-flex flex-column align-items-center" style="width:100%; min-width:770px;">
     <div class="row gap-3" style="height:700px; width:100%;">
       <div class="col-3 bg-secondary bg-opacity-25 rounded-3" style="min-width:240px;">
         <div class="mt-4">
@@ -53,7 +53,7 @@
         <div class="my-3" style="height:100%">
           <div class="" style="height:50%;">
             <h5 class='mb-0'><strong>내가 좋아요 한 영화들</strong></h5>
-            <span class=""><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></span>
+            <div class=""><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></div>
             <div class="row  flex-nowrap" id="scollbar">
               <span v-for="like_movie in like_movies" :key=like_movie.id style="width:190px;">
                 <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">

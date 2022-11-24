@@ -36,6 +36,7 @@
     },
     props: {
       movies: Array,
+      chartData: Object,
       chartId: {
         type: String,
         default: 'doughnut-chart'
@@ -67,43 +68,17 @@
     },
     data() {
       return {
-        chartData: {
-          labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-          datasets: [
-            {
-              backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-              data: [40, 20, 80, 10]
-            }
-          ]
-        },
         chartOptions: {
           responsive: true,
           maintainAspectRatio: false
-        }
+        },
+        lawData: {},
       }
     },
-    methods: {
-      getData() {
-        for (const movie of this.movies) {
-          console.log(movie)
-          console.log(movie.genres)
-          console.log(movie.genre_name)
-          // for (const genre of movie.genres) {
-          //   if (this.chartData['labels'].includes(genre_set(genre))) {
-          //     console.log()
-          //   }
-          // }
-        }
-      }
-    },
-    // computed: {
-    //   ChartData() {
-    //     this.getData()
-    //   }
-    // }
-    created() {
-      this.getData()
-    }
   }
   </script>
-  
+  <style>
+  .dd{
+    color: #3dda4a;
+  }
+  </style>

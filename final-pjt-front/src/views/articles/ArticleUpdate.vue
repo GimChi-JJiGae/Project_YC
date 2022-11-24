@@ -6,7 +6,7 @@
         <input class="border-dark p-2 border-opacity-10" type="text" id="title" v-model.trim="article.title" placeholder="제목을 입력하세요."><br>
       </div>
       <div class="row mt-4">
-        <input class="border-dark p-2 border-opacity-10" id="movie" v-model.trim="movie_title" placeholder="영화 검색"><br>
+        <input class="border-dark p-2 border-opacity-10" id="movie" v-model.trim="movie_title" placeholder="영화 검색" disabled><br>
         <button class="btn content-font border btn-sm" style="height:36px;" @click="open">
           <span style="font-size: 11px;">영화 검색</span>
         </button>

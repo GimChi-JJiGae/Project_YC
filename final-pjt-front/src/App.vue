@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="m-0">
     <div class="container" style="min-width: 960px;">
 
       <b-navbar type="light" class="d-flex justify-content-between">
@@ -21,6 +21,7 @@
             </span>
             <span v-else>
               <b-dropdown-item opdown-item :to="{ name: 'LogInView' }">로그인</b-dropdown-item>
+              <b-dropdown-item opdown-item :to="{ name: 'SignUpView' }">회원가입</b-dropdown-item>
             </span>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -214,9 +215,10 @@ export default {
 
 </script>
 
-<style>
-#app {
-  font-family: 'Do Hyeon', sans-serif;
+<style scoped>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
+#app *{
+  font-family: 'Pretendard Variable';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

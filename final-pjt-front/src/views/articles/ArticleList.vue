@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row">
+    <div class="row mb-2">
       <div class="col-3">영화</div>
       <div class="col-4">제목</div>
       <div class="col-2">글쓴이</div>

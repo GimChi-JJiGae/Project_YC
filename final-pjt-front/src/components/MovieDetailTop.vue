@@ -94,7 +94,7 @@
         >
           <section class="page-section" id="contact">
             <div>
-              <iframe width="100%" height="400px" :src="this.youtubeLink" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <iframe width="100%" height="600px" :src="this.youtubeLink" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             <div>
               <button @click="close" class="m-1 btn content-font border btn-sm" type="submit">닫기</button>
