@@ -132,7 +132,7 @@
         </div>
       </div>
     </div>
-    <div class="col bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column p-3 mt-3" style="min-width:420px; width: 100%; height:100%;">
+    <div class="row bg-secondary bg-opacity-25 rounded-3 text-start p-3 mt-3" style="min-width:420px; width: 100%; height:400px;">
       <div class="row" style="width:100%">
         <div class="col-4">
           <DoughnutChart

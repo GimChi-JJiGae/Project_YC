@@ -3,7 +3,7 @@
     <div>
       <div id="container" class="box" ><!--style="padding-bottom:20px;">-->
         <div v-for="(idx, k) in genre_list" :index="idx" :key="k">
-          <button :id="genre_list[k][`id`]" class="btn btn-outline-secondary" @click="recommend">{{ genre_list[k]["name"] }}</button>
+          <button :id="genre_list[k][`id`]" class="btn btn-outline-secondary" @click="recommend" style="width:100px;">{{ genre_list[k]["name"] }}</button>
         </div>
       </div>
       <div id="recommendedmovies" class="row">

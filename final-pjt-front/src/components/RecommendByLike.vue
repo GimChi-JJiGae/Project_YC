@@ -2,8 +2,8 @@
   <div class="row" style="height:100%;">
     <div class="row">
     </div>
-    <div class="row flex-nowrap" id="scollbar" >
-      <span v-for="movie in Filterd_Movies" :key=movie[1].id style="width:190px;"> 
+    <div class="row flex-nowrap" id="scollbar" style="height:100%">
+      <span v-for="movie in Filterd_Movies" :key=movie[1].id style="width:190px; height:100%"> 
         <router-link :to="{name : 'MovieDetail', params : {movie_pk : movie[1].id }}">
           <img :src='`https://image.tmdb.org/t/p/original/${movie[1].poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
         </router-link>
@@ -77,7 +77,18 @@ export default {
         for (const gen of movie.genres) {
           for (const gen_data of genre_data) {
             if (Number(Object.keys(gen_data)[0]) === gen) {
-              tmp += Object.values(gen_data)[0] * (movie.popularity/90) 
+              // console.log(this.like_movies.includes(movie))
+              let flag = false
+              for (const like_movie in this.like_movies) {
+                // console.log(this.like_movies[like_movie].original_id, movie.original_id)
+                if (this.like_movies[like_movie].original_id === movie.original_id) {
+                  flag = true
+                  break
+                } 
+              }
+              if (!flag) {
+                tmp += Object.values(gen_data)[0] * (movie.popularity/90) 
+              }
             }
           }
         }

@@ -59,12 +59,12 @@
             <p>{{directorName}}</p>
           </div>
         </div>
-        <div class="row text-start mb-3">
+        <div class="row text-start mb-3" >
           <div>
             <h3>배우</h3>
           </div>
-          <div v-if="called">
-            <div class="row flex-nowrap" id="scollbar">
+          <div v-if="called" >
+            <div class="row flex-nowrap" id="scollbar" style="height:100%">
               <span v-for="i in list" :key="i" style="width:110px;">
                 <a :href="`https://www.themoviedb.org/person/${actorsId[i]}`">
                   <img
@@ -256,5 +256,26 @@ export default {
 .modal-content.modal-80size {
   height: auto;
   min-height: 80%;
+}
+
+#scollbar {
+  overflow: auto;
+  width: 100%;
+}
+#scollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  /* display: none; */
+}
+#scollbar::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+#scollbar::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
 }
 </style>

@@ -1,17 +1,60 @@
 <template>
   <div id="app" class="m-0">
-    <div class="container" style="min-width: 960px;">
-
-      <b-navbar type="light" class="d-flex justify-content-between">
+    <div style="position:fixed; bottom:5px; right:5px;">
+      <a href="#app">TOP</a>
+    </div>
+    <div class="container">
+      <b-navbar type="light" class="d-flex justify-content-between pb-0">
         <b-navbar-nav class="d-flex align-items-center">
           <b-nav-item :to="{ name: 'HomeView' }"><img src="@/assets/logo5.png" alt="" style="width:150px;"></b-nav-item>
-
+  
           <b-nav-item :to="{ name: 'ArticleHomeView' }">Community</b-nav-item>
           <b-nav-item :to="{ name: 'GenreMovies' }">Genres</b-nav-item>
           <!-- Navbar dropdowns -->
         </b-navbar-nav>
-
+        
         <b-navbar-nav class="d-flex align-items-center">
+          <b-nav-item >
+            <button class="btn content-font border btn-sm" style="height:36px;" @click="open">
+              <span style="font-size: 16px;">영화 검색</span>
+            </button>
+            <b-modal
+              hide-footer
+              v-model="show"
+              id="review-modal"
+              size="lg"
+              title="영화 검색창"
+              hide-header-close
+            >
+              <section class="page-section" id="contact">
+                <div class="col row m-0" style="width: 100%">
+                  <input class="stage-search border-opacity-10 rounded-2" type="text" v-model="search" placeholder="영화명" @input="handleSearchInput" style="width:100%; height:36px;"/>
+                </div>
+                <div>
+                  <ul class="list-group list-group-flush" style="width:100%;">
+                    <li
+                      v-for="(movie, idx) in Movies"
+                      :key="idx"
+                      class="list-group-item"
+                      style="height: 100%; cursor:pointer;"
+                    >
+                      <div class="row" @click="moveToDetail(movie)">
+                        <div class="col">
+                          {{movie.title}}
+                        </div>
+                        <div class="col-2">
+                          {{movie.release_date}}
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <button @click="close" class="m-1 btn content-font border btn-sm" type="submit">닫기</button>
+                </div>
+              </section>
+            </b-modal>
+          </b-nav-item>
           <b-nav-item-dropdown text="User" right >
             <span v-if="access_token">
               <b-dropdown-item to="javascript:void(0)" @click.native="LogOut">로그아웃</b-dropdown-item>
@@ -26,10 +69,28 @@
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-navbar>
-
+    </div>
+    <hr>
+    <div class="container" style="min-width: 960px;">
       <router-view/>
-  
-
+    </div>
+    <hr>
+    <div class="container">
+      <div class="row justify-content-center align-items-center" style="height:30px;">
+        <div class="row">
+          <div class="col text-end">
+            <img src="@/assets/logo5.png" alt="">
+          </div>
+          <div class="col text-start">
+            <div class="text-start">
+              개발자 : 윤도현, 최형규
+            </div>
+            <div class="text-start">
+              문의 사항 : 010-8565-5971
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,9 +113,16 @@ export default {
       high_vote_movie_list: [],
       user: null,
       me: null,
+      search: null,
+      filteredMovies: [],
+      show: false,
+      movies: JSON.parse(localStorage.getItem("movie_list")),
     }
   },
   computed: {
+    Movies() {
+      return this.filteredMovies
+    },
     access_token() {
       return this.$store.state.access_token
     },
@@ -196,6 +264,31 @@ export default {
         this.high_vote_movie_list.push(temp[i])
       }
       localStorage.setItem('high_vote_movie_list', JSON.stringify(this.high_vote_movie_list))
+    },
+    handleSearchInput() {
+      if (this.search !== 0) {
+        clearTimeout(this.debounce)
+        this.debounce = setTimeout(() => {
+          let filteredMovies = []
+          filteredMovies = this.movies.filter(movie => movie.title.includes(this.search) | movie.original_title.includes(this.search))
+          this.filteredMovies = filteredMovies
+        }, 500)
+      } else {
+        clearTimeout(this.debounce)
+        this.debounce = setTimeout(() => {
+          this.filteredMovies = []
+        }, 500)
+      }
+    },
+    open() {
+      this.show = true
+    },
+    close() {
+      this.show = false
+    },
+    moveToDetail(movie) {
+      this.$router.push({ name: 'MovieDetail', params: { 'movie_pk': movie.id }})
+      location.reload()
     }
   },
   created() {

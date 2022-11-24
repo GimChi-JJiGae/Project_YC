@@ -23,7 +23,7 @@
               <input class="stage-search border-opacity-10 rounded-2" type="text" v-model="search" placeholder="영화명" @input="handleSearchInput" style="width:100%; height:36px;"/>
             </div>
             <div>
-              <ul class="list-group list-group-flush" style="width:100%;">
+              <ul class="list-group list-group-flush" style="width:100%;" id="scollbar">
                 <li
                   v-for="(movie, idx) in Movies"
                   :key="idx"
@@ -152,5 +152,25 @@ export default {
 </script>
 
 <style>
-
+#scollbar {
+  height:800px; 
+  overflow-x:hidden; 
+  overflow-y:auto; 
+}
+#scollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  /* display: none; */
+}
+#scollbar::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+#scollbar::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
 </style>

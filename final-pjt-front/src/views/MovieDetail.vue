@@ -45,7 +45,7 @@ export default {
     
     getMovie : function(){
       const movie_data = JSON.parse(localStorage.getItem('movie_list'))[this.$route.params.movie_pk - 1]
-     
+      console.log(movie_data)
       const movie_original_id = movie_data.original_id
       const url = 'https://api.themoviedb.org/3/movie/' + movie_original_id + '?api_key=5d2592924ae354925561438e12ee8888&language=ko-KR' 
       //let youtubeId = ''//첫번재 영상만 사용하기 하자. 값이 없을 경우도 있음.
