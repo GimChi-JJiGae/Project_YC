@@ -1,17 +1,13 @@
 <template>
-  <div>
-      <div class="row flex-nowrap" id="scollbar">
-          <span v-for="pick_movie in picked_movie_show_list" :key=pick_movie.id style="width:190px;">
-            <a :href='`http://localhost:8080/movies/${pick_movie.id}`'>
-            <img :src='`https://image.tmdb.org/t/p/original/${pick_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
-            <!--<router-link :to="{name : 'MovieDetail', params : {movie_pk : pick_movie.id }}">
-              <img :src='`https://image.tmdb.org/t/p/original/${pick_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
-            </router-link>-->
-          </a>
-        </span>
+  <div class="row" style="height:100%">
+    <div class="row flex-nowrap" id="scollbar" style="height:100%">
+      <span v-for="pick_movie in picked_movie_show_list" :key=pick_movie.id style="width:190px; height:100%">
+        <router-link :to="{name : 'MovieDetail', params : {movie_pk : pick_movie.id }}">
+          <img :src='`https://image.tmdb.org/t/p/original/${pick_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
+        </router-link>
+      </span>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -159,24 +155,5 @@ export default {
 </script>
 
 <style>
-#scollbar {
-  overflow: auto;
-  width: 100%;
-}
-#scollbar::-webkit-scrollbar {
-  width: 5px;
-  height: 10px;
-  /* display: none; */
-}
-#scollbar::-webkit-scrollbar-thumb {
-  background-color: #2f3542;
-  border-radius: 10px;
-  background-clip: padding-box;
-  border: 1px solid transparent;
-}
-#scollbar::-webkit-scrollbar-track {
-  background-color: grey;
-  border-radius: 10px;
-  box-shadow: inset 0px 0px 5px white;
-}
+
 </style>

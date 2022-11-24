@@ -54,7 +54,7 @@
           <div class="" style="height:50%;">
             <h5 class='mb-0'><strong>{{user.username}}님이 좋아요 한 영화들</strong></h5>
             <div class=""><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></div>
-            <div class="row  flex-nowrap" id="scollbar">
+            <div class="row  flex-nowrap" id="scollbar" style="height:75%">
               <span v-for="like_movie in like_movies" :key=like_movie.id style="width:190px;">
                 <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">
                   <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">

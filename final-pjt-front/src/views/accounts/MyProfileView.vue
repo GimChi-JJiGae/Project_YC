@@ -110,12 +110,12 @@
         </b-modal>
       </div>
 
-      <div class="col bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column p-3" style="min-width:420px; height:100%;">
+      <div class="col bg-secondary bg-opacity-25 rounded-3 text-start justify-content-center p-3" style="min-width:420px; height:100%;">
         <div class="my-3" style="height:100%">
           <div class="" style="height:50%;">
             <h5 class='mb-0'><strong>내가 좋아요 한 영화들</strong></h5>
             <span class=""><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></span>
-            <div class="row  flex-nowrap" id="scollbar">
+            <div class="row  flex-nowrap" id="scollbar" style="height:75%">
               <span v-for="like_movie in like_movies" :key=like_movie.id style="width:190px;">
                 <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">
                   <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
@@ -132,7 +132,7 @@
         </div>
       </div>
     </div>
-    <div class="row bg-secondary bg-opacity-25 rounded-3 text-start p-3 mt-3" style="min-width:420px; width: 100%; height:400px;">
+    <div class="row bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column p-3 mt-3" style="min-width:420px; width: 100%; height:400px;">
       <div class="row" style="width:100%">
         <div class="col-4">
           <DoughnutChart

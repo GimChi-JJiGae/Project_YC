@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div class="row flex-nowrap" id="scollbar">
+      <div class="row flex-nowrap" id="scollbar" style="height:100%">
           <span v-for="pick_movie in picked_movie_show_list" :key=pick_movie.id style="width:190px;">
             <a :href='`http://localhost:8080/movies/${pick_movie.id}`'>
             <img :src='`https://image.tmdb.org/t/p/original/${pick_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
