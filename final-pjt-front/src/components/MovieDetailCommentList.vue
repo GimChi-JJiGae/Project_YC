@@ -33,7 +33,7 @@
     </div>
     <hr>
     <div @mouseleave="showCurrentRating(0)" style="display:inline-block;">
-              <star-rating :show-rating="false" @current-rating="showCurrentRating" @rating-selected="setCurrentSelectedRating" :increment="0.5"></star-rating>
+              <star-rating :show-rating="false" @current-rating="showCurrentRating" @rating-selected="setCurrentSelectedRating" :increment="0.5" active-color="#e1bad9"></star-rating>
             </div>
             <div style="margin-top:10px;font-weight:bold;">{{currentRating}}</div>
     <div class="row">

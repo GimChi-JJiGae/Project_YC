@@ -49,6 +49,7 @@ export default {
       isTrue: true,
       random_top_movie_list: [],
       popular_movie_list: [],
+      high_vote_movie_list: [],
       user: null,
       me: null,
     }
@@ -141,6 +142,7 @@ export default {
           localStorage.setItem('movie_list',JSON.stringify(this.$store.state.movies) )
           this.pick_random_top_movies()
           this.pick_popular_movies()
+          this.pick_high_vote_movies()
         }
       })
       
@@ -182,6 +184,19 @@ export default {
       }
       localStorage.setItem('popular_movie_list', JSON.stringify(this.popular_movie_list))
     },
+
+    pick_high_vote_movies: function() {
+      let temp = this.$store.state.movies.slice()
+      temp.sort(function(a, b) { // 내림차순
+        return a.vote_average > b.vote_average ? -1 : a.vote_average < b.vote_average? 1 : 0;
+    // 형돈, 재석, 명수, 광희
+      
+      });
+      for (let i = 0; i<10; i++){
+        this.high_vote_movie_list.push(temp[i])
+      }
+      localStorage.setItem('high_vote_movie_list', JSON.stringify(this.high_vote_movie_list))
+    }
   },
   created() {
     this.getGenres()
@@ -190,6 +205,7 @@ export default {
     } else {
       this.pick_random_top_movies()
       this.pick_popular_movies()
+      this.pick_high_vote_movies()
     }
   },
 

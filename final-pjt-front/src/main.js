@@ -12,7 +12,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { NavbarPlugin } from 'bootstrap-vue'
-
+import VueFeather from 'vue-feather';
 
 Vue.use(NavbarPlugin)
 
@@ -21,7 +21,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(Carousel3d)
 Vue.use(BootstrapVue)
-
+Vue.use(VueFeather);
 Vue.config.productionTip = false
 
 new Vue({
