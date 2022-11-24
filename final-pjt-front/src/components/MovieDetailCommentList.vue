@@ -4,25 +4,28 @@
     <div class="row" style="width:100%;">
       <div class="col-1">유저</div>
       <div class="col-2">별점</div>
-      <div class="col">내용</div>
-      <div class="col-2">생성시간</div>
+      <div class="col">내용 </div>
+      <div class="col-1">생성시간 </div>
       <div class="col-1"><font-awesome-icon icon="fa-regular fa-thumbs-up"/></div>
       <div class="col-1"><font-awesome-icon icon="fa-regular fa-thumbs-down"/></div>
+      <div class="col-1"></div>
     </div>
     <hr>
     <div class="comment-list row" style="width:100%;">
    
       <ul class="list-group list-group-flush px-0">
       <li class="list-group-item p-0 mb-1" v-for="(comment, idx) in comments" :key="idx" >
-        <div class="row m-0" style="width:100%;">
+        <div :id="`comment`+comment.id" class="row m-0" style="width:100%;">
           <div class="col-1"><span style="cursor:pointer;" @click="moveToProfile(user[idx])"><strong>{{ user[idx] }}</strong></span></div>
           <div class="col-2">
             <star-rating :rating="comment_rank_list[idx]" :read-only="true" :increment="0.01" :star-size="15" class="justify-content-center"></star-rating>
           </div>
           <div class="col">{{ comment.content }}</div>
-          <div class="col-2"><small>{{ comments_date[idx] }}</small></div>
+          <div class="col-1"><small>{{ comments_date[idx] }}</small></div>
           <div :id="`like` + idx" class="col-1" style="cursor:pointer;"  @click="likeComment(comments_id[idx])">{{ like_numbers[idx]}}</div>
           <div :id="`hate` + idx" class="col-1" style="cursor:pointer;" @click="hateComment(comments_id[idx])"> {{ hate_numbers[idx]}}</div>
+          
+          <div class="col-1"> <span v-if="comment['user'] === my_id" style="cursor:pointer;" @click="deleteComment(comment, idx)"> 삭제 </span></div>
         </div>
         <!--
         <div class="text-end" v-if="user.username === comment.username">
@@ -54,6 +57,7 @@
 
 import axios from 'axios'
 import StarRating from "vue-star-rating";
+import VueJwtDecode from 'vue-jwt-decode'
 
 const SERVER_URL = 'http://127.0.0.1:8000'
 
@@ -71,6 +75,7 @@ export default {
       comment_data: [],
       comments: [],
       user: [],
+      user_id_list: [],
       comments_date: [],
       is_liked: null,
       like_numbers: [],
@@ -82,6 +87,7 @@ export default {
       //boundRating: 3,
       final_rate: 0,
       comment_rank_list: [],
+      my_id: null,
     }
   },
   computed: {
@@ -193,6 +199,39 @@ export default {
           })
       }
     },
+    deleteComment(comment, idx) {
+        
+        axios.delete(`${SERVER_URL}/movies/${comment.id}/comments/`)
+          .then(() => {
+            const targetComment = document.getElementById(`comment${comment.id}`)
+            
+            while ( targetComment.hasChildNodes() ) {
+              targetComment.removeChild( targetComment.firstChild );       
+            }
+            this.comment_data.splice(idx, 1)
+            this.comments.splice(idx, 1)
+            this.comment_rank_list.splice(idx, 1)
+            this.comments_date.splice(idx, 1)
+            this.user.splice(idx,1)
+            this.user_id_list.splice(idx,1)
+          })
+          
+          .catch(err => {
+            console.log(err)
+          })
+    },
+    getMyName() {
+      const config = this.getToken()
+      const hash = localStorage.getItem('access_token')
+      const info = VueJwtDecode.decode(hash)
+      axios.post(`${SERVER_URL}/accounts/myprofile/`, info, config)
+        .then(res => {
+          this.my_id = res.data.id
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     getComments() {
       
       axios.get(`http://127.0.0.1:8000/movies/${this.$route.params.movie_pk}/comments/`)
@@ -226,6 +265,7 @@ export default {
           for (let j = 0; res.data.length; j++){
             if(res.data[j].id === this.comment_data[i].user){
               this.user.push(res.data[j].username)
+              this.user_id_list.push(res.data[j].id)
               break
             }
           }
@@ -241,6 +281,7 @@ export default {
     },
   },
   created : function(){
+    this.getMyName()
     this.getComments()
   },
   mounted: function(){

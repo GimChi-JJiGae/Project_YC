@@ -1,12 +1,13 @@
 <template>
-  <div>여기는 나이대로 추천
-    {{ this.age_to_recommend }}
-    {{ this.like_movies.length }}
-    <div class="row  flex-nowrap" id="scollbar">
-          <span v-for="like_movie in like_movies" :key=like_movie.id style="width:190px;">
-            <router-link :to="{name : 'MovieDetail', params : {movie_pk : like_movie.id }}">
-              <img :src='`https://image.tmdb.org/t/p/original/${like_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
-            </router-link>
+  <div>
+      <div class="row flex-nowrap" id="scollbar">
+          <span v-for="pick_movie in picked_movie_show_list" :key=pick_movie.id style="width:190px;">
+            <a :href='`http://localhost:8080/movies/${pick_movie.id}`'>
+            <img :src='`https://image.tmdb.org/t/p/original/${pick_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
+            <!--<router-link :to="{name : 'MovieDetail', params : {movie_pk : pick_movie.id }}">
+              <img :src='`https://image.tmdb.org/t/p/original/${pick_movie.poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
+            </router-link>-->
+          </a>
         </span>
     </div>
   </div>
@@ -25,6 +26,7 @@ export default {
   },
   data() {
     return {
+      slides: 10,
       users_list: [],
       genre_dict: {'12': 0, '14': 0, '16': 0, '18':0, '27':0, '28': 0,
                   '35': 0, '36': 0, '37': 0, '53': 0, '80': 0, '99': 0,
@@ -34,6 +36,7 @@ export default {
       list_for_calculate: [],
       recommend_movie_list: [],
       picked_movie: [],
+      picked_movie_show_list: [],
     }
   },
   methods: {
@@ -67,7 +70,7 @@ export default {
       for(let i = 0; i < this.users_list.length; i++){
         if (this.users_list[i].age === this.age_to_recommend) {
           for(let j = 0; j < this.users_list[i].like_movies.length; j++){
-            console.log(this.all_movie_data[this.users_list[i].like_movies[j] - 1]['genres'])
+            
             for(let k = 0; k < this.all_movie_data[this.users_list[i].like_movies[j] - 1]['genres'].length; k++){
               
               this.genre_dict[String(this.all_movie_data[this.users_list[i].like_movies[j] - 1]['genres'][k])] = this.genre_dict[String(this.all_movie_data[this.users_list[i].like_movies[j] - 1]['genres'][k])] + 1
@@ -76,10 +79,10 @@ export default {
           }
         }
       }
-      console.log(this.genre_dict)
+     
     },
     getMychart() {
-      console.log("여기옴?")
+      
       //const out = Object.fromEntries(
       //  Object.entries(this.genre_dict).sort(([,a],[,b]) => a > b? -1: 1 )
       //);
@@ -133,22 +136,46 @@ export default {
           break
         }
       }
-      console.log(this.picked_movie)
+      
       this.picked_movie.sort(() => Math.random() - 0.5)
-      console.log(this.picked_movie)
+      
       this.picked_movie = this.picked_movie.slice(0, 10)
-      console.log(this.picked_movie)
+ 
+      for(let i = 0; i < 10; i++){
+        this.picked_movie_show_list.push(this.all_movie_data[this.picked_movie[i]])
+      }
+
+
+
     }
     
 
   },
   created() {
     this.makeRecommendation()
-    
   }
 }
 </script>
 
 <style>
-
+#scollbar {
+  overflow: auto;
+  width: 100%;
+}
+#scollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  /* display: none; */
+}
+#scollbar::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+#scollbar::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
 </style>
