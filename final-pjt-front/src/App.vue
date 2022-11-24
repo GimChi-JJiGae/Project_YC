@@ -189,7 +189,7 @@ export default {
       let temp = this.$store.state.movies.slice()
       temp.sort(function(a, b) { // 내림차순
         return a.vote_average > b.vote_average ? -1 : a.vote_average < b.vote_average? 1 : 0;
-    // 형돈, 재석, 명수, 광희
+   
       
       });
       for (let i = 0; i<10; i++){
