@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h5><strong>{{user.username}}님이 리뷰 남긴 영화들</strong></h5>
-    <span class=""><small>'리뷰 작성한' 영화 수 : {{user.movie_comments?.length}}</small></span>
+    <h5 class="mb-0"><strong>{{user.username}}님이 리뷰 남긴 영화들</strong></h5>
+    <div class=""><small>'리뷰 작성한' 영화 수 : {{user.movie_comments?.length}}</small></div>
     <div class="row  flex-nowrap" id="scollbar" style="height:75%">
       <span v-for="comment_movie in comment_movies" :key=comment_movie.id style="width:190px;">
         <router-link :to="{name : 'MovieDetail', params : {movie_pk : comment_movie.id }}">
