@@ -86,7 +86,7 @@
 
 ## ✨ 데이터베이스 모델링(ERD)
 
-![image-20221125034226307](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125034226307.png)
+![image-20221125034226307](./images/image-20221125034226307.png)
 
 
 
@@ -294,7 +294,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 
 - 로그인과 로그아웃은 JWT를 통한 토큰 기반의 로그인 구현 방식을 채택
 
-![image-20221125041012807](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125041012807.png)
+![image-20221125041012807](./images/image-20221125041012807.png)
 
 
 
@@ -304,7 +304,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 
 - 회원가입 시 ID 중복, Email 중복은 불가하며 비밀번호 설정 시 8~16자, 숫자 포함, 특수문자 포함 이라는 조건이 있음
 
-![image-20221125041316409](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125041316409.png)
+![image-20221125041316409](./images/image-20221125041316409.png)
 
 
 
@@ -314,7 +314,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - 메인 화면의 핵심은 3D carousel을 통한 랜덤 영화 출력임. 해당 영화에 마우스를 호버한다면 평점과 Detail 페이지로 갈 수 있는 버튼이 생기도록 구현
 - 3D carousel 밑으로 인기순, 평점순 영화 데이터들이 나오고 가장 밑에는 오늘의 장르를 랜덤으로 선정해 해당 장르의 영화를 랜덤으로 출력하도록 구현
 
-![image-20221125041724106](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125041724106.png)
+![image-20221125041724106](./images/image-20221125041724106.png)
 
 
 
@@ -324,7 +324,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - 모달창을 띄어 입력창에 검색어를 입력 할 경우 실시간으로 해당 문자열과 매칭되는 영화를 출력
 - 해당 영화를 클릭하면 영화 Detail 페이지로 이동
 
-![image-20221125042303558](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125042303558.png)
+![image-20221125042303558](./images/image-20221125042303558.png)
 
 
 
@@ -335,7 +335,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - 별점을 선택하고 댓글을 달 경우 댓글 리뷰 생성 가능
 - 관련 장르의 영화들 랜덤 출력
 
-![image-20221125042614088](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125042614088.png)
+![image-20221125042614088](./images/image-20221125042614088.png)
 
 
 
@@ -346,7 +346,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - 게시글 제목 혹은 글쓴이 검색 가능
 - 해당 영화 이름을 클릭할 경우 Detail 페이지로 이
 
-![image-20221125042748501](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125042748501.png)
+![image-20221125042748501](./images/image-20221125042748501.png)
 
 
 
@@ -355,7 +355,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - 영화 검색 버튼을 클릭하면 영화를 검색할 수 있는 모달창 생성
 - 검색 후 클릭하면 해당 영화 정보가 데이터에 담기고, 게시글 생성 시 Django로 전달되어 데이터베이스에 저장됨
 
-![image-20221125042948755](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125042948755.png)
+![image-20221125042948755](./images/image-20221125042948755.png)
 
 
 
@@ -363,7 +363,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 
 - 댓글 기능, 좋아요, 싫어요 기능
 
-![image-20221125043101454](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125043101454.png)
+![image-20221125043101454](./images/image-20221125043101454.png)
 
 
 
@@ -371,7 +371,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 
 - 장르 버튼을 클릭하면 해당 장르에 해당하는 영화만 필터링해서 보여줌
 
-![image-20221125043206088](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125043206088.png)
+![image-20221125043206088](./images/image-20221125043206088.png)
 
 
 
@@ -380,7 +380,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - 찾고 싶은 유저 검색 가능
 - 해당 유저 클릭 시 해당 유저의 프로필 페이지로 이동
 
-![image-20221125043254113](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125043254113.png)
+![image-20221125043254113](./images/image-20221125043254113.png)
 
 
 
@@ -390,7 +390,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - 해당 유저의 정보 출력
 - 팔로우 버튼 구현
 
-![image-20221125043421345](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125043421345.png)
+![image-20221125043421345](./images/image-20221125043421345.png)
 
 
 
@@ -400,7 +400,7 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - vuechart.js를 통해 장르별 좋아요 수를 도넛 차트로 표현
 - 추천 알고리즘 컨셉인 좋아요, 연령대, 성별 버튼들을 누르면 해당 컨셉의 추천 영화들 출력
 
-![image-20221125043510191](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125043510191.png)
+![image-20221125043510191](./images/image-20221125043510191.png)
 
 
 
@@ -411,11 +411,11 @@ with open('genres.json', 'w', encoding='UTF-8') as file:
 - 회원탈퇴 클릭 시 비밀번호를 한번 더 입력하라는 모달창이 뜸
   - 비밀번호 일치 시 회원 탈퇴 진행
 
-![image-20221125043819526](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125043819526.png)
+![image-20221125043819526](./images/image-20221125043819526.png)
 
-![image-20221125043839124](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125043839124.png)
+![image-20221125043839124](./images/image-20221125043839124.png)
 
-![image-20221125043853178](C:\Users\82108\AppData\Roaming\Typora\typora-user-images\image-20221125043853178.png)
+![image-20221125043853178](./images/image-20221125043853178.png)
 
 
 
