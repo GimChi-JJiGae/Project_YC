@@ -17,7 +17,7 @@
         <div class="row">
           <div class="col-2"><!--<span style="cursor:pointer;" @click="moveToProfile(comment.user, comment.username)">--><strong>{{ user[idx] }}</strong></div>
           <div class="col-2">
-            <star-rating :rating="comment_rank_list[idx]" :read-only="true" :increment="0.01" :star-size="20"></star-rating>
+            <star-rating :rating="comment_rank_list[idx]" :read-only="true" :increment="0.01" :star-size="20" active-color="#e1bad9"></star-rating>
           </div>
           <div class="col-4">{{ comments[idx] }}</div>
           <div class="col-2"><small>{{ comments_date[idx] }}</small></div>
@@ -32,7 +32,7 @@
     </ul>
     </div>
     <div @mouseleave="showCurrentRating(0)" style="display:inline-block;">
-              <star-rating :show-rating="false" @current-rating="showCurrentRating" @rating-selected="setCurrentSelectedRating" :increment="0.5"></star-rating>
+              <star-rating :show-rating="false" @current-rating="showCurrentRating" @rating-selected="setCurrentSelectedRating" :increment="0.5" active-color="#e1bad9"></star-rating>
             </div>
             <div style="margin-top:10px;font-weight:bold;">{{currentRating}}</div>
     <div class="row">
