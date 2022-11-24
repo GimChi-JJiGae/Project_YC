@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <h5 class='mb-0'><strong>추천 영화 목록</strong></h5>
-    <div class="row flex-nowrap" id="scollbar">
+  <div class="row" style="height:100%;">
+    <div class="row">
+    </div>
+    <div class="row flex-nowrap" id="scollbar" >
       <span v-for="movie in Filterd_Movies" :key=movie[1].id style="width:190px;"> 
         <router-link :to="{name : 'MovieDetail', params : {movie_pk : movie[1].id }}">
           <img :src='`https://image.tmdb.org/t/p/original/${movie[1].poster_path}`' alt="" style="height:230px; width:180px;" class="rounded-2">
@@ -19,7 +20,7 @@ export default {
     like_movies: Array,
     LawData: Object,  
   },
-  data() {
+  data() { 
     return { 
       movies : JSON.parse(localStorage.getItem('movie_list')),
       filterd_movies : [],
@@ -48,6 +49,7 @@ export default {
       return datas
     },
     Filterd_Movies() {
+      this.getFilteredMovies()
       return this.filterd_movies
     }
   },
@@ -87,12 +89,11 @@ export default {
       this.filterd_movies.sort((a, b) => b[0] - a[0])
       this.filterd_movies = this.filterd_movies.slice(0, 40)
       this.filterd_movies = _.sampleSize(this.filterd_movies, 10)
-      console.log(this.filterd_movies)
-    } 
-  },
-  created() {
-    this.getFilteredMovies()
-    console.log(this.filterd_movies) 
+      this.getList()
+    },
+    getList() {
+      this.filtered_movies = this.filterd_movies
+    }
   },
 }
 </script>

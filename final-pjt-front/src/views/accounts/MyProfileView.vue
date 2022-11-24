@@ -124,42 +124,64 @@
             </div>
           </div>
           <div class="" style="height:50%;">
-            <h5><strong>추천 영화 목록</strong></h5>
+            <MyCommentList
+            :comment_movies="comment_movies"
+            :user="user"
+            />
           </div>
         </div>
       </div>
     </div>
-    <div class="row" style="width:100%">
-      <div class="col">
-        <DoughnutChart
+    <div class="col bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column p-3 mt-3" style="min-width:420px; width: 100%; height:100%;">
+      <div class="row" style="width:100%">
+        <div class="col-4">
+          <DoughnutChart
           :movies="like_movies"
           :chartData="chartData"
-        />
-      </div>
-      <div class="col">
-        <RecommendByLike
-          :like_movies="like_movies"
-          :LawData="LawData"
-        />
+          />
+        </div>
+        <div class="col-8">
+          <b-tabs content-class="mt-3">
+            <b-tab title="좋아요" active>
+              <p>
+                <RecommendByLike
+                  :like_movies="like_movies"
+                  :LawData="LawData"
+                />
+              </p>
+            </b-tab>
+            <b-tab title="연령대">
+              <p>
+                <RecommendByAge
+                  :age_to_recommend="age_to_recommend"
+                  :like_movies="like_movies"
+                />
+              </p>
+            </b-tab>
+            <b-tab title="성별" >
+              <p>
+                <ReconmmendBySex
+                  :sex_to_recommend="sex_to_recommend"
+                  :like_movies="like_movies"
+                />
+              </p>
+            </b-tab>
+          </b-tabs>
+          
+          </div>
+          
+          
       </div>
     </div>
-    <RecommendByAge
-      :age_to_recommend="age_to_recommend"
-      :like_movies="like_movies"
-      
-    />
-    <ReconmmendBySex
-      :sex_to_recommend="sex_to_recommend"
-      :like_movies="like_movies"
-    />
   </div>
-</template>
+  </template>
 
 <script>
 import axios from 'axios'
 import VueJwtDecode from "vue-jwt-decode"
 
 import MyFollower from "@/components/MyFollower"
+import MyCommentList from "@/components/MyCommentList"
 import DoughnutChart from "@/components/DoughnutChart"
 import RecommendByAge from '@/components/RecommendByAge.vue'
 import ReconmmendBySex from '@/components/ReconmmendBySex.vue'
@@ -172,6 +194,7 @@ export default {
   name: 'MyProfileView',
   components: {
     MyFollower,
+    MyCommentList,
     DoughnutChart,
     RecommendByAge,
     ReconmmendBySex,
@@ -183,6 +206,7 @@ export default {
       basic: null,
       user: [],
       users: [],
+      comment_list: [],
       myFollowings: [],
       myMovies: [],
       show1: false,
@@ -203,10 +227,7 @@ export default {
         datasets: [
           { // backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
             // data: [40, 20, 80, 10]
-            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16', '#3dda4a', '#daca3d',
-                              '#e65d5d', '#daca3d', '#daca3d', '#daca3d', '#daca3d', '#daca3d', 
-                              '#daca3d', '#daca3d', '#daca3d', '#daca3d', '#daca3d', '#daca3d', 
-                              '#daca3d',],
+            backgroundColor: [],
             data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           }
         ]
@@ -228,9 +249,15 @@ export default {
     getImage(url) {
       this.image = SERVER_URL + url
     },
+    getComment() {
+      axios.get(`${SERVER_URL}/movies/comments/`)
+        .then(res => {
+          this.comment_list = res.data
+        })
+    },
     getMyName: function () {
       const config = this.getToken()
-
+      this.getComment()
       const hash = localStorage.getItem('access_token')
       const info = VueJwtDecode.decode(hash)
       axios.post(`${SERVER_URL}/accounts/myprofile/`, info, config)
@@ -303,6 +330,14 @@ export default {
           this.chartData.datasets[0]['data'][this.chartData.labels.indexOf(com)] = 0
         }
       }
+
+      for (let i = 0; i < 19; i++) {
+        let RGB_1 = Math.floor(Math.random() * (255 + 1))
+        let RGB_2 = Math.floor(Math.random() * (255 + 1))
+        let RGB_3 = Math.floor(Math.random() * (255 + 1))
+        let strRGBA = 'rgba(' + RGB_1 + ',' + RGB_2 + ',' + RGB_3 + ',0.5)'
+        this.chartData.datasets[0]['backgroundColor'].push(strRGBA);
+      }
     },
   },
   created() {
@@ -318,6 +353,18 @@ export default {
         });
       }
       return like_movie_list
+    },
+    comment_movies() {
+      const comment_movie_list = []
+      if (this.user.movie_comments) {
+        this.user.movie_comments.forEach(comment_movie => {
+
+          const movie = JSON.parse(localStorage.getItem('movie_list'))[this.comment_list[comment_movie-1].movie-1]
+          console.log(movie.movie_comments)
+          comment_movie_list.push(movie)
+        })
+      }
+      return comment_movie_list
     },
     followingsLength() {
       if (this.user.followings) {

@@ -52,7 +52,7 @@
       <div class="col bg-secondary bg-opacity-25 rounded-3 text-start d-flex flex-column p-3" style="min-width:420px; height:100%;">
         <div class="my-3" style="height:100%">
           <div class="" style="height:50%;">
-            <h5 class='mb-0'><strong>내가 좋아요 한 영화들</strong></h5>
+            <h5 class='mb-0'><strong>{{user.username}}님이 좋아요 한 영화들</strong></h5>
             <div class=""><small>'좋아요'한 영화 수 : {{user.like_movies?.length}}</small></div>
             <div class="row  flex-nowrap" id="scollbar">
               <span v-for="like_movie in like_movies" :key=like_movie.id style="width:190px;">
@@ -63,7 +63,10 @@
             </div>
           </div>
           <div class="" style="height:50%;">
-            <h5><strong>추천 영화 목록</strong></h5>
+            <UserCommentList
+            :comment_movies="comment_movies"
+            :user="user"
+            />
           </div>
         </div>
       </div>
@@ -74,17 +77,21 @@
 <script>
 import axios from 'axios'
 import VueJwtDecode from "vue-jwt-decode"
+import UserCommentList from "@/components/UserCommentList"
 
 // const SERVER_URL = process.env.VUE_APP_SERVER_URL
 const SERVER_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'ProfileView',
-
+  components: {
+    UserCommentList,
+  },
   data() {
     return {
-      user: [],
+      user: {},
       me: [],
+      comment_list: [],
       following: null,
       usersMovies: [],
       image: null,
@@ -101,6 +108,12 @@ export default {
         },
       }
       return config
+    },
+    getComment() {
+      axios.get(`${SERVER_URL}/movies/comments/`)
+        .then(res => {
+          this.comment_list = res.data
+        })
     },
     getImage(url) {
       this.image = SERVER_URL + url
@@ -145,6 +158,7 @@ export default {
     },
     getUserInfo: function () {
       const config = this.getToken()
+      this.getComment()
       const username = this.$route.params.username
       const userItem = {
         username: username,
@@ -218,6 +232,17 @@ export default {
       } else {
         return '여성'
       }
+    },
+    comment_movies() {
+      const comment_movie_list = []
+      if (this.user.movie_comments) {
+        this.user.movie_comments.forEach(comment_movie => {
+
+          const movie = JSON.parse(localStorage.getItem('movie_list'))[this.comment_list[comment_movie-1].movie-1]
+          comment_movie_list.push(movie)
+        })
+      }
+      return comment_movie_list
     },
   },
   created() {

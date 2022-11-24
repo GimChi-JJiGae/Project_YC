@@ -30,8 +30,8 @@
             />
           </div>
           <div class="col">
-            <button class="btn content-font border btn-sm" style="height:36px;" @click="open">
-              <span style="font-size: 16px;">예고편</span>
+            <button class="btn content-font border btn-sm" style="height:36px; min-width: 56px;" @click="open">
+              <span style="font-size: 15px;">예고편</span>
             </button>
           </div>
           <div class="col-2" @click="likeMovie">

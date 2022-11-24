@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5>선호 장르</h5>
+    <h5>선호 장르 및 추천</h5>
     <Doughnut
     :chart-options="chartOptions"
     :chart-data="chartData"
@@ -70,7 +70,17 @@
       return {
         chartOptions: {
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          scales: {
+            xAxes: [{
+              stacked:true,
+            }]
+          },
         },
         lawData: {},
       }
