@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column" style="width:100%; height:700px; min-width:770px;">
+  <div class="d-flex flex-column align-items-center" style="width:100%; min-width:770px;">
     <div class="row gap-3" style="height:700px; width:100%;">
       <div class="col-3 bg-secondary bg-opacity-25 rounded-3" style="min-width:240px;">
         <div class="mt-4">
@@ -132,6 +132,7 @@
     <div class="row" style="width:100%">
       <DoughnutChart
         :movies="like_movies"
+        :chartData="chartData"
       />
     </div>
   </div>
@@ -170,6 +171,20 @@ export default {
       bodyTextVariant: "white",
       footerBgVariant: "danger",
       footerTextVariant: "dark",
+      lawData : {},
+      chartData: {
+        labels: [],
+        datasets: [
+          { // backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+            // data: [40, 20, 80, 10]
+            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16', '#3dda4a', '#daca3d',
+                              '#e65d5d', '#daca3d', '#daca3d', '#daca3d', '#daca3d', '#daca3d', 
+                              '#daca3d', '#daca3d', '#daca3d', '#daca3d', '#daca3d', '#daca3d', 
+                              '#daca3d',],
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+          }
+        ]
+      },
       
     }
   },
@@ -201,7 +216,8 @@ export default {
             const url = '/media/basic.png'
             this.getImage(url)
           }
-
+          this.getData()
+          console.log(this.chartData)
         // const item = this.user.like_movies
         // axios.post(`${SERVER_URL}/movies/${this.user.id}/like/`, item, config)
         // .then( (res) => {
@@ -232,6 +248,29 @@ export default {
     updateUser() {
       this.$router.push({ name: 'UpdateUserView', params: { username: `${this.user.username}` } })
     },
+    getData() {
+      const genres = JSON.parse(localStorage.getItem('genres'))
+      for (const gen of genres) {
+        this.lawData[gen['name']] = 0
+        this.chartData.labels.push(gen['name'])
+      }
+      for (const movie of this.like_movies) {
+        for (const genre of movie.genres) {
+          for (const gen of genres) {
+            if (gen['id'] === genre) {
+              this.lawData[gen['name']] += 1
+            }
+          }
+        }
+      }
+      for (const com in this.lawData) {
+        if (this.lawData[com]) {
+          this.chartData.datasets[0]['data'][this.chartData.labels.indexOf(com)] = this.lawData[com]
+        } else {
+          this.chartData.datasets[0]['data'][this.chartData.labels.indexOf(com)] = 0
+        }
+      }
+    },
   },
   created() {
     this.getMyName()
@@ -245,7 +284,6 @@ export default {
             like_movie_list.push(movie)
         });
       }
-      console.log(like_movie_list)
       return like_movie_list
     },
     followingsLength() {
@@ -268,7 +306,7 @@ export default {
       } else {
         return '여성'
       }
-    }
+    },
   },
 }
 </script>

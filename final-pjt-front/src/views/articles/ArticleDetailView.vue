@@ -53,6 +53,9 @@
       </div>
     </div>
     <div class="row">
+      <div class="col text-start">
+        <button class="m-1 btn content-font border btn-sm" type="submit" @click="moveToArticleHomeView">목록</button>
+      </div>
       <div class="col text-end">
         <button class="m-1 btn content-font border btn-sm" type="submit" @click="createComment">댓글 작성</button>
       </div>
@@ -272,6 +275,9 @@ export default {
     },
     moveToMovieDetail() {
       this.$router.push({name : 'MovieDetail', params : {movie_pk : `${this.article.movie}` } })
+    },
+    moveToArticleHomeView() {
+      this.$router.push({ name: 'ArticleHomeView'})
     },
     likeArticle(article) {
       const config = this.getToken()

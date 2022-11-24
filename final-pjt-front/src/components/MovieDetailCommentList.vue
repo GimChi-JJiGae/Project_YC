@@ -1,25 +1,25 @@
 <template>
-  <div>
+  <div class="row align-items-center justify-content-center" style="width: 100%;">
     <hr>
-    <div class="row">
-      <div class="col-2">유저</div>
+    <div class="row" style="width:100%;">
+      <div class="col-1">유저</div>
       <div class="col-2">별점</div>
-      <div class="col-4">내용</div>
+      <div class="col">내용</div>
       <div class="col-2">생성시간</div>
       <div class="col-1"><font-awesome-icon icon="fa-regular fa-thumbs-up"/></div>
       <div class="col-1"><font-awesome-icon icon="fa-regular fa-thumbs-down"/></div>
     </div>
     <hr>
-    <div class="comment-list">
+    <div class="comment-list row" style="width:100%;">
    
-      <ul class="list-group list-group-flush">
-      <li class="list-group-item" v-for="(comment, idx) in comments" :key="idx">
-        <div class="row">
-          <div class="col-2"><!--<span style="cursor:pointer;" @click="moveToProfile(comment.user, comment.username)">--><strong>{{ user[idx] }}</strong></div>
+      <ul class="list-group list-group-flush px-0">
+      <li class="list-group-item p-0 mb-1" v-for="(comment, idx) in comments" :key="idx" >
+        <div class="row m-0" style="width:100%;">
+          <div class="col-1"><span style="cursor:pointer;" @click="moveToProfile(user[idx])"><strong>{{ user[idx] }}</strong></span></div>
           <div class="col-2">
-            <star-rating :rating="comment_rank_list[idx]" :read-only="true" :increment="0.01" :star-size="20"></star-rating>
+            <star-rating :rating="comment_rank_list[idx]" :read-only="true" :increment="0.01" :star-size="15" class="justify-content-center"></star-rating>
           </div>
-          <div class="col-4">{{ comments[idx] }}</div>
+          <div class="col">{{ comment.content }}</div>
           <div class="col-2"><small>{{ comments_date[idx] }}</small></div>
           <div :id="`like` + idx" class="col-1" style="cursor:pointer;"  @click="likeComment(comments_id[idx])">{{ like_numbers[idx]}}</div>
           <div :id="`hate` + idx" class="col-1" style="cursor:pointer;" @click="hateComment(comments_id[idx])"> {{ hate_numbers[idx]}}</div>
@@ -31,6 +31,7 @@
       </li>
     </ul>
     </div>
+    <hr>
     <div @mouseleave="showCurrentRating(0)" style="display:inline-block;">
               <star-rating :show-rating="false" @current-rating="showCurrentRating" @rating-selected="setCurrentSelectedRating" :increment="0.5"></star-rating>
             </div>
@@ -213,11 +214,11 @@ export default {
         this.hate_numbers = []
         this.comment_rank_list = []
         for (let i = 0; i < this.comment_data.length; i++){
-          this.comments.push(this.comment_data[i].content)
+          this.comments.push(this.comment_data[i])
           let timeinfo = this.comment_data[i].created_at
           let year_month_day = timeinfo.split('T')
-          let hour_minuite = year_month_day[1].split('.')
-          this.comments_date.push(year_month_day[0] + ' ' + hour_minuite[0])
+          let hour_minuite = year_month_day[1].split(':')
+          this.comments_date.push(year_month_day[0] + ' ' + hour_minuite[0] + ':' + hour_minuite[1])
           this.comments_id.push(this.comment_data[i].id)
           this.like_numbers.push(this.comment_data[i].like_movie_comment_users.length)
           this.hate_numbers.push(this.comment_data[i].hate_movie_comment_users.length)
@@ -234,7 +235,10 @@ export default {
         console.log(err)
       })
       )
-    }
+    },
+    moveToProfile(username) {
+      this.$router.push({ name: "ProfileView", params: { username: username} })
+    },
   },
   created : function(){
     this.getComments()

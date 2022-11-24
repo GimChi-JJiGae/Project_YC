@@ -1,12 +1,17 @@
 <template>
-  <div class="border p-2 rounded-3">
+  <div class="border p-2 rounded-3 row align-items-center justify-content-center">
 
     <!--<iframe width="560" height="315" :src="this.youtubeLink" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
     <!--<iframe width="100%" height="700px" src="https://youtu.be/rrI7tOhoVzA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
-    
-    <MovieDetailTop :movie="movie"/>
-    <MovieDetailCommentList/>
-    <MovieDetailRelated/>
+    <div class="row">
+      <MovieDetailTop :movie="movie"/>
+    </div>
+    <div class="row">
+      <MovieDetailCommentList/>
+    </div>
+    <div class="row">
+      <MovieDetailRelated/>
+    </div>
     
   </div>
 </template>
